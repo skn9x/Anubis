@@ -1,0 +1,564 @@
+%{
+
+package anubis.parser;
+import java.io.*;
+import java.util.*;
+import anubis.*;
+import anubis.ast.*;
+import anubis.except.*;
+import anubis.runtime.*;
+import anubis.runtime.util.*;
+
+@SuppressWarnings({
+	"unchecked", "serial"
+})
+public class Parser {
+
+%}
+
+// 構造キーワード
+%token		OBJECT, RECORD, FUNCTION
+// 制御構造キーワード
+%token		DEF, IF, THEN, ELSE, FOR, WHILE, DO, TRY, CATCH, FINALLY, SWITCH, CASE, ASSERT, END
+// 制御構文キーワード
+%token		BREAK, CONTINUE, THROW, RETURN, ATMARK, OWATA
+// 演算子
+%right		NEWSLOT, ASSIGN, ASSIGN_ADD, ASSIGN_SUB, ASSIGN_MUL, ASSIGN_DIV, ASSIGN_MOD, ASSIGN_TRUEDIV
+%right		QUESTION, COLON
+%left		OR
+%left		XOR
+%left		AND
+%left		EQ, NEQ
+%left		LT, LTEQ, GT, GTEQ
+%nonassoc	RFIND, RREPL
+%left		IFNULL
+%left		PLUS, MINUS
+%left		MUL, DIV, MOD, TRUEDIV
+%right		UPLUS, UMINUS, NOT
+%left		ISNULL
+%left		DOT
+%right		RIGHT_DARROW, RIGHT_ARROW
+%left		LP, RP, LB, RB, LBT, RBT, MAP_LBT, SET_LBT
+// 記号
+%token		COMMA, SEMICOLON, DOT2, COLON2
+// 変数
+%token		THIS, SUPER, OUTER, LOCAL
+// リテラル
+%token<String>	IDENTIFIER, INTEGER, DECIMAL, STRING, CHAR, NULL, VOID, TRUE, FALSE, REGEX
+
+%type<String>
+	idOpt,
+	id,
+	labelOpt,
+%type<List<String>>
+	idListOpt,
+	idList
+%type<APrimitive>
+	primitive
+%type<List<Expression>>
+	exprListOpt,
+	exprList
+%type<Expression>
+	exprOpt,
+	expr,
+	term,
+	objectExpr,
+	functionExpr,
+	blockExpr
+%type<LeftValue>
+	leftvalue
+%type<Statement>
+	stmtListOpt,
+	stmtList,
+	stmt,
+	cmdStmt,
+	elseStmtOpt,
+	elseStmt
+%type<List<CaseElement>>
+	caseList
+%type<CaseElement>
+	caseBody
+%type<List<Pair<Expression, Expression>>>
+	mapElementOpt,
+	mapElement
+%type<CompilationUnit>
+	compilationUnit
+%type<CallArgument>
+	callArgs
+
+%%
+
+compilationUnit:
+	expr
+		{ $$ = new ReturnStatement($1); }
+	| stmtListOpt
+		{ $$ = $1; }
+	;
+
+// 文の定義
+stmtListOpt:
+		{ $$ = EmptyStatement.INSTANCE; }
+	| stmtList
+		{ $$ = $1; }
+	;
+stmtList:
+	stmt
+		{ $$ = new BlockStatement().append($1); }
+	| stmtList stmt
+		{ $$ = ((BlockStatement)$1).append($2); }
+	;
+stmt:
+	SEMICOLON
+		{ $$ = EmptyStatement.INSTANCE; }
+	| cmdStmt SEMICOLON
+		{ $$ = $1; }
+	| cmdStmt ATMARK IF expr SEMICOLON
+		{ $$ = new ConditionStatement($4, $1, EmptyStatement.INSTANCE); }
+	| cmdStmt ATMARK FOR id COLON expr SEMICOLON
+		{ $$ = new ForStatement($4, $6, $1, EmptyStatement.INSTANCE); }
+	| cmdStmt ATMARK WHILE expr SEMICOLON
+		{ $$ = new WhileStatement($4, $1, EmptyStatement.INSTANCE); }
+	| DEF leftvalue ASSIGN expr SEMICOLON
+		{ $$ = new ExpressionStatement(newNewSlotCall($2, $4, true)); }
+	| labelOpt IF expr THEN stmtList elseStmtOpt END
+		{ $$ = new ConditionStatement($1, $3, $5, $6); }
+	| labelOpt FOR id COLON expr DO stmtList elseStmtOpt END
+		{ $$ = new ForStatement($1, $3, $5, $7, $8); }
+	| labelOpt WHILE expr DO stmtList elseStmtOpt END
+		{ $$ = new WhileStatement($1, $3, $5, $6); }
+	| labelOpt TRY stmtList CATCH id DO stmtList END
+		{ $$ = new TryCatchStatement($1, $3, $5, $7); }
+	| labelOpt TRY stmtList FINALLY stmtList END
+		{ $$ = new TryFinallyStatement($1, $3, $5); }
+	| labelOpt TRY stmtList CATCH id DO stmtList FINALLY stmtList END
+		{ $$ = new TryFinallyStatement($1, new TryCatchStatement($3, $5, $7), $9); }
+	| labelOpt SWITCH expr caseList elseStmtOpt END
+		{ $$ = new SwitchStatement($1, $3, $4, $5); }
+	| ASSERT expr SEMICOLON
+		{ $$ = new AssertStatement($2); }
+	| ASSERT expr elseStmt END
+		{ $$ = new AssertStatement($2, $3); }
+	| OWATA
+		{ $$ = null; }	// TODO
+	;
+labelOpt:
+		{ $$ = null; }
+	| IDENTIFIER COLON
+		{ $$ = $1; }
+	;
+cmdStmt:
+	expr
+		{ $$ = new ExpressionStatement($1); }
+	| RETURN exprOpt
+		{ $$ = new ReturnStatement($2); }
+	| BREAK idOpt
+		{ $$ = new BreakStatement($2); }
+	| CONTINUE idOpt
+		{ $$ = new ContinueStatement($2); }
+	| THROW exprOpt
+		{ $$ = new ThrowStatement($2); }
+	;
+elseStmtOpt:
+		{ $$ = EmptyStatement.INSTANCE; }
+	| elseStmt
+		{ $$ = $1; }
+	;
+elseStmt:
+	ELSE stmtList
+		{ $$ = $2; }
+	;
+caseList:
+	caseBody
+		{ $$ = new ArrayList<CaseElement>(Arrays.asList($1)); }
+	| caseList caseBody
+		{ $1.add($2); $$ = $1; }
+	;
+caseBody:
+	CASE primitive THEN stmtList
+		{ $$ = new CaseElement($2, $4); }
+	;
+
+// 式の定義
+exprListOpt:
+		{ $$ = new ArrayList<Expression>(); }
+	| exprList
+		{ $$ = $1; }
+	;
+exprList:
+	expr
+		{ $$ = new ArrayList<Expression>(Arrays.asList($1)); }
+	| exprList COMMA expr
+		{ $$ = $1; $1.add($3); }
+	;
+exprOpt:
+		{ $$ = null; }
+	| expr
+		{ $$ = $1; }
+	;
+expr:
+	// 項
+	term
+		{ $$ = $1; }
+	// 入れ子
+	| LP expr RP
+		{ $$ = $2; }
+	// 単項演算子
+	| PLUS expr %prec UPLUS
+		{ $$ = newCall($2, "+p"); }
+	| MINUS expr %prec UMINUS
+		{ $$ = newCall($2, "-n"); }
+	| NOT expr
+		{ $$ = new UnaryExpression(UnaryOperator.NOT, $2); }
+	| expr ISNULL
+		{ $$ = new UnaryExpression(UnaryOperator.ISNULL, $1); }
+	// 二項演算子
+	| expr MUL expr
+		{ $$ = newCall($1, "*", $3); }
+	| expr DIV expr
+		{ $$ = newCall($1, "/", $3); }
+	| expr MOD expr
+		{ $$ = newCall($1, "%", $3); }
+	| expr TRUEDIV expr
+		{ $$ = newCall($1, "\\", $3); }
+	| expr PLUS expr
+		{ $$ = newCall($1, "+", $3); }
+	| expr MINUS expr
+		{ $$ = newCall($1, "-", $3); }
+	| expr IFNULL expr
+		{ $$ = new BinaryExpression(BinaryOperator.IFNULL, $1, $3); }
+	| expr RFIND expr
+		{ $$ = newCall($1, "=~", $3); }
+	| expr RREPL expr RIGHT_ARROW expr
+		{ $$ = newCall($1, "=^", $3, $5); }
+	| expr EQ expr
+		{ $$ = new BinaryExpression(BinaryOperator.EQUALS, $1, $3); }
+	| expr NEQ expr
+		{ $$ = new BinaryExpression(BinaryOperator.NOTEQUALS, $1, $3); }
+	| expr LT expr
+		{ $$ = newCall($1, "<", $3); }
+	| expr LTEQ expr
+		{ $$ = newCall($1, "<=", $3); }
+	| expr GT expr
+		{ $$ = newCall($1, ">", $3); }
+	| expr GTEQ expr
+		{ $$ = newCall($1, ">=", $3); }
+	| expr AND expr
+		{ $$ = new BinaryExpression(BinaryOperator.AND, $1, $3); }
+	| expr XOR expr
+		{ $$ = new BinaryExpression(BinaryOperator.XOR, $1, $3); }
+	| expr OR expr
+		{ $$ = new BinaryExpression(BinaryOperator.OR, $1, $3); }
+	// 三項演算子
+	| expr QUESTION expr COLON expr
+		{ $$ = new TernaryExpression(TernaryOperator.IFELSE, $1, $3, $5); }
+	// 代入演算子
+	| leftvalue NEWSLOT expr
+		{ $$ = newNewSlotCall($1, $3, false); }
+	| leftvalue ASSIGN expr
+		{ $$ = newAssignCall($1, null, $3); }
+	| leftvalue ASSIGN_ADD expr
+		{ $$ = newAssignCall($1, "+", $3); }
+	| leftvalue ASSIGN_SUB expr
+		{ $$ = newAssignCall($1, "-", $3); }
+	| leftvalue ASSIGN_MUL expr
+		{ $$ = newAssignCall($1, "*", $3); }
+	| leftvalue ASSIGN_DIV expr
+		{ $$ = newAssignCall($1, "/", $3); }
+	| leftvalue ASSIGN_TRUEDIV expr
+		{ $$ = newAssignCall($1, "\\", $3); }
+	| leftvalue ASSIGN_MOD expr
+		{ $$ = newAssignCall($1, "%", $3); }
+	// 変数呼び出し
+	| expr DOT id
+		{ $$ = new GetSlotExpression($1, $3); }
+	| expr DOT THIS
+		{ $$ = new GetSpecialExpression($1, SpecialSlot.THIS); }
+	| expr DOT SUPER
+		{ $$ = new GetSpecialExpression($1, SpecialSlot.SUPER); }
+	| expr DOT OUTER
+		{ $$ = new GetSpecialExpression($1, SpecialSlot.OUTER); }
+	// 関数呼び出し
+	| IDENTIFIER LP callArgs RP
+		{ $$ = newCall(LocalExpression.INSTANCE, $1, $3); }
+	| expr DOT IDENTIFIER LP callArgs RP
+		{ $$ = newCall($1, $3, $5); }
+	// インデクサ
+	| expr LBT expr RBT
+		{ $$ = new BinaryExpression(BinaryOperator.INDEX, $1, $3); }
+	// スライサ
+	| expr LBT expr DOT2 expr RBT
+		{ $$ = new TernaryExpression(TernaryOperator.SLICE, $1, $3, $5); }
+	| expr LBT expr DOT2 RBT
+		{ $$ = new TernaryExpression(TernaryOperator.SLICE, $1, $3, new PrimitiveExpression(null)); }
+	| expr LBT DOT2 expr RBT
+		{ $$ = new TernaryExpression(TernaryOperator.SLICE, $1, new PrimitiveExpression(null), $4); }
+	;
+callArgs:
+	exprListOpt
+		{ $$ = new CallArgument(null, $1); }
+	| ATMARK expr
+		{ $$ = new CallArgument($2); }
+	| ATMARK expr COMMA exprListOpt
+		{ $$ = new CallArgument($2, $4); }
+	;
+leftvalue:	// 左辺値
+	// 変数
+	id
+		{ $$ = new SetSlotLeftValue(LocalExpression.INSTANCE, $1); }
+	| SUPER
+		{ $$ = new SetSpecialLeftValue(LocalExpression.INSTANCE, SpecialSlot.SUPER); }
+	| OUTER
+		{ $$ = new SetSpecialLeftValue(LocalExpression.INSTANCE, SpecialSlot.OUTER); }
+	// 変数参照
+	| expr DOT id
+		{ $$ = new SetSlotLeftValue($1, $3); }
+	| expr DOT SUPER
+		{ $$ = new SetSpecialLeftValue($1, SpecialSlot.SUPER); }
+	| expr DOT OUTER
+		{ $$ = new SetSpecialLeftValue($1, SpecialSlot.OUTER); }
+	// インデクサ
+	| expr LBT expr RBT
+		{ $$ = new SetIndexLeftValue($1, $3); }
+	;
+
+term:
+	// 変数
+	id
+		{ $$ = new GetSlotExpression(LocalExpression.INSTANCE, $1); }
+	| THIS
+		{ $$ = new GetSpecialExpression(LocalExpression.INSTANCE, SpecialSlot.THIS); }
+	| SUPER
+		{ $$ = new GetSpecialExpression(LocalExpression.INSTANCE, SpecialSlot.SUPER); }
+	| OUTER
+		{ $$ = new GetSpecialExpression(LocalExpression.INSTANCE, SpecialSlot.OUTER); }
+	| LOCAL
+		{ $$ = LocalExpression.INSTANCE; }
+	// プリミティブ
+	| primitive
+		{ $$ = new PrimitiveExpression($1); }
+	// 配列・マップ・集合
+	| LBT exprListOpt RBT
+		{ $$ = new NewListExpression($2); }
+	| MAP_LBT mapElementOpt RBT
+		{ $$ = new NewMapExpression($2); }
+	| SET_LBT exprListOpt RBT
+		{ $$ = new NewSetExpression($2); }
+	// レンジ
+	| LBT expr DOT2 RBT
+		{ $$ = new NewRangeExpression($2, null, null); }
+	| LBT expr DOT2 expr RBT
+		{ $$ = new NewRangeExpression($2, $4, null); }
+	| LBT expr DOT2 SEMICOLON expr RBT
+		{ $$ = new NewRangeExpression($2, null, $5); }
+	| LBT expr DOT2 expr SEMICOLON expr RBT
+		{ $$ = new NewRangeExpression($2, $4, $6); }
+	// オブジェクト生成
+	| objectExpr
+		{ $$ = $1; }
+	| functionExpr
+		{ $$ = $1; }
+	| recordExpr
+		{ $$ = null; } // TODO
+	| blockExpr
+		{ $$ = $1; }
+	;
+mapElementOpt:
+		{ $$ = new ArrayList<Pair<Expression, Expression>>(); }
+	| mapElement
+		{ $$ = $1; }
+	;
+mapElement:
+	expr RIGHT_ARROW expr
+		{ $$ = new ArrayList<Pair<Expression, Expression>>(Arrays.asList(new Pair<Expression, Expression>($1, $3))); }
+	| mapElement COMMA expr RIGHT_ARROW expr
+		{ $$ = $1; $1.add(new Pair<Expression, Expression>($3, $5)); }
+	;
+
+// 構造体の定義
+objectExpr:
+	OBJECT LB stmtListOpt RB
+		{ $$ = new NewObjectExpression($3); }
+	;
+functionExpr:
+	FUNCTION LP idListOpt RP LB stmtListOpt RB
+		{ $$ = new NewFunctionExpression($3, $6); }
+	| LB idListOpt RIGHT_ARROW expr RB
+		{ $$ = new NewFunctionExpression($2, new ReturnStatement($4)); }
+	;
+recordExpr:
+	RECORD LB recordElementListOpt RB
+		// TODO
+	;
+recordElementListOpt:
+		// TODO
+	| recordElementList
+		// TODO
+	;
+recordElementList:
+	recordElement
+		// TODO
+	| recordElementList COMMA recordElement
+		// TODO
+	;
+recordElement:
+	primitive
+		// TODO
+	| id
+		// TODO
+	| id LBT INTEGER RBT
+		// TODO
+	;
+blockExpr:
+	DO LB RB
+		{ $$ = new BlockExpression(EmptyStatement.INSTANCE); }
+	| DO LB stmtList RB
+		{ $$ = new BlockExpression($3); }
+	;
+
+// プリミティブの定義
+primitive:
+	VOID
+		{ $$ = null; }
+	| NULL
+		{ $$ = AObjects.getNull(); }
+	| TRUE
+		{ $$ = AObjects.getTrue(); }
+	| FALSE
+		{ $$ = AObjects.getFalse(); }
+	| INTEGER
+		{ $$ = AObjects.getNumber(ParserHelper.parseNumber($1)); }
+	| DECIMAL
+		{ $$ = AObjects.getNumber(ParserHelper.parseNumber($1)); }
+	| STRING
+		{ $$ = AObjects.getString($1); }
+	| REGEX
+		{ $$ = null; } // TODO
+	| CHAR
+		{ $$ = null; } // TODO
+	;
+
+// 識別子の定義
+idListOpt:
+		{ $$ = new ArrayList<String>(); }
+	| idList
+		{ $$ = $1; }
+	;
+idList:
+	id
+		{ $$ = new ArrayList<String>(Arrays.asList($1)); }
+	| idList COMMA id
+		{ $$ = $1; $1.add($3); }
+	;
+idOpt:
+		{ $$ = null; }
+	| id
+		{ $$ = $1; }
+	;
+id:
+	IDENTIFIER
+		{ $$ = $1; }
+	;
+
+%%
+	private static CallExpression newCall(Expression expr, String name, Expression... args) {
+		return newCall(expr, name, new CallArgument(null, args));
+	}
+	private static CallExpression newCall(Expression expr, String name, CallArgument args) {
+		return new CallExpression(expr, name, args);
+	}
+	
+	private static CallExpression newNewSlotCall(LeftValue lv, Expression right, boolean readonly) {
+		if (lv instanceof SetSlotLeftValue) {
+			SetSlotLeftValue left = (SetSlotLeftValue) lv;
+			Expression slotName = new PrimitiveExpression(AObjects.getString(left.getName()));
+			if (readonly) {
+				return newCall(left.getExpr(), "newSlot", slotName, right, new PrimitiveExpression(AObjects.getTrue()));
+			}
+			else {
+				return newCall(left.getExpr(), "newSlot", slotName, right);
+			}
+		}
+		else if (lv instanceof SetSpecialLeftValue) {
+			SetSpecialLeftValue left = (SetSpecialLeftValue) lv;
+			switch (left.getName()) {
+				case SUPER: {
+					return newCall(left.getExpr(), "setSuper", right);
+				}
+				case OUTER: {
+					return newCall(left.getExpr(), "setOuter", right);
+				}
+			}
+		}
+		else if (lv instanceof SetIndexLeftValue) {
+			SetIndexLeftValue left = (SetIndexLeftValue) lv;
+			return newCall(left.getExpr(), "set", left.getIndex(), right);
+		}
+		throw new BugIsHereException();
+	}
+	
+	private static CallExpression newAssignCall(LeftValue lv, String op, Expression right) {
+		Expression opname = null;
+		if (op != null) {
+			opname = new PrimitiveExpression(AObjects.getString(op));
+		}
+		
+		if (lv instanceof SetSlotLeftValue) {
+			SetSlotLeftValue left = (SetSlotLeftValue) lv;
+			Expression slotName = new PrimitiveExpression(AObjects.getString(left.getName()));
+			if (op != null)
+				return newCall(left.getExpr(), "setSlot", slotName, right, opname);
+			else
+				return newCall(left.getExpr(), "setSlot", slotName, right);
+		}
+		else if (lv instanceof SetSpecialLeftValue) {
+			SetSpecialLeftValue left = (SetSpecialLeftValue) lv;
+			switch (left.getName()) {
+				case SUPER: {
+					if (op != null)
+						return newCall(left.getExpr(), "setSuper", right, opname);
+					else
+						return newCall(left.getExpr(), "setSuper", right);
+				}
+				case OUTER: {
+					if (op != null)
+						return newCall(left.getExpr(), "setOuter", right, opname);
+					else
+						return newCall(left.getExpr(), "setOuter", right);
+				}
+			}
+		}
+		else if (lv instanceof SetIndexLeftValue) {
+			SetIndexLeftValue left = (SetIndexLeftValue) lv;
+			if (op != null)
+				return newCall(left.getExpr(), "set", left.getIndex(), right, opname);
+			else
+				return newCall(left.getExpr(), "set", left.getIndex(), right);
+		}
+		throw new BugIsHereException();
+	}
+	
+	public CompilationUnit parse(Reader source) {
+		Parser yyparser = new Parser();
+		try {
+			return (CompilationUnit) yyparser.yyparse(new Scanner(source));
+		}
+		catch (Parser.yyException ye) {
+			throw ExceptionProvider.newParseException(ye);
+		}
+		catch (IOException ie) {
+			throw ExceptionProvider.newParseException(ie);
+		}
+	}
+	public static void main(final String[] args) {
+	    ObjectFactory oldFactory = AObjects.setCurrent(new StandardObjectFactory());
+	    try {
+			new Parser().parse(new FileReader(args[0]));
+	    }
+	    catch(IOException ex) {
+			throw new RuntimeException(ex);
+		}
+		finally {
+	    	AObjects.setCurrent(oldFactory);
+	    }
+	}
+}

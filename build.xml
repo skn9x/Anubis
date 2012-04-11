@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="build-project" name="Anubis">
+	<property file="build.properties" />
+	<property environment="env" />
+
+	<path id="anubis.classpath">
+		<pathelement location="bin" />
+		<fileset dir="lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+	<path id="anubis.classpath.test">
+		<pathelement location="bin" />
+		<pathelement location="bin-test" />
+		<fileset dir="lib">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="lib-test">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="init">
+		<mkdir dir="bin" />
+		<copy includeemptydirs="false" todir="bin">
+			<fileset dir="src">
+				<exclude name="**/LICENSE.TXT" />
+				<exclude name="**/package.html" />
+				<exclude name="**/*.launch" />
+				<exclude name="**/*.java" />
+				<exclude name="**/*.jay" />
+				<exclude name="**/*.jflex" />
+				<exclude name="**/*.*~" />
+				<exclude name="**/*.bak" />
+				<exclude name="**/*.tmp" />
+			</fileset>
+		</copy>
+		<mkdir dir="bin-test" />
+		<copy includeemptydirs="false" todir="bin-test">
+			<fileset dir="test">
+				<exclude name="**/LICENSE.TXT" />
+				<exclude name="**/package.html" />
+				<exclude name="**/*.launch" />
+				<exclude name="**/*.java" />
+				<exclude name="**/*.bak" />
+				<exclude name="**/*.tmp" />
+			</fileset>
+		</copy>
+		<mkdir dir="dist" />
+	</target>
+
+	<target name="clean">
+		<delete dir="bin" failonerror="false"/>
+		<delete dir="bin-test" failonerror="false" />
+		<delete dir="dist" failonerror="false" />
+	</target>
+	
+	<target name="genparser" depends="init">
+		<java jar="lib-ant/JFlex.jar" fork="true" failonerror="true" dir="src/anubis/parser">
+			<arg line="anubis.jflex" />
+		</java>
+		<java jar="lib-ant/jay.jar" fork="true" failonerror="true" dir="." output="src/anubis/parser/Parser.java">
+			<arg line="${jay.option} src/anubis/parser/anubis.jay" />
+		</java>
+	</target>
+	
+	<target name="compile" depends="init, genparser">
+		<javac debug="${compile.debug}" debuglevel="${compile.debuglevel}" destdir="bin" source="${compile.source}" target="${compile.target}" encoding="${source.encoding}" includeantruntime="false">
+			<src path="src" />
+			<classpath refid="anubis.classpath" />
+		</javac>
+		<javac debug="${compile.debug}" debuglevel="${compile.debuglevel}" destdir="bin-test" source="${compile.source}" target="${compile.target}" encoding="${source.encoding}" includeantruntime="false">
+			<src path="test" />
+			<classpath refid="anubis.classpath.test" />
+		</javac>
+	</target>
+
+	<target name="build-jar" depends="compile">
+		<jar jarfile="dist/anubis.jar" basedir="bin">
+			<manifest>
+				<attribute name="Implementation-Title" value="${anubis.title}" />
+				<attribute name="Implementation-Version" value="${anubis.version}" />
+				<attribute name="Implementation-Vendor" value="${anubis.vendor}" />
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="build-javadoc" depends="init">
+		<mkdir dir="dist/doc" />
+		<javadoc destdir="dist/doc" windowtitle="${anubis.doc.windowtitle}" encoding="${source.encoding}" docencoding="${source.encoding}" charset="Shift_JIS" access="${doc.access}">
+			<fileset dir="src" />
+		</javadoc>
+		<zip destfile="dist/anubis-doc.zip" basedir="dist/doc" update="true" excludes="**/*.bak" />
+	</target>
+	
+	<target name="build-src" depends="init">
+		<zip destfile="dist/anubis-src.zip" basedir="src" update="true" excludes="**/*.bak" />
+	</target>
+	
+	<target name="build-project">
+		<antcall target="clean" />
+		<antcall target="build-jar" />
+		<antcall target="build-src" />
+	</target>
+</project>
