@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 import org.junit.Test;
 import anubis.AbstractTest;
+import anubis.except.AnubisUserException;
 import anubis.except.AssertionException;
 
 public class StatementEmitterTest extends AbstractTest {
@@ -29,18 +30,35 @@ public class StatementEmitterTest extends AbstractTest {
 	}
 	
 	@Test
-	public void testEmitBreakStatement() {
-		fail("まだ実装されていません");
+	public void testEmitBreakStatement() throws Exception {
+		assertNull(exec("break; return 1;"));
+		assertNull(exec("LABEL: assert false else break LABEL; return 1; end"));
+		assertAEquals(1, exec("for x: [1..3] do break; else x = 4; end return x;"));
+		assertAEquals(1, exec("x = 0; while true do x += 1; break; end return x;"));
+		assertAEquals(1, exec("IF: if true then x = 1; break IF; x = 2; end return x;"));
+		exec("try break; finally end");
+	}
+	
+	@Test(expected = RuntimeException.class)
+	// TODO 専用の例外へ
+	public void testEmitBreakStatementNG() throws Exception {
+		exec("try finally break; end");
 	}
 	
 	@Test
-	public void testEmitConditionStatement() {
-		fail("まだ実装されていません");
+	public void testEmitContinueStatement() throws Exception {
+		assertNull(exec("continue; return 1;"));
+		assertNull(exec("LABEL: assert false else continue LABEL; return 1; end"));
+		assertAEquals(4, exec("for x: [1..3] do continue; else x = 4; end return x;"));
+		assertAEquals(4, exec("x = 0; while x < 4 do x += 1; continue; x += 1; end return x;"));
+		assertAEquals(1, exec("IF: if true then x = 1; continue IF; x = 2; end return x;"));
+		exec("try continue; finally end");
 	}
 	
-	@Test
-	public void testEmitContinueStatement() {
-		fail("まだ実装されていません");
+	@Test(expected = RuntimeException.class)
+	// TODO 専用の例外へ
+	public void testEmitContinueStatementNG() throws Exception {
+		exec("try finally continue; end");
 	}
 	
 	@Test
@@ -54,13 +72,15 @@ public class StatementEmitterTest extends AbstractTest {
 	}
 	
 	@Test
-	public void testEmitLoopStatement() {
-		fail("まだ実装されていません");
+	public void testEmitForStatement() throws Exception {
+		assertAEquals(10, exec("sum = 0; for x: [1, 2, 3] do sum += x; else sum += 4; end return sum;"));
 	}
 	
 	@Test
-	public void testEmitMapStatement() {
-		fail("まだ実装されていません");
+	public void testEmitIfStatement() throws Exception {
+		assertAEquals(3, exec("x = 1; x += 2 @if true; return x;"));
+		assertAEquals(1, exec("if true then x = 1; else x = 2; end return x;"));
+		assertAEquals(2, exec("if false then x = 1; else x = 2; end return x;"));
 	}
 	
 	@Test
@@ -74,19 +94,29 @@ public class StatementEmitterTest extends AbstractTest {
 		fail("まだ実装されていません");
 	}
 	
-	@Test
-	public void testEmitThrowStatement() {
-		fail("まだ実装されていません");
+	@Test(expected = AnubisUserException.class)
+	public void testEmitThrowStatement() throws Exception {
+		exec("throw;");
 	}
 	
 	@Test
-	public void testEmitTryCatchStatement() {
-		fail("まだ実装されていません");
+	public void testEmitTryCatchStatement() throws Exception {
+		assertAEquals(3, exec("try throw 3; catch ex do return ex; end"));
+	}
+	
+	@Test(expected = AnubisUserException.class)
+	public void testEmitTryFinallyStatement異常系() throws Exception {
+		assertNull(exec("try throw; assert false; finally x = 1; end return x;"));
 	}
 	
 	@Test
-	public void testEmitTryFinallyStatement() {
-		fail("まだ実装されていません");
+	public void testEmitTryFinallyStatement正常系() throws Exception {
+		assertAEquals(3, exec("try x = 1; finally x += 2; end return x;"));
 	}
 	
+	@Test(timeout = 1000)
+	public void testEmitWhileStatement() throws Exception {
+		assertAEquals(10, exec("x = 1; while x < 10 do x += 1; end return x;"));
+		assertAEquals(-1, exec("x = 1; while x < 10 do x += 1; else x = -1; end return x;"));
+	}
 }

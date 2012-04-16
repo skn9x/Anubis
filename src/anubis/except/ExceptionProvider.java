@@ -149,6 +149,10 @@ public class ExceptionProvider {
 		return result;
 	}
 	
+	public static AnubisUserException newUserException(AnubisObject value) {
+		return new AnubisUserException(value);
+	}
+	
 	/**
 	 * void に対する操作を行ったことを示す例外を作成します。
 	 * @return 例外オブジェクト

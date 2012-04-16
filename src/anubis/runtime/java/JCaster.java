@@ -129,6 +129,15 @@ public class JCaster {
 		}
 	};
 	
+	public static Object as(Class<?> cls, AnubisObject arg) {
+		Object value = DEEPCAST.start(arg, cls);
+		if (value == NULL)
+			return null;
+		if (value != null)
+			return toWrappedClass(cls).cast(value);
+		return null;
+	}
+	
 	public static Object cast(AnubisObject obj) {
 		Object value = SIMPLECAST.start(obj, null);
 		if (value == NULL)

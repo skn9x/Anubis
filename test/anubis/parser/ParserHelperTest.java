@@ -1,9 +1,10 @@
 package anubis.parser;
 
+import static anubis.parser.ParserHelper.escape;
 import static anubis.parser.ParserHelper.getHexCode;
+import static anubis.parser.ParserHelper.mayQuoteIdentifier;
 import static anubis.parser.ParserHelper.parseNumber;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import org.junit.Test;
@@ -12,7 +13,9 @@ public class ParserHelperTest {
 	
 	@Test
 	public void testEscape() {
-		fail("‚Ü‚¾ŽÀ‘•‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+		assertEquals("", escape(null));
+		assertEquals("", escape(""));
+		assertEquals("abc\\n\\t\\b\\r\\f\\\\n\\\"\\'\\`def", escape("abc\n\t\b\r\f\\n\"\'`def"));
 	}
 	
 	@Test
@@ -28,7 +31,11 @@ public class ParserHelperTest {
 	
 	@Test
 	public void testMayQuoteIdentifier() {
-		fail("‚Ü‚¾ŽÀ‘•‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+		assertEquals("", mayQuoteIdentifier(null));
+		assertEquals("``", mayQuoteIdentifier(""));
+		assertEquals("`123`", mayQuoteIdentifier("123"));
+		assertEquals("abc123", mayQuoteIdentifier("abc123"));
+		assertEquals("`object`", mayQuoteIdentifier("object"));
 	}
 	
 	@Test
@@ -52,25 +59,4 @@ public class ParserHelperTest {
 		assertEquals(new BigDecimal("-.2"), parseNumber("-.2"));
 		assertEquals(new BigDecimal("-3."), parseNumber("-3."));
 	}
-	
-	@Test
-	public void testQuote() {
-		fail("‚Ü‚¾ŽÀ‘•‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
-	}
-	
-	@Test
-	public void testUnescape() {
-		fail("‚Ü‚¾ŽÀ‘•‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
-	}
-	
-	@Test
-	public void testUnescapeSimple() {
-		fail("‚Ü‚¾ŽÀ‘•‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
-	}
-	
-	@Test
-	public void testUnquote() {
-		fail("‚Ü‚¾ŽÀ‘•‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
-	}
-	
 }

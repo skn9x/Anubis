@@ -87,6 +87,19 @@ WSP			= [\ \t]
 	"continue"	{ return Parser.CONTINUE; }
 	"throw"		{ return Parser.THROW; }
 	"return"	{ return Parser.RETURN; }
+	"or"		{ return Parser.OR; }
+	"xor"		{ return Parser.XOR; }
+	"and"		{ return Parser.AND; }
+	"not"		{ return Parser.NOT; }
+	"isnull"	{ return Parser.ISNULL; }
+	"this"		{ return Parser.THIS; }
+	"super"		{ return Parser.SUPER; }
+	"outer"		{ return Parser.OUTER; }
+	"local"		{ return Parser.LOCAL; }
+	"null"		{ return Parser.NULL; }
+	"void"		{ return Parser.VOID; }
+	"true"		{ return Parser.TRUE; }
+	"false"		{ return Parser.FALSE; }
 	"@"			{ return Parser.ATMARK; }
 	":="		{ return Parser.NEWSLOT; }
 	"="			{ return Parser.ASSIGN; }
@@ -98,9 +111,6 @@ WSP			= [\ \t]
 	"%="		{ return Parser.ASSIGN_MOD; }
 	"?"			{ return Parser.QUESTION; }
 	":"			{ return Parser.COLON; }
-	"or"		{ return Parser.OR; }
-	"xor"		{ return Parser.XOR; }
-	"and"		{ return Parser.AND; }
 	"=="		{ return Parser.EQ; }
 	"!="		{ return Parser.NEQ; }
 	"<>"		{ return Parser.NEQ; }
@@ -115,8 +125,6 @@ WSP			= [\ \t]
 	"/"			{ return Parser.DIV; }
 	"%"			{ return Parser.MOD; }
 	"\\"		{ return Parser.TRUEDIV; }
-	"not"		{ return Parser.NOT; }
-	"isnull"	{ return Parser.ISNULL; }
 	"."			{ return Parser.DOT; }
 	"=~"		{ return Parser.RFIND; }
 	"=^"		{ return Parser.RREPL; }
@@ -134,14 +142,6 @@ WSP			= [\ \t]
 	";"			{ return Parser.SEMICOLON; }
 	".."		{ return Parser.DOT2; }
 	"::"		{ return Parser.COLON2; }
-	"this"		{ return Parser.THIS; }
-	"super"		{ return Parser.SUPER; }
-	"outer"		{ return Parser.OUTER; }
-	"local"		{ return Parser.LOCAL; }
-	"null"		{ return Parser.NULL; }
-	"void"		{ return Parser.VOID; }
-	"true"		{ return Parser.TRUE; }
-	"false"		{ return Parser.FALSE; }
 	
 	{INTEGER}	{ value = yytext(); return Parser.INTEGER; }
 	{DECIMAL}	{ value = yytext(); return Parser.DECIMAL; }
@@ -174,7 +174,11 @@ WSP			= [\ \t]
 <LINE_STRING, LINE_SYMBOL>{
 	"\\t"		{ string.append('\t'); }
 	"\\n"		{ string.append('\n'); }
+	"\\N"		{ string.append(System.getProperty("line.separator", "\n")); }
 	"\\r"		{ string.append('\r'); }
+	"\\R"		{ string.append(System.getProperty("line.separator", "\r")); }
+	"\\b"		{ string.append('\b'); }
+	"\\f"		{ string.append('\f'); }
 	"\\\""		{ string.append('\"'); }
 	"\\\'"		{ string.append('\''); }
 	"\\`"		{ string.append('`'); }

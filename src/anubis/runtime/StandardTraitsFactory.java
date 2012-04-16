@@ -89,10 +89,10 @@ public class StandardTraitsFactory implements TraitsFactory {
 		new ANumberTrueDivideFunction(trait, "\\");
 		new ANumberRemainderFunction(trait, "%");
 		new ANumberPowerFunction(trait, "**");
-		new ANumberGreaterThanFunction(trait, "<");
-		new ANumberGreaterThanEqualsFunction(trait, "<=");
-		new ANumberLessThanFunction(trait, ">");
-		new ANumberLessThanEqualsFunction(trait, ">=");
+		new ANumberGreaterThanFunction(trait, ">");
+		new ANumberGreaterThanEqualsFunction(trait, ">=");
+		new ANumberLessThanFunction(trait, "<");
+		new ANumberLessThanEqualsFunction(trait, "<=");
 		return trait;
 	}
 	

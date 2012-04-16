@@ -8,7 +8,7 @@ import anubis.ast.BlockStatement;
 import anubis.ast.BreakStatement;
 import anubis.ast.CallExpression;
 import anubis.ast.CompilationUnit;
-import anubis.ast.ConditionStatement;
+import anubis.ast.IfStatement;
 import anubis.ast.ContinueStatement;
 import anubis.ast.EmptyStatement;
 import anubis.ast.ExpressionStatement;
@@ -78,7 +78,7 @@ public class CodeGenerator implements AstVisitor<CodeBuilder, CodeBuilder> {
 	}
 	
 	@Override
-	public CodeBuilder accept(ConditionStatement stmt, CodeBuilder builder) {
+	public CodeBuilder accept(IfStatement stmt, CodeBuilder builder) {
 		emit_stmt.emit(builder, stmt);
 		return builder;
 	}

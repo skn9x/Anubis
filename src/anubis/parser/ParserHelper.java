@@ -7,45 +7,44 @@ import java.util.Arrays;
 import java.util.regex.Pattern;
 
 public class ParserHelper {
-	private static final String[] keywords = { // TODO あとで直す
-		"do",
+	private static final String[] keywords = { // TODO 随時見直し
+		"object",
+		"record",
+		"function",
 		"end",
+		"def",
 		"if",
-		"elsif",
 		"then",
 		"else",
 		"for",
-		"in",
 		"while",
-		"break",
-		"continue",
-		"case",
-		"of",
-		"return",
-		"let",
+		"do",
 		"try",
 		"catch",
 		"finally",
-		"throw",
+		"switch",
+		"case",
 		"assert",
-		"lock",
-		"this",
-		"local",
-		"super",
-		"outer",
-		"true",
-		"false",
-		"null",
-		"void",
-		"not",
-		"and",
+		"break",
+		"continue",
+		"throw",
+		"return",
 		"or",
 		"xor",
+		"and",
+		"not",
+		"isnull",
+		"this",
+		"super",
+		"outer",
+		"local",
+		"null",
+		"void",
+		"true",
+		"false",
 	};
 	
-	private static final Pattern identifier = Pattern.compile("^[A-Za-z\\$_][A-Za-z0-9\\$_]*$");
-	private static final Pattern trimBlockString = Pattern.compile("^(\r\n|\r|\n)|(\r\n|\r|\n)$");
-	private static final Pattern unescapeBlockString = Pattern.compile("^(.)", Pattern.MULTILINE);
+	private static final Pattern identifier = Pattern.compile("^[A-Za-z\\$_][0-9A-Za-z\\$_]*$");
 	
 	static {
 		Arrays.sort(keywords);
@@ -61,38 +60,40 @@ public class ParserHelper {
 	 */
 	public static String escape(String str) {
 		StringBuilder sb = new StringBuilder();
-		for (char c: str.toCharArray()) {
-			switch (c) {
-				case '\n':
-					sb.append("\\n");
-					break;
-				case '\t':
-					sb.append("\\t");
-					break;
-				case '\b':
-					sb.append("\\b");
-					break;
-				case '\r':
-					sb.append("\\r");
-					break;
-				case '\f':
-					sb.append("\\f");
-					break;
-				case '\\':
-					sb.append("\\\\");
-					break;
-				case '\"':
-					sb.append("\\\"");
-					break;
-				case '\'':
-					sb.append("\\\'");
-					break;
-				case '`':
-					sb.append("\\`");
-					break;
-				default:
-					sb.append(c);
-					break;
+		if (str != null) {
+			for (char c: str.toCharArray()) {
+				switch (c) {
+					case '\n':
+						sb.append("\\n");
+						break;
+					case '\t':
+						sb.append("\\t");
+						break;
+					case '\b':
+						sb.append("\\b");
+						break;
+					case '\r':
+						sb.append("\\r");
+						break;
+					case '\f':
+						sb.append("\\f");
+						break;
+					case '\\':
+						sb.append("\\\\");
+						break;
+					case '\"':
+						sb.append("\\\"");
+						break;
+					case '\'':
+						sb.append("\\\'");
+						break;
+					case '`':
+						sb.append("\\`");
+						break;
+					default:
+						sb.append(c);
+						break;
+				}
 			}
 		}
 		return sb.toString();
@@ -114,9 +115,14 @@ public class ParserHelper {
 	 * @return
 	 */
 	public static String mayQuoteIdentifier(String str) {
-		if (Arrays.binarySearch(keywords, str) < 0 && identifier.matcher(str).find())
-			return str;
-		return "`" + escape(str) + "`";
+		if (str == null) {
+			return "";
+		}
+		else {
+			if (Arrays.binarySearch(keywords, str) < 0 && identifier.matcher(str).find())
+				return str;
+			return "`" + escape(str) + "`";
+		}
 	}
 	
 	/**
@@ -148,110 +154,5 @@ public class ParserHelper {
 				return negate ? result.negate() : result;
 			}
 		}
-	}
-	
-	/**
-	 * 文字列を " で囲みます
-	 * @param str
-	 * @return
-	 */
-	public static String quote(String str) {
-		return "\"" + escape(str) + "\"";
-	}
-	
-	/**
-	 * 文字列内のエスケープ文字を特殊文字に置き換えます
-	 * @param str エスケープ文字を含む文字列
-	 * @return 特殊文字を含む文字列
-	 */
-	public static String unescape(String str) {
-		int index = 0, point = str.indexOf('\\');
-		if (0 <= point) {
-			// \n, \N, \r, \R, \t, \b, \f, \\, \", \', \`
-			StringBuilder sb = new StringBuilder();
-			do {
-				sb.append(str.substring(index, point));
-				if (point + 1 < str.length()) {
-					char c = str.charAt(point + 1);
-					switch (c) {
-						case 'n':
-							sb.append('\n');
-							break;
-						case 'N':
-							sb.append(System.getProperty("line.separator", "\r\n"));
-							break;
-						case 'r':
-							sb.append('\r');
-							break;
-						case 'R':
-							sb.append(System.getProperty("line.separator", "\r\n"));
-							break;
-						case 'b':
-							sb.append('\b');
-							break;
-						case 't':
-							sb.append('\t');
-							break;
-						case 'f':
-							sb.append('\f');
-							break;
-						case '\\':
-							sb.append('\\');
-							break;
-						case '\"':
-							sb.append('\"');
-							break;
-						case '\'':
-							sb.append('\'');
-							break;
-						case '`':
-							sb.append('`');
-							break;
-						default:
-							sb.append(c);
-							break;
-					}
-				}
-				index = point + 2;
-				point = str.indexOf('\\', index);
-			} while (0 <= point);
-			sb.append(str.substring(index));
-			str = sb.toString();
-		}
-		return str;
-	}
-	
-	/**
-	 * 文字列内の '' を ' に戻します
-	 * @param str '' を含む文字列
-	 * @return 置換された文字列
-	 */
-	public static String unescapeSimple(String str) {
-		return str.replace("\'\'", "\'");
-	}
-	
-	/**
-	 * "～", '～', {"～"}, {'～'}, `～` で囲まれた文字列を unquote します。
-	 * @param text
-	 * @return
-	 */
-	public static String unquote(String text) {
-		switch (text.charAt(0)) {
-			case '\'':
-				return unescapeSimple(text.substring(1, text.length() - 1));
-			case '`':
-			case '\"':
-				return unescape(text.substring(1, text.length() - 1));
-			case '{':
-				switch (text.charAt(1)) {
-					case '\"':
-						text = text.substring(2, text.length() - 2); // {" と "} を削除
-						text = trimBlockString.matcher(text).replaceAll("");
-						text = unescapeBlockString.matcher(text).replaceAll("");
-						return text;
-				}
-				break;
-		}
-		return ParserHelper.unescape(text);
 	}
 }

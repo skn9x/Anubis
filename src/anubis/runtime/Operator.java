@@ -1,14 +1,18 @@
 package anubis.runtime;
 
+import java.util.Iterator;
 import anubis.ACallable;
 import anubis.ADumpable;
 import anubis.AFalse;
 import anubis.AIndexable;
+import anubis.AIterable;
 import anubis.ASliceable;
 import anubis.AnubisObject;
 import anubis.SlotRef;
 import anubis.except.AnubisException;
+import anubis.except.AnubisUserException;
 import anubis.except.ExceptionProvider;
+import anubis.runtime.java.IteratorAdapter;
 import anubis.runtime.java.JCaster;
 
 /**
@@ -55,6 +59,16 @@ public class Operator {
 		if (obj == null)
 			throw ExceptionProvider.newSlotNotFound(obj, name);
 		return obj.findSlot(name);
+	}
+	
+	public static Iterator<AnubisObject> getIterator(AnubisObject obj) {
+		if (obj instanceof AIterable) {
+			return ((AIterable) obj).getAIterator();
+		}
+		if (obj instanceof Iterable) {
+			return new IteratorAdapter(((Iterable<?>) obj).iterator());
+		}
+		throw new IllegalArgumentException(); // TODO
 	}
 	
 	public static boolean isFalse(AnubisObject value) {
@@ -138,5 +152,22 @@ public class Operator {
 		if (obj == null)
 			return "void";
 		return obj.toString();
+	}
+	
+	public static AnubisObject unwrapException(Throwable ex) {
+		if (ex instanceof AnubisObject)
+			return (AnubisObject) ex;
+		if (ex instanceof AnubisUserException)
+			return ((AnubisUserException) ex).getValue();
+		return AObjects.getJObject(ex); // TODO ‚±‚±‚¾‚¯ AObjects Žg‚¤‚Ì‚Í‚È‚ñ‚©Œ™
+	}
+	
+	public static Throwable wrapException(AnubisObject value) {
+		if (value instanceof Throwable)
+			return (Throwable) value;
+		Throwable th = (Throwable) JCaster.as(Throwable.class, value); // TODO ‚±‚±‚¾‚¯ JCaster Žg‚¤‚Ì‚Í‚È‚ñ‚©Œ™
+		if (th != null)
+			return th;
+		return ExceptionProvider.newUserException(value);
 	}
 }

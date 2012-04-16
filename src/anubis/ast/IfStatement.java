@@ -1,15 +1,15 @@
 package anubis.ast;
 
-public class ConditionStatement extends LabelStatement {
+public class IfStatement extends LabelStatement {
 	private final Expression condition;
 	private final Statement _then;
 	private final Statement _else;
 	
-	public ConditionStatement(Expression condition, Statement _then, Statement _else) {
+	public IfStatement(Expression condition, Statement _then, Statement _else) {
 		this(null, condition, _then, _else);
 	}
 	
-	public ConditionStatement(String label, Expression condition, Statement _then, Statement _else) {
+	public IfStatement(String label, Expression condition, Statement _then, Statement _else) {
 		super(label);
 		assert condition != null;
 		assert _then != null;

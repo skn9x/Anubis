@@ -16,7 +16,7 @@ public interface AstVisitor<Arg, Ret> {
 	
 	public Ret accept(CallExpression expr, Arg object);
 	
-	public Ret accept(ConditionStatement stmt, Arg object);
+	public Ret accept(IfStatement stmt, Arg object);
 	
 	public Ret accept(ContinueStatement stmt, Arg object);
 	

@@ -9,7 +9,10 @@ import static org.objectweb.asm.Opcodes.ACONST_NULL;
 import static org.objectweb.asm.Opcodes.ALOAD;
 import static org.objectweb.asm.Opcodes.ANEWARRAY;
 import static org.objectweb.asm.Opcodes.ARETURN;
+import static org.objectweb.asm.Opcodes.ASTORE;
+import static org.objectweb.asm.Opcodes.ATHROW;
 import static org.objectweb.asm.Opcodes.BIPUSH;
+import static org.objectweb.asm.Opcodes.CHECKCAST;
 import static org.objectweb.asm.Opcodes.DUP;
 import static org.objectweb.asm.Opcodes.DUP_X1;
 import static org.objectweb.asm.Opcodes.GETFIELD;
@@ -57,11 +60,13 @@ public class CodeBuilder {
 	private static final String LCN_CODEBLOCK = Type.getDescriptor(CodeBlock.class);//"Lanubis/code/CodeBlock;";
 	private static final String ICN_SUPERCLASS = getInternalName(CN_SUPERCLASS);
 	private static final int VAR_LOCAL = 1; // exec １番目の引数 = local
+	private static final int VAR_FREESPACE = 2; // ローカル変数用フリースペース
 	
 	private final String internalClassName;
 	private final ClassWriter cw;
 	private final MethodVisitor mv;
 	private byte[] result = null;
+	private int var = VAR_FREESPACE;
 	
 	public CodeBuilder(String className) {
 		this.internalClassName = className.replace('.', '/');
@@ -80,8 +85,16 @@ public class CodeBuilder {
 		}
 	}
 	
+	public int allocLv() {
+		return var++;
+	}
+	
 	public void emitAAStore() {
 		mv.visitInsn(AASTORE);
+	}
+	
+	public void emitCheckCast(Class<?> clazz) {
+		mv.visitTypeInsn(CHECKCAST, getInternalName(clazz));
 	}
 	
 	public void emitDup() {
@@ -115,14 +128,12 @@ public class CodeBuilder {
 				if (clazz.isInterface()) {
 					mv.visitMethodInsn(INVOKEINTERFACE, getInternalName(clazz), name, getMethodDescriptor(mm));
 				}
+				else if (Modifier.isStatic(mm.getModifiers())) {
+					mv.visitMethodInsn(INVOKESTATIC, getInternalName(mm.getDeclaringClass()), name,
+							getMethodDescriptor(mm));
+				}
 				else {
-					if (Modifier.isStatic(mm.getModifiers())) {
-						mv.visitMethodInsn(INVOKESTATIC, getInternalName(mm.getDeclaringClass()), name,
-								getMethodDescriptor(mm));
-					}
-					else {
-						mv.visitMethodInsn(INVOKEVIRTUAL, getInternalName(clazz), name, getMethodDescriptor(mm));
-					}
+					mv.visitMethodInsn(INVOKEVIRTUAL, getInternalName(clazz), name, getMethodDescriptor(mm));
 				}
 			}
 		}
@@ -167,8 +178,21 @@ public class CodeBuilder {
 		mv.visitInsn(ARETURN);
 	}
 	
+	public void emitStoreLocalVar(int var) {
+		mv.visitVarInsn(ASTORE, var);
+	}
+	
 	public void emitSwap() {
 		mv.visitInsn(SWAP);
+	}
+	
+	public void emitThrow() {
+		mv.visitInsn(ATHROW);
+	}
+	
+	public void emitTryBlock(Label _try, Label _end, Label _catch, Class<? extends Throwable> ex) {
+		mv.visitTryCatchBlock((org.objectweb.asm.Label) _try.getMarker(), (org.objectweb.asm.Label) _end.getMarker(),
+				(org.objectweb.asm.Label) _catch.getMarker(), ex != null ? getInternalName(ex) : null);
 	}
 	
 	public byte[] finallize() {
@@ -215,6 +239,13 @@ public class CodeBuilder {
 		return result;
 	}
 	
+	public void freeLv() {
+		var--;
+		if (var < VAR_FREESPACE) {
+			var = VAR_FREESPACE;
+		}
+	}
+	
 	public Label newLabel() {
 		return new Label(new org.objectweb.asm.Label());
 	}
@@ -255,6 +286,10 @@ public class CodeBuilder {
 	
 	public void pushLocal() {
 		mv.visitVarInsn(ALOAD, VAR_LOCAL);
+	}
+	
+	public void pushLocalVar(int var) {
+		mv.visitVarInsn(ALOAD, var);
 	}
 	
 	public void pushNull() {

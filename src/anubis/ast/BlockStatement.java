@@ -4,14 +4,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class BlockStatement implements Statement {
+public class BlockStatement extends LabelStatement {
 	private final List<Statement> statements;
 	
 	public BlockStatement() {
-		this(new ArrayList<Statement>());
+		this(null, new ArrayList<Statement>());
 	}
 	
 	public BlockStatement(List<Statement> statements) {
+		this(null, statements);
+	}
+	
+	public BlockStatement(String label) {
+		this(label, new ArrayList<Statement>());
+	}
+	
+	public BlockStatement(String label, List<Statement> statements) {
+		super(label);
 		assert statements != null;
 		this.statements = statements;
 	}
