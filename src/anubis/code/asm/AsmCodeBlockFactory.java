@@ -11,11 +11,11 @@ import anubis.except.CompileException;
 public class AsmCodeBlockFactory {
 	private final CustomCodeClassLoader loader;
 	private final String pname;
-	private final boolean debugMode;
+	private final boolean debug;
 	
 	private int clsCount = 0;
 	
-	public AsmCodeBlockFactory(String pname, boolean debugMode) {
+	public AsmCodeBlockFactory(String pname, boolean debug) {
 		this.loader = AccessController.doPrivileged(new PrivilegedAction<CustomCodeClassLoader>() {
 			@Override
 			public CustomCodeClassLoader run() {
@@ -23,7 +23,7 @@ public class AsmCodeBlockFactory {
 			}
 		});
 		this.pname = pname;
-		this.debugMode = debugMode;
+		this.debug = debug;
 	}
 	
 	public CodeBlock newCodeBlock(CompilationUnit node) {
@@ -40,7 +40,7 @@ public class AsmCodeBlockFactory {
 	
 	public Class<?> newCodeBlockClass(CompilationUnit node) {
 		String className = newClassName();
-		byte[] data = new CodeGenerator(this).generate(node, className);
+		byte[] data = new CodeGenerator(this, debug).generate(node, className);
 		loader.putClassData(className, data);
 		try {
 			return loader.findClass(className);

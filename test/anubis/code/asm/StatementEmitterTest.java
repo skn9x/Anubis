@@ -1,7 +1,6 @@
 package anubis.code.asm;
 
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
 import org.junit.Test;
 import anubis.AbstractTest;
 import anubis.except.AnubisUserException;
@@ -84,14 +83,24 @@ public class StatementEmitterTest extends AbstractTest {
 	}
 	
 	@Test
+	public void testEmitLockStatement() throws Exception {
+		exec("lock 123 do x = 123; end");
+	}
+	
+	@Test
 	public void testEmitReturnStatement() throws Exception {
 		assertAEquals(true, exec("return true;"));
 		assertNull(exec("return;"));
 	}
 	
 	@Test
-	public void testEmitSwitchStatement() {
-		fail("‚Ü‚¾ŽÀ‘•‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+	public void testEmitSwitchStatement() throws Exception {
+		assertAEquals(
+				10,
+				exec("switch 2 case 1 then x = 0; case 2 then x = 10; case 3 then x = 100; else x = 1000; end return x;"));
+		assertAEquals(
+				1000,
+				exec("switch 0 case 1 then x = 0; case 2 then x = 10; case 3 then x = 100; else x = 1000; end return x;"));
 	}
 	
 	@Test(expected = AnubisUserException.class)
@@ -112,6 +121,11 @@ public class StatementEmitterTest extends AbstractTest {
 	@Test
 	public void testEmitTryFinallyStatement³íŒn() throws Exception {
 		assertAEquals(3, exec("try x = 1; finally x += 2; end return x;"));
+	}
+	
+	@Test
+	public void testEmitUsingStatement() throws Exception {
+		exec("obj = object{ close := { => }; }; using obj do x = 123; end");
 	}
 	
 	@Test(timeout = 1000)

@@ -1,23 +1,21 @@
 package anubis.ast;
 
-import anubis.runtime.APrimitive;
-
 public class CaseElement {
-	private final APrimitive value;
+	private final Expression value;
 	private final Statement _then;
 	
-	public CaseElement(APrimitive value, Statement _then) {
+	public CaseElement(Expression value, Statement _then) {
 		assert value != null;
 		assert _then != null;
 		this.value = value;
 		this._then = _then;
 	}
 	
-	public Statement getThen() {
-		return _then;
+	public Expression getValue() {
+		return value;
 	}
 	
-	public APrimitive getValue() {
-		return value;
+	public Statement getThen() {
+		return _then;
 	}
 }

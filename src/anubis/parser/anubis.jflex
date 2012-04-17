@@ -83,6 +83,8 @@ WSP			= [\ \t]
 	"switch"	{ return Parser.SWITCH; }
 	"case"		{ return Parser.CASE; }
 	"assert"	{ return Parser.ASSERT; }
+	"using"		{ return Parser.USING; }
+	"lock"		{ return Parser.LOCK; }
 	"break"		{ return Parser.BREAK; }
 	"continue"	{ return Parser.CONTINUE; }
 	"throw"		{ return Parser.THROW; }
@@ -91,6 +93,8 @@ WSP			= [\ \t]
 	"xor"		{ return Parser.XOR; }
 	"and"		{ return Parser.AND; }
 	"not"		{ return Parser.NOT; }
+	"istrue"	{ return Parser.ISTRUE; }
+	"isfalse"	{ return Parser.ISFALSE; }
 	"isnull"	{ return Parser.ISNULL; }
 	"this"		{ return Parser.THIS; }
 	"super"		{ return Parser.SUPER; }

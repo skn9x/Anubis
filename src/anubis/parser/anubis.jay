@@ -19,9 +19,9 @@ public class Parser {
 // 構造キーワード
 %token		OBJECT, RECORD, FUNCTION
 // 制御構造キーワード
-%token		DEF, IF, THEN, ELSE, FOR, WHILE, DO, TRY, CATCH, FINALLY, SWITCH, CASE, ASSERT, END
+%token		DEF, IF, THEN, ELSE, FOR, WHILE, DO, TRY, CATCH, FINALLY, SWITCH, CASE, ASSERT, USING, LOCK, END
 // 制御構文キーワード
-%token		BREAK, CONTINUE, THROW, RETURN, ATMARK, OWATA
+%token		BREAK, CONTINUE, THROW, RETURN, ATMARK
 // 演算子
 %right		NEWSLOT, ASSIGN, ASSIGN_ADD, ASSIGN_SUB, ASSIGN_MUL, ASSIGN_DIV, ASSIGN_MOD, ASSIGN_TRUEDIV
 %right		QUESTION, COLON
@@ -34,8 +34,9 @@ public class Parser {
 %left		IFNULL
 %left		PLUS, MINUS
 %left		MUL, DIV, MOD, TRUEDIV
-%right		UPLUS, UMINUS, NOT
-%left		ISNULL
+%right		NOT
+%left		ISNULL, ISTRUE, ISFALSE
+%right		UPLUS, UMINUS
 %left		DOT
 %right		RIGHT_DARROW, RIGHT_ARROW
 %left		LP, RP, LB, RB, LBT, RBT, MAP_LBT, SET_LBT
@@ -44,7 +45,7 @@ public class Parser {
 // 変数
 %token		THIS, SUPER, OUTER, LOCAL
 // リテラル
-%token<String>	IDENTIFIER, INTEGER, DECIMAL, STRING, CHAR, NULL, VOID, TRUE, FALSE, REGEX
+%token<String>	IDENTIFIER, INTEGER, DECIMAL, STRING, NULL, VOID, TRUE, FALSE, REGEX
 
 %type<String>
 	idOpt,
@@ -138,8 +139,10 @@ stmt:
 		{ $$ = new AssertStatement($1, $3); }
 	| labelOpt ASSERT expr elseStmt END
 		{ $$ = new AssertStatement($1, $3, $4); }
-	| OWATA
-		{ $$ = null; }	// TODO
+	| labelOpt USING expr DO stmtListOpt END
+		{ $$ = new UsingStatement($1, $3, $5); }
+	| labelOpt LOCK expr DO stmtListOpt END
+		{ $$ = new LockStatement($1, $3, $5); }
 	;
 labelOpt:
 		{ $$ = null; }
@@ -174,7 +177,7 @@ caseList:
 		{ $1.add($2); $$ = $1; }
 	;
 caseBody:
-	CASE primitive THEN stmtList
+	CASE expr THEN stmtListOpt
 		{ $$ = new CaseElement($2, $4); }
 	;
 
@@ -209,6 +212,10 @@ expr:
 		{ $$ = newCall($2, "-n"); }
 	| NOT expr
 		{ $$ = new UnaryExpression(UnaryOperator.NOT, $2); }
+	| expr ISTRUE
+		{ $$ = new UnaryExpression(UnaryOperator.ISTRUE, $1); }
+	| expr ISFALSE
+		{ $$ = new UnaryExpression(UnaryOperator.ISFALSE, $1); }
 	| expr ISNULL
 		{ $$ = new UnaryExpression(UnaryOperator.ISNULL, $1); }
 	// 二項演算子
@@ -384,6 +391,8 @@ functionExpr:
 		{ $$ = new NewFunctionExpression($3, $6); }
 	| LB idListOpt RIGHT_ARROW expr RB
 		{ $$ = new NewFunctionExpression($2, new ReturnStatement($4)); }
+	| LB idListOpt RIGHT_DARROW stmtListOpt RB
+		{ $$ = new NewFunctionExpression($2, $4); }
 	;
 recordExpr:
 	RECORD LB recordElementListOpt RB
@@ -432,8 +441,6 @@ primitive:
 	| STRING
 		{ $$ = AObjects.getString($1); }
 	| REGEX
-		{ $$ = null; } // TODO
-	| CHAR
 		{ $$ = null; } // TODO
 	;
 

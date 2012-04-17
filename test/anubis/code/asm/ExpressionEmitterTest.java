@@ -145,6 +145,8 @@ public class ExpressionEmitterTest extends AbstractTest {
 		assertTrue(exec("function(args){}") instanceof AUserFunction);
 		assertTrue(exec("{->1234}") instanceof AUserFunction);
 		assertTrue(exec("{args->1234}") instanceof AUserFunction);
+		assertTrue(exec("{=>}") instanceof AUserFunction);
+		assertTrue(exec("{args => return 123 + 456;}") instanceof AUserFunction);
 	}
 	
 	@Test
@@ -260,5 +262,17 @@ public class ExpressionEmitterTest extends AbstractTest {
 		assertAEquals(true, exec("void isnull"));
 		assertAEquals(true, exec("null isnull"));
 		assertAEquals(false, exec("1234 isnull"));
+		
+		assertAEquals(false, exec("void istrue"));
+		assertAEquals(false, exec("null istrue"));
+		assertAEquals(false, exec("false istrue"));
+		assertAEquals(true, exec("true istrue"));
+		assertAEquals(true, exec("1234 istrue"));
+		
+		assertAEquals(true, exec("void isfalse"));
+		assertAEquals(true, exec("null isfalse"));
+		assertAEquals(true, exec("false isfalse"));
+		assertAEquals(false, exec("true isfalse"));
+		assertAEquals(false, exec("1234 isfalse"));
 	}
 }

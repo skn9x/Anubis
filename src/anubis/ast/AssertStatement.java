@@ -1,26 +1,26 @@
 package anubis.ast;
 
 public class AssertStatement extends LabelStatement {
-	private final Expression assertion;
+	private final Expression condition;
 	private final Statement _else;
 	
-	public AssertStatement(Expression assertion) {
-		this(null, assertion, null);
+	public AssertStatement(Expression condition) {
+		this(null, condition, null);
 	}
 	
-	public AssertStatement(String label, Expression assertion) {
-		this(label, assertion, null);
+	public AssertStatement(String label, Expression condition) {
+		this(label, condition, null);
 	}
 	
-	public AssertStatement(String label, Expression assertion, Statement _else) {
+	public AssertStatement(String label, Expression condition, Statement _else) {
 		super(label);
-		assert assertion != null;
-		this.assertion = assertion;
+		assert condition != null;
+		this.condition = condition;
 		this._else = _else;
 	}
 	
-	public Expression getAssertion() {
-		return assertion;
+	public Expression getCondition() {
+		return condition;
 	}
 	
 	public Statement getElse() {

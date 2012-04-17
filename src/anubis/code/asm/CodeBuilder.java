@@ -31,6 +31,8 @@ import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
 import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.MONITORENTER;
+import static org.objectweb.asm.Opcodes.MONITOREXIT;
 import static org.objectweb.asm.Opcodes.NEW;
 import static org.objectweb.asm.Opcodes.POP;
 import static org.objectweb.asm.Opcodes.PUTSTATIC;
@@ -159,6 +161,14 @@ public class CodeBuilder {
 		catch (NoSuchFieldException ex) {
 			throw new CompileException(ex);
 		}
+	}
+	
+	public void emitMonitorEnter() {
+		mv.visitInsn(MONITORENTER);
+	}
+	
+	public void emitMonitorExit() {
+		mv.visitInsn(MONITOREXIT);
 	}
 	
 	public void emitNew(Class<?> clazz) {

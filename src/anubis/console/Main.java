@@ -57,8 +57,9 @@ public class Main {
 				"ソースファイルを指定する").create("f"));
 		result.addOption(OptionBuilder.withLongOpt("line").hasArg().withArgName("code").withDescription(
 				"引数に指定のコードを実行する").create("l"));
-		result.addOption(OptionBuilder.withLongOpt("nologo").withDescription("対話モード時にロゴを表示しない").create());
-		result.addOption(OptionBuilder.withLongOpt("noprompt").withDescription("対話モード時にプロンプトを表示しない").create());
+		result.addOption(OptionBuilder.withDescription("対話モード時にロゴを表示しない").create("nologo"));
+		result.addOption(OptionBuilder.withDescription("対話モード時にプロンプトを表示しない").create("noprompt"));
+		result.addOption(OptionBuilder.withDescription("assert を有効にする").create("ea"));
 		return result;
 	}
 	

@@ -348,6 +348,18 @@ public class ExpressionEmitter {
 				builder.emitInvoke(AObjects.class, "getBool", Boolean.TYPE);
 				break;
 			}
+			case ISTRUE: {
+				expr.getExpr().visit(owner, builder);
+				builder.emitInvoke(Operator.class, "isTrue", AnubisObject.class);
+				builder.emitInvoke(AObjects.class, "getBool", Boolean.TYPE);
+				break;
+			}
+			case ISFALSE: {
+				expr.getExpr().visit(owner, builder);
+				builder.emitInvoke(Operator.class, "isFalse", AnubisObject.class);
+				builder.emitInvoke(AObjects.class, "getBool", Boolean.TYPE);
+				break;
+			}
 			default: {
 				throw new BugIsHereException();
 			}

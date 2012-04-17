@@ -5,18 +5,21 @@ import anubis.AnubisObject;
 import anubis.ast.AssertStatement;
 import anubis.ast.BlockStatement;
 import anubis.ast.BreakStatement;
+import anubis.ast.CaseElement;
 import anubis.ast.ContinueStatement;
 import anubis.ast.EmptyStatement;
 import anubis.ast.Expression;
 import anubis.ast.ExpressionStatement;
 import anubis.ast.ForStatement;
 import anubis.ast.IfStatement;
+import anubis.ast.LockStatement;
 import anubis.ast.ReturnStatement;
 import anubis.ast.Statement;
 import anubis.ast.SwitchStatement;
 import anubis.ast.ThrowStatement;
 import anubis.ast.TryCatchStatement;
 import anubis.ast.TryFinallyStatement;
+import anubis.ast.UsingStatement;
 import anubis.ast.WhileStatement;
 import anubis.runtime.Operator;
 
@@ -28,33 +31,35 @@ public class StatementEmitter {
 		this.owner = owner;
 	}
 	
-	public void emit(CodeBuilder builder, AssertStatement stmt) { // TODO デバッグモード対応
-		Label _END = builder.newLabel();
-		// condition
-		stmt.getAssertion().visit(owner, builder);
-		builder.emitInvoke(Operator.class, "isTrue", AnubisObject.class);
-		builder.emitIfTrue(_END);
-		// else
-		if (stmt.getElse() == null) {
-			builder.emitInvoke(Operator.class, "fail");
-		}
-		else {
-			block.startWeakBlock(stmt.getLabel(), _END, _END);
-			try {
-				stmt.getElse().visit(owner, builder);
+	public void emit(CodeBuilder builder, AssertStatement stmt) {
+		if (owner.isDebug()) {
+			Label _END = builder.newLabel();
+			// condition
+			stmt.getCondition().visit(owner, builder);
+			builder.emitInvoke(Operator.class, "isTrue", AnubisObject.class);
+			builder.emitIfTrue(_END);
+			// else
+			if (stmt.getElse() == null) {
+				builder.emitInvoke(Operator.class, "fail");
 			}
-			finally {
-				block.endBlock();
+			else {
+				block.startWeakBlock(stmt.getLabel(), _END, _END);
+				try {
+					stmt.getElse().visit(owner, builder);
+				}
+				finally {
+					block.endBlock();
+				}
 			}
+			builder.emitLabel(_END);
 		}
-		builder.emitLabel(_END);
 	}
 	
 	public void emit(CodeBuilder builder, BlockStatement stmt) {
 		Label _END = builder.newLabel();
 		block.startWeakBlock(stmt.getLabel(), _END, _END);
 		try {
-			for (Statement stmt2: stmt.getInner()) {
+			for (Statement stmt2: stmt.getBody()) {
 				stmt2.visit(owner, builder);
 			}
 		}
@@ -77,7 +82,7 @@ public class StatementEmitter {
 	}
 	
 	public void emit(CodeBuilder builder, ExpressionStatement stmt) {
-		stmt.getExpr().visit(owner, builder);
+		stmt.getExpression().visit(owner, builder);
 		builder.emitPop();
 	}
 	
@@ -168,6 +173,34 @@ public class StatementEmitter {
 		builder.emitLabel(_END);
 	}
 	
+	public void emit(CodeBuilder builder, final LockStatement stmt) {
+		final int var = builder.allocLv();
+		try {
+			// expr
+			stmt.getExpression().visit(owner, builder);
+			// TODO null チェック
+			builder.emitDup();
+			builder.emitStoreLocalVar(var);
+			builder.emitMonitorEnter();
+			// body
+			new TryFinallyEmitter(block, stmt.getLabel()) {
+				@Override
+				public void emitFinally(CodeBuilder builder) {
+					builder.pushLocalVar(var);
+					builder.emitMonitorExit();
+				}
+				
+				@Override
+				public void emitTry(CodeBuilder builder) {
+					stmt.getBody().visit(owner, builder);
+				}
+			}.emit(builder);
+		}
+		finally {
+			builder.freeLv();
+		}
+	}
+	
 	public void emit(CodeBuilder builder, ReturnStatement stmt) {
 		Expression expr = stmt.getExpression();
 		if (expr == null)
@@ -177,9 +210,49 @@ public class StatementEmitter {
 		builder.emitReturn();
 	}
 	
-	public void emit(CodeBuilder builder, SwitchStatement stmt) {
-		// TODO Auto-generated method stub
-		return;
+	public void emit(CodeBuilder builder, final SwitchStatement stmt) {
+		final int var = builder.allocLv();
+		try {
+			stmt.getCondition().visit(owner, builder);
+			builder.emitStoreLocalVar(var);
+			new TryFinallyEmitter(block, null) {
+				@Override
+				public void emitFinally(CodeBuilder builder) {
+					builder.pushNull();
+					builder.emitStoreLocalVar(var);
+				}
+				
+				@Override
+				public void emitTry(CodeBuilder builder) {
+					Label _END = builder.newLabel();
+					// body
+					block.startStrongBlock(stmt.getLabel(), _END, _END);
+					try {
+						for (CaseElement elm: stmt.getCases()) {
+							Label _ELSE = builder.newLabel();
+							// condition
+							builder.pushLocalVar(var);
+							elm.getValue().visit(owner, builder);
+							builder.emitInvoke(Operator.class, "opEquals", AnubisObject.class, AnubisObject.class);
+							builder.emitIfFalse(_ELSE);
+							// then
+							elm.getThen().visit(owner, builder);
+							builder.emitGoto(_END);
+							builder.emitLabel(_ELSE);
+						}
+						// else
+						stmt.getElse().visit(owner, builder);
+					}
+					finally {
+						block.endBlock();
+					}
+					builder.emitLabel(_END);
+				}
+			}.emit(builder);
+		}
+		finally {
+			builder.freeLv();
+		}
 	}
 	
 	public void emit(CodeBuilder builder, ThrowStatement stmt) {
@@ -248,6 +321,33 @@ public class StatementEmitter {
 				stmt.getTry().visit(owner, builder);
 			}
 		}.emit(builder);
+	}
+	
+	public void emit(CodeBuilder builder, final UsingStatement stmt) {
+		final int var = builder.allocLv();
+		try {
+			// expr
+			stmt.getExpression().visit(owner, builder);
+			// TODO null チェック
+			builder.emitStoreLocalVar(var);
+			// body
+			new TryFinallyEmitter(block, stmt.getLabel()) {
+				@Override
+				public void emitFinally(CodeBuilder builder) {
+					builder.pushLocalVar(var);
+					builder.emitInvoke(Operator.class, "opClose", AnubisObject.class);
+					builder.emitPop();
+				}
+				
+				@Override
+				public void emitTry(CodeBuilder builder) {
+					stmt.getBody().visit(owner, builder);
+				}
+			}.emit(builder);
+		}
+		finally {
+			builder.freeLv();
+		}
 	}
 	
 	public void emit(CodeBuilder builder, WhileStatement stmt) {

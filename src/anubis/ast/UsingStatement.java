@@ -1,19 +1,21 @@
 package anubis.ast;
 
-/**
- * @author SiroKuro
- */
-public class ExpressionStatement implements Statement {
+public class UsingStatement extends LabelStatement {
 	private final Expression expr;
+	private final Statement body;
 	
-	public ExpressionStatement(Expression expr) {
+	public UsingStatement(String label, Expression expr, Statement body) {
+		super(label);
 		assert expr != null;
+		assert body != null;
 		this.expr = expr;
+		this.body = body;
 	}
 	
-	/**
-	 * @return the expr
-	 */
+	public Statement getBody() {
+		return body;
+	}
+	
 	public Expression getExpression() {
 		return expr;
 	}

@@ -8,14 +8,15 @@ import anubis.ast.BlockStatement;
 import anubis.ast.BreakStatement;
 import anubis.ast.CallExpression;
 import anubis.ast.CompilationUnit;
-import anubis.ast.IfStatement;
 import anubis.ast.ContinueStatement;
 import anubis.ast.EmptyStatement;
 import anubis.ast.ExpressionStatement;
 import anubis.ast.ForStatement;
 import anubis.ast.GetSlotExpression;
 import anubis.ast.GetSpecialExpression;
+import anubis.ast.IfStatement;
 import anubis.ast.LocalExpression;
+import anubis.ast.LockStatement;
 import anubis.ast.NewFunctionExpression;
 import anubis.ast.NewListExpression;
 import anubis.ast.NewMapExpression;
@@ -30,15 +31,18 @@ import anubis.ast.ThrowStatement;
 import anubis.ast.TryCatchStatement;
 import anubis.ast.TryFinallyStatement;
 import anubis.ast.UnaryExpression;
+import anubis.ast.UsingStatement;
 import anubis.ast.WhileStatement;
 
 public class CodeGenerator implements AstVisitor<CodeBuilder, CodeBuilder> {
 	private final ExpressionEmitter emit_expr = new ExpressionEmitter(this);
 	private final StatementEmitter emit_stmt = new StatementEmitter(this);
 	private final AsmCodeBlockFactory owner;
+	private final boolean debug;
 	
-	public CodeGenerator(AsmCodeBlockFactory owner) {
+	public CodeGenerator(AsmCodeBlockFactory owner, boolean debug) {
 		this.owner = owner;
+		this.debug = debug;
 	}
 	
 	@Override
@@ -74,12 +78,6 @@ public class CodeGenerator implements AstVisitor<CodeBuilder, CodeBuilder> {
 	@Override
 	public CodeBuilder accept(CallExpression expr, CodeBuilder builder) {
 		emit_expr.emit(builder, expr);
-		return builder;
-	}
-	
-	@Override
-	public CodeBuilder accept(IfStatement stmt, CodeBuilder builder) {
-		emit_stmt.emit(builder, stmt);
 		return builder;
 	}
 	
@@ -120,8 +118,20 @@ public class CodeGenerator implements AstVisitor<CodeBuilder, CodeBuilder> {
 	}
 	
 	@Override
+	public CodeBuilder accept(IfStatement stmt, CodeBuilder builder) {
+		emit_stmt.emit(builder, stmt);
+		return builder;
+	}
+	
+	@Override
 	public CodeBuilder accept(LocalExpression expr, CodeBuilder builder) {
 		emit_expr.emit(builder, expr);
+		return builder;
+	}
+	
+	@Override
+	public CodeBuilder accept(LockStatement stmt, CodeBuilder builder) {
+		emit_stmt.emit(builder, stmt);
 		return builder;
 	}
 	
@@ -210,6 +220,12 @@ public class CodeGenerator implements AstVisitor<CodeBuilder, CodeBuilder> {
 	}
 	
 	@Override
+	public CodeBuilder accept(UsingStatement stmt, CodeBuilder builder) {
+		emit_stmt.emit(builder, stmt);
+		return builder;
+	}
+	
+	@Override
 	public CodeBuilder accept(WhileStatement stmt, CodeBuilder builder) {
 		emit_stmt.emit(builder, stmt);
 		return builder;
@@ -218,6 +234,10 @@ public class CodeGenerator implements AstVisitor<CodeBuilder, CodeBuilder> {
 	public byte[] generate(CompilationUnit node, String className) {
 		CodeBuilder builder = node.visit(this, new CodeBuilder(className));
 		return builder.finallize();
+	}
+	
+	public boolean isDebug() {
+		return debug;
 	}
 	
 	public Class<?> newCodeBlockClass(CompilationUnit node) {

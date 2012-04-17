@@ -16,8 +16,6 @@ public interface AstVisitor<Arg, Ret> {
 	
 	public Ret accept(CallExpression expr, Arg object);
 	
-	public Ret accept(IfStatement stmt, Arg object);
-	
 	public Ret accept(ContinueStatement stmt, Arg object);
 	
 	public Ret accept(EmptyStatement stmt, Arg object);
@@ -30,7 +28,11 @@ public interface AstVisitor<Arg, Ret> {
 	
 	public Ret accept(GetSpecialExpression expr, Arg object);
 	
+	public Ret accept(IfStatement stmt, Arg object);
+	
 	public Ret accept(LocalExpression expr, Arg object);
+	
+	public Ret accept(LockStatement stmt, Arg object);
 	
 	public Ret accept(NewFunctionExpression expr, Arg object);
 	
@@ -59,6 +61,8 @@ public interface AstVisitor<Arg, Ret> {
 	public Ret accept(TryFinallyStatement stmt, Arg object);
 	
 	public Ret accept(UnaryExpression expr, Arg object);
+	
+	public Ret accept(UsingStatement stmt, Arg object);
 	
 	public Ret accept(WhileStatement stmt, Arg object);
 }

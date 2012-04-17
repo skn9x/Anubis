@@ -21,18 +21,15 @@ public abstract class AFunction extends AObject implements ACallable {
 	 * @param valueOf
 	 * @return
 	 */
-	public static ACallable partialApply(AnubisObject val, AString... args) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	/**
-	 * @param val
-	 * @param valueOf
-	 * @return
-	 */
-	public static ACallable partialApply(AnubisObject val, String args) {
-		// TODO Auto-generated method stub
-		return null;
+	public static ACallable partial(final ACallable func, final AnubisObject... pArgs) {
+		return new AFunction() {
+			@Override
+			public AnubisObject call(AnubisObject _this, AnubisObject... args) {
+				AnubisObject[] newArgs = new AnubisObject[args.length + 1];
+				System.arraycopy(pArgs, 0, newArgs, 0, pArgs.length);
+				System.arraycopy(args, 0, newArgs, pArgs.length, args.length);
+				return func.call(_this, newArgs);
+			}
+		};
 	}
 }

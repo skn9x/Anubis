@@ -4,5 +4,5 @@ package anubis.ast;
  * @author SiroKuro
  */
 public enum UnaryOperator {
-	NOT, ISNULL,
+	NOT, ISNULL, ISTRUE, ISFALSE,
 }

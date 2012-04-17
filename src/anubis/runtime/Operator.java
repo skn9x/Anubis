@@ -42,7 +42,12 @@ public class Operator {
 		}
 		val = findSlot(obj, SLOT_FORWARD);
 		if (val != null) {
-			return AFunction.partialApply(val, name);
+			if (val instanceof ACallable)
+				return AFunction.partial((ACallable) val, new AnubisObject[]{
+					AObjects.getString(name)
+				});
+			else
+				throw ExceptionProvider.newNotCallable(val);
 		}
 		throw ExceptionProvider.newSlotNotFound(obj, name);
 	}
@@ -90,6 +95,10 @@ public class Operator {
 		else
 			object.setSlot(name, value);
 		return value;
+	}
+	
+	public static AnubisObject opClose(AnubisObject obj) {
+		return findFunction(obj, "close").call(obj);
 	}
 	
 	public static boolean opEquals(AnubisObject x, AnubisObject y) {
