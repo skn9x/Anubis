@@ -9,7 +9,7 @@
 			<include name="*.jar"/>
 		</fileset>
 	</path>
-
+	
 	<path id="anubis.classpath.test">
 		<pathelement location="bin" />
 		<pathelement location="bin-test" />
@@ -20,7 +20,7 @@
 			<include name="*.jar"/>
 		</fileset>
 	</path>
-
+	
 	<target name="init">
 		<mkdir dir="bin" />
 		<copy includeemptydirs="false" todir="bin">
@@ -65,7 +65,7 @@
 		</java>
 	</target>
 	
-	<target name="compile" depends="init, genparser">
+	<target name="compile" depends="init">
 		<javac debug="${compile.debug}" debuglevel="${compile.debuglevel}" destdir="bin" source="${compile.source}" target="${compile.target}" encoding="${source.encoding}" includeantruntime="false">
 			<src path="src" />
 			<classpath refid="anubis.classpath" />
@@ -75,32 +75,79 @@
 			<classpath refid="anubis.classpath.test" />
 		</javac>
 	</target>
-
+	
 	<target name="build-jar" depends="compile">
-		<jar jarfile="dist/anubis.jar" basedir="bin">
+		<jar jarfile="dist/anubis.jar">
 			<manifest>
 				<attribute name="Implementation-Title" value="${anubis.title}" />
 				<attribute name="Implementation-Version" value="${anubis.version}" />
 				<attribute name="Implementation-Vendor" value="${anubis.vendor}" />
 			</manifest>
+			<fileset dir="bin">
+				<exclude name="**/*.bak"/>
+				<exclude name="**/*.tmp"/>
+				<exclude name="**/*~"/>
+			</fileset>
+			<fileset dir=".">
+				<include name="README.md" />
+				<include name="ANUBIS-LICENSE.TXT" />
+			</fileset>
 		</jar>
 	</target>
 	
 	<target name="build-javadoc" depends="init">
 		<mkdir dir="dist/doc" />
-		<javadoc destdir="dist/doc" windowtitle="${anubis.doc.windowtitle}" encoding="${source.encoding}" docencoding="${source.encoding}" charset="Shift_JIS" access="${doc.access}">
+		<javadoc destdir="dist/doc" windowtitle="${anubis.doc.windowtitle}" encoding="${source.encoding}" docencoding="${source.encoding}" charset="${source.encoding}" access="${doc.access}">
 			<fileset dir="src" />
 		</javadoc>
-		<zip destfile="dist/anubis-doc.zip" basedir="dist/doc" update="true" excludes="**/*.bak" />
+		<zip destfile="dist/anubis-doc.zip" update="true">
+			<fileset dir="dist/doc">
+				<exclude name="**/*.bak"/>
+				<exclude name="**/*.tmp"/>
+				<exclude name="**/*~"/>
+			</fileset>
+			<fileset dir=".">
+				<include name="README.md" />
+				<include name="ANUBIS-LICENSE.TXT" />
+			</fileset>
+		</zip>
+		<delete dir="dist/doc" />
 	</target>
 	
 	<target name="build-src" depends="init">
-		<zip destfile="dist/anubis-src.zip" basedir="src" update="true" excludes="**/*.bak" />
+		<zip destfile="dist/anubis-src.zip" update="true">
+			<fileset dir="src">
+				<exclude name="**/*.bak"/>
+				<exclude name="**/*.tmp"/>
+				<exclude name="**/*~"/>
+			</fileset>
+			<fileset dir=".">
+				<include name="README.md" />
+				<include name="ANUBIS-LICENSE.TXT" />
+			</fileset>
+		</zip>
 	</target>
 	
 	<target name="build-project">
 		<antcall target="clean" />
 		<antcall target="build-jar" />
+<!--
+		<antcall target="build-javadoc" />
+-->
 		<antcall target="build-src" />
+		<copy includeemptydirs="false" todir="dist/lib">
+			<fileset dir="lib">
+				<exclude name="**/*.bak" />
+				<exclude name="**/*.tmp" />
+				<exclude name="**/*~"/>
+			</fileset>
+		</copy>
+		<copy includeemptydirs="false" todir="dist">
+			<fileset dir="etc">
+				<exclude name="**/*.bak" />
+				<exclude name="**/*.tmp" />
+				<exclude name="**/*~"/>
+			</fileset>
+		</copy>
 	</target>
 </project>
