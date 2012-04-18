@@ -48,16 +48,16 @@ public class ExceptionProvider {
 	}
 	
 	/**
-	 * {@link ObjectFactory} ‚ª€”õ‚Å‚«‚Ä‚¢‚È‚¢‚±‚Æ‚ğ¦‚·—áŠO‚ğì¬‚µ‚Ü‚·B
-	 * @return —áŠOƒIƒuƒWƒFƒNƒg
+	 * {@link ObjectFactory} ãŒæº–å‚™ã§ãã¦ã„ãªã„ã“ã¨ã‚’ç¤ºã™ä¾‹å¤–ã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * @return ä¾‹å¤–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static FactoryNotReadyException newFactoryNotReady() {
 		return new FactoryNotReadyException(format(pattern_newFactoryNotReady_0));
 	}
 	
 	/**
-	 * Java‚ÌŠÖ”‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½‚±‚Æ‚ğ¦‚·—áŠO‚ğì¬‚µ‚Ü‚·B
-	 * @return —áŠOƒIƒuƒWƒFƒNƒg
+	 * Javaã®é–¢æ•°ãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸã“ã¨ã‚’ç¤ºã™ä¾‹å¤–ã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * @return ä¾‹å¤–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static JOverloadMismatchException newJOverloadMismatch() {
 		return new JOverloadMismatchException(format(pattern_newJOverloadMismatch_0));
@@ -72,76 +72,76 @@ public class ExceptionProvider {
 	}
 	
 	/**
-	 * ƒIƒuƒWƒFƒNƒg‚ª {@link ACallable} ‚Å‚È‚©‚Á‚½‚±‚Æ‚ğ¦‚·—áŠO‚ğì¬‚µ‚Ü‚·B
-	 * @param obj ‘ÎÛƒIƒuƒWƒFƒNƒg
-	 * @return —áŠOƒIƒuƒWƒFƒNƒg
+	 * ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒ {@link ACallable} ã§ãªã‹ã£ãŸã“ã¨ã‚’ç¤ºã™ä¾‹å¤–ã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * @param obj å¯¾è±¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @return ä¾‹å¤–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static NotCallableException newNotCallable(AnubisObject obj) {
 		return new NotCallableException(format(pattern_newNotCallable_1, Operator.toDebugString(obj)));
 	}
 	
 	/**
-	 * ƒXƒNƒŠƒvƒg‚Ìƒp[ƒX‚É¸”s‚µ‚½‚±‚Æ‚ğ¦‚·—áŠO‚ğì¬‚µ‚Ü‚·B
-	 * @param cause Œ´ˆö‚Æ‚È‚Á‚½—áŠOƒIƒuƒWƒFƒNƒg
-	 * @return —áŠOƒIƒuƒWƒFƒNƒg
+	 * ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®ãƒ‘ãƒ¼ã‚¹ã«å¤±æ•—ã—ãŸã“ã¨ã‚’ç¤ºã™ä¾‹å¤–ã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * @param cause åŸå› ã¨ãªã£ãŸä¾‹å¤–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @return ä¾‹å¤–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static AnubisParserException newParseException(Throwable cause) {
 		return new AnubisParserException(cause);
 	}
 	
 	/**
-	 * ƒXƒNƒŠƒvƒg‚Ìƒp[ƒX‚É¸”s‚µ‚½‚±‚Æ‚ğ¦‚·—áŠO‚ğì¬‚µ‚Ü‚·B
-	 * @param message ƒƒbƒZ[ƒW
-	 * @return —áŠOƒIƒuƒWƒFƒNƒg
+	 * ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®ãƒ‘ãƒ¼ã‚¹ã«å¤±æ•—ã—ãŸã“ã¨ã‚’ç¤ºã™ä¾‹å¤–ã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * @param message ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	 * @return ä¾‹å¤–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static AnubisParserException newParseExceptionByInvalidChars(String text, String code, int line, int column) {
 		return new AnubisParserException(format(pattern_newParseExceptionByInvalidChars_3, text, code, line, column));
 	}
 	
 	/**
-	 * ƒXƒNƒŠƒvƒg‚Ìƒp[ƒX‚É¸”s‚µ‚½‚±‚Æ‚ğ¦‚·—áŠO‚ğì¬‚µ‚Ü‚·B
-	 * @param message ƒƒbƒZ[ƒW
-	 * @return —áŠOƒIƒuƒWƒFƒNƒg
+	 * ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®ãƒ‘ãƒ¼ã‚¹ã«å¤±æ•—ã—ãŸã“ã¨ã‚’ç¤ºã™ä¾‹å¤–ã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * @param message ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	 * @return ä¾‹å¤–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static AnubisParserException newParseExceptionByStringNotTerminated(String text, int line, int column) {
 		return new AnubisParserException(format(pattern_newParseExceptionByStringNotTerminated_3, text, line, column));
 	}
 	
 	/**
-	 * ƒXƒƒbƒg‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½‚±‚Æ‚ğ¦‚·—áŠO‚ğì¬‚µ‚Ü‚·B
-	 * @param obj ƒXƒƒbƒgŒŸõæƒIƒuƒWƒFƒNƒg
-	 * @param name ƒXƒƒbƒg–¼
-	 * @return —áŠOƒIƒuƒWƒFƒNƒg
+	 * ã‚¹ãƒ­ãƒƒãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸã“ã¨ã‚’ç¤ºã™ä¾‹å¤–ã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * @param obj ã‚¹ãƒ­ãƒƒãƒˆæ¤œç´¢å…ˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @param name ã‚¹ãƒ­ãƒƒãƒˆå
+	 * @return ä¾‹å¤–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static SlotNotFoundException newSlotNotFound(AnubisObject obj, String name) {
 		return new SlotNotFoundException(format(pattern_newSlotNotFound_2, Operator.toDebugString(obj), name));
 	}
 	
 	/**
-	 * ƒXƒƒbƒg‚ª“Ç‚İæ‚èê—p‚Ì‚½‚ß•ÏX‚Å‚«‚È‚©‚Á‚½‚±‚Æ‚ğ¦‚·—áŠO‚ğì¬‚µ‚Ü‚·B
-	 * @param obj ƒXƒƒbƒgŒŸõæƒIƒuƒWƒFƒNƒg
-	 * @param name ƒXƒƒbƒg–¼
-	 * @return —áŠOƒIƒuƒWƒFƒNƒg
+	 * ã‚¹ãƒ­ãƒƒãƒˆãŒèª­ã¿å–ã‚Šå°‚ç”¨ã®ãŸã‚å¤‰æ›´ã§ããªã‹ã£ãŸã“ã¨ã‚’ç¤ºã™ä¾‹å¤–ã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * @param obj ã‚¹ãƒ­ãƒƒãƒˆæ¤œç´¢å…ˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @param name ã‚¹ãƒ­ãƒƒãƒˆå
+	 * @return ä¾‹å¤–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static SlotReadonlyException newSlotReadonly(AnubisObject obj, String name) {
 		return new SlotReadonlyException(format(pattern_newSlotReadonly_2, Operator.toDebugString(obj), name));
 	}
 	
 	/**
-	 * ƒXƒƒbƒg‚ª“Ç‚İæ‚èê—p‚Ì‚½‚ß•ÏX‚Å‚«‚È‚©‚Á‚½‚±‚Æ‚ğ¦‚·—áŠO‚ğì¬‚µ‚Ü‚·B
-	 * @param name ƒXƒƒbƒg–¼
-	 * @return —áŠOƒIƒuƒWƒFƒNƒg
+	 * ã‚¹ãƒ­ãƒƒãƒˆãŒèª­ã¿å–ã‚Šå°‚ç”¨ã®ãŸã‚å¤‰æ›´ã§ããªã‹ã£ãŸã“ã¨ã‚’ç¤ºã™ä¾‹å¤–ã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * @param name ã‚¹ãƒ­ãƒƒãƒˆå
+	 * @return ä¾‹å¤–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static SlotReadonlyException newSlotReadonly(String name) {
 		return new SlotReadonlyException(format(pattern_newSlotReadonly_1, name));
 	}
 	
 	/**
-	 * ƒXƒƒbƒg‚ª“Ç‚İæ‚èê—p‚Ì‚½‚ß•ÏX‚Å‚«‚È‚©‚Á‚½‚±‚Æ‚ğ¦‚·—áŠO‚ğì¬‚µ‚Ü‚·B
-	 * @param cause Œ´ˆö‚Æ‚È‚Á‚½—áŠOƒIƒuƒWƒFƒNƒg
-	 * @param obj ƒXƒƒbƒgŒŸõæƒIƒuƒWƒFƒNƒg
-	 * @param name ƒXƒƒbƒg–¼
-	 * @return —áŠOƒIƒuƒWƒFƒNƒg
+	 * ã‚¹ãƒ­ãƒƒãƒˆãŒèª­ã¿å–ã‚Šå°‚ç”¨ã®ãŸã‚å¤‰æ›´ã§ããªã‹ã£ãŸã“ã¨ã‚’ç¤ºã™ä¾‹å¤–ã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * @param cause åŸå› ã¨ãªã£ãŸä¾‹å¤–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @param obj ã‚¹ãƒ­ãƒƒãƒˆæ¤œç´¢å…ˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @param name ã‚¹ãƒ­ãƒƒãƒˆå
+	 * @return ä¾‹å¤–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static SlotReadonlyException newSlotReadonly(Throwable cause, AnubisObject obj, String name) {
 		SlotReadonlyException result = newSlotReadonly(obj, name);
@@ -154,17 +154,17 @@ public class ExceptionProvider {
 	}
 	
 	/**
-	 * void ‚É‘Î‚·‚é‘€ì‚ğs‚Á‚½‚±‚Æ‚ğ¦‚·—áŠO‚ğì¬‚µ‚Ü‚·B
-	 * @return —áŠOƒIƒuƒWƒFƒNƒg
+	 * void ã«å¯¾ã™ã‚‹æ“ä½œã‚’è¡Œã£ãŸã“ã¨ã‚’ç¤ºã™ä¾‹å¤–ã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * @return ä¾‹å¤–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static VoidOperationException newVoidOperation() {
 		return new VoidOperationException(format(pattern_newVoidOperation_0));
 	}
 	
 	/**
-	 * —áŠOƒIƒuƒWƒFƒNƒg‚ğ {@link AnubisRuntimeException} ‚Å•ï‚İ‚Ü‚·B
-	 * @param ex —áŠOƒIƒuƒWƒFƒNƒg
-	 * @return —áŠOƒIƒuƒWƒFƒNƒg
+	 * ä¾‹å¤–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ {@link AnubisRuntimeException} ã§åŒ…ã¿ã¾ã™ã€‚
+	 * @param ex ä¾‹å¤–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @return ä¾‹å¤–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static AnubisRuntimeException wrapRuntimeException(Throwable ex) {
 		return new AnubisRuntimeException(ex);

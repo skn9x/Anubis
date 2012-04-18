@@ -8,17 +8,17 @@ import anubis.except.AssertionException;
 
 public class StatementEmitterTest extends AbstractTest {
 	@Test(expected = AssertionException.class)
-	public void testEmitAssertStatement¸”s‚P() throws Exception {
+	public void testEmitAssertStatementå¤±æ•—ï¼‘() throws Exception {
 		exec("assert false;");
 	}
 	
 	@Test
-	public void testEmitAssertStatement¸”s‚Q() throws Exception {
+	public void testEmitAssertStatementå¤±æ•—ï¼’() throws Exception {
 		assertAEquals(1, exec("assert false else x = 1; end return x;"));
 	}
 	
 	@Test
-	public void testEmitAssertStatement¬Œ÷() throws Exception {
+	public void testEmitAssertStatementæˆåŠŸ() throws Exception {
 		exec("assert true;");
 		assertNull(exec("assert true else x = 1; end return x;"));
 	}
@@ -39,7 +39,7 @@ public class StatementEmitterTest extends AbstractTest {
 	}
 	
 	@Test(expected = RuntimeException.class)
-	// TODO ê—p‚Ì—áŠO‚Ö
+	// TODO å°‚ç”¨ã®ä¾‹å¤–ã¸
 	public void testEmitBreakStatementNG() throws Exception {
 		exec("try finally break; end");
 	}
@@ -55,7 +55,7 @@ public class StatementEmitterTest extends AbstractTest {
 	}
 	
 	@Test(expected = RuntimeException.class)
-	// TODO ê—p‚Ì—áŠO‚Ö
+	// TODO å°‚ç”¨ã®ä¾‹å¤–ã¸
 	public void testEmitContinueStatementNG() throws Exception {
 		exec("try finally continue; end");
 	}
@@ -114,12 +114,12 @@ public class StatementEmitterTest extends AbstractTest {
 	}
 	
 	@Test(expected = AnubisUserException.class)
-	public void testEmitTryFinallyStatementˆÙíŒn() throws Exception {
+	public void testEmitTryFinallyStatementç•°å¸¸ç³»() throws Exception {
 		assertNull(exec("try throw; assert false; finally x = 1; end return x;"));
 	}
 	
 	@Test
-	public void testEmitTryFinallyStatement³íŒn() throws Exception {
+	public void testEmitTryFinallyStatementæ­£å¸¸ç³»() throws Exception {
 		assertAEquals(3, exec("try x = 1; finally x += 2; end return x;"));
 	}
 	

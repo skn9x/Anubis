@@ -26,12 +26,12 @@ public class ScannerTest {
 	}
 	
 	/**
-	 * {@link anubis.parser.Scanner#yylex()} ‚Ì‚½‚ß‚ÌƒeƒXƒgEƒƒ\ƒbƒhB
+	 * {@link anubis.parser.Scanner#yylex()} ã®ãŸã‚ã®ãƒ†ã‚¹ãƒˆãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 	 */
 	@Test
 	@Ignore
 	public void testYylex() {
-		fail("‚Ü‚¾À‘•‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+		fail("ã¾ã å®Ÿè£…ã•ã‚Œã¦ã„ã¾ã›ã‚“");
 	}
 	
 }

@@ -38,7 +38,7 @@ public class Utils {
 		ANumber num = Utils.cast(obj, ANumber.class);
 		if (num == null)
 			throw ExceptionProvider.newVoidOperation(); // TODO IllegalArgumentException
-		// TODO ƒI[ƒo[ƒtƒ[ƒ`ƒFƒbƒN‚ð‚¢‚ê‚é
+		// TODO ã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ­ãƒ¼ãƒã‚§ãƒƒã‚¯ã‚’ã„ã‚Œã‚‹
 		return num.getNumber().intValue();
 	}
 	
@@ -46,7 +46,7 @@ public class Utils {
 		ANumber num = Utils.cast(obj, ANumber.class);
 		if (num == null)
 			return _default;
-		// TODO ƒI[ƒo[ƒtƒ[ƒ`ƒFƒbƒN‚ð‚¢‚ê‚é
+		// TODO ã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ­ãƒ¼ãƒã‚§ãƒƒã‚¯ã‚’ã„ã‚Œã‚‹
 		return num.getNumber().intValue();
 	}
 	

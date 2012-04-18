@@ -11,11 +11,11 @@ import anubis.except.ExceptionProvider;
 
 public abstract class Invocation implements Comparable<Invocation> {
 	/**
-	 * ƒpƒ‰ƒ[ƒ^Œ^‚Ì”z—ñ
+	 * ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿åž‹ã®é…åˆ—
 	 */
 	private final Class<?>[] argTypes;
 	/**
-	 * ˆø”ƒXƒRƒA(”äŠr—p)
+	 * å¼•æ•°ã‚¹ã‚³ã‚¢(æ¯”è¼ƒç”¨)
 	 */
 	private final String argsScore;
 	

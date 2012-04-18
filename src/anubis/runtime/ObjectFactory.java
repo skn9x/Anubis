@@ -8,77 +8,77 @@ import anubis.code.CodeBlock;
  */
 public interface ObjectFactory {
 	/**
-	 * false ƒIƒuƒWƒFƒNƒg‚ğ•Ô‚µ‚Ü‚·
+	 * false ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã—ã¾ã™
 	 * @return the false
 	 */
 	public abstract APrimitive getFalse();
 	
 	/**
-	 * Class ‚É‘Î‰‚·‚é JClass ƒIƒuƒWƒFƒNƒg‚ğ•Ô‚µ‚Ü‚·B
-	 * @param cls ƒNƒ‰ƒXƒIƒuƒWƒFƒNƒg
-	 * @return JClass ƒIƒuƒWƒFƒNƒg / ˆø”‚ª null ‚Ìê‡‚Í null
+	 * Class ã«å¯¾å¿œã™ã‚‹ JClass ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã—ã¾ã™ã€‚
+	 * @param cls ã‚¯ãƒ©ã‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @return JClass ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ / å¼•æ•°ãŒ null ã®å ´åˆã¯ null
 	 */
 	public abstract JClass getJClass(Class<?> cls);
 	
 	/**
-	 * Object ‚É‘Î‰‚·‚é JObject ƒIƒuƒWƒFƒNƒg‚ğ•Ô‚µ‚Ü‚·B
-	 * @param object ƒIƒuƒWƒFƒNƒg
-	 * @return JObject ƒIƒuƒWƒFƒNƒg / ˆø”‚ª null ‚Ìê‡‚Í null
+	 * Object ã«å¯¾å¿œã™ã‚‹ JObject ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã—ã¾ã™ã€‚
+	 * @param object ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @return JObject ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ / å¼•æ•°ãŒ null ã®å ´åˆã¯ null
 	 */
 	public abstract JObject getJObject(Object object);
 	
 	/**
-	 * null ƒIƒuƒWƒFƒNƒg‚ğ•Ô‚µ‚Ü‚·B
+	 * null ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã—ã¾ã™ã€‚
 	 * @return the null
 	 */
 	public abstract APrimitive getNull();
 	
 	/**
-	 * Number ‚É‘Î‰‚·‚é ANumber ƒIƒuƒWƒFƒNƒg‚ğ•Ô‚µ‚Ü‚·B
-	 * @param value Number ƒIƒuƒWƒFƒNƒg
-	 * @return ANumber ƒIƒuƒWƒFƒNƒg
+	 * Number ã«å¯¾å¿œã™ã‚‹ ANumber ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã—ã¾ã™ã€‚
+	 * @param value Number ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @return ANumber ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public abstract ANumber getNumber(Number value);
 	
 	/**
-	 * ƒIƒuƒWƒFƒNƒg‚É‘Î‰‚·‚é AnubisObject ‚ğ•Ô‚µ‚Ü‚·B
-	 * @param obj ƒIƒuƒWƒFƒNƒg
-	 * @return AnubisObject ƒCƒ“ƒXƒ^ƒ“ƒX
+	 * ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¯¾å¿œã™ã‚‹ AnubisObject ã‚’è¿”ã—ã¾ã™ã€‚
+	 * @param obj ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @return AnubisObject ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	 */
 	public abstract AnubisObject getObject(Object obj);
 	
 	/**
-	 * String ‚É‘Î‰‚·‚é AString ƒIƒuƒWƒFƒNƒg‚ğ•Ô‚µ‚Ü‚·B
-	 * @param value String ƒIƒuƒWƒFƒNƒg
-	 * @return AString ƒIƒuƒWƒFƒNƒg
+	 * String ã«å¯¾å¿œã™ã‚‹ AString ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã—ã¾ã™ã€‚
+	 * @param value String ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @return AString ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public abstract AString getString(String value);
 	
 	/**
-	 * Œ»İ‚ÌƒXƒŒƒbƒh‚ÉŠÖ˜A•t‚¯‚ç‚ê‚½ {@link TraitsFactory} ‚ğ•Ô‚µ‚Ü‚·B
-	 * @return TraitsFactory ƒIƒuƒWƒFƒNƒg
+	 * ç¾åœ¨ã®ã‚¹ãƒ¬ãƒƒãƒ‰ã«é–¢é€£ä»˜ã‘ã‚‰ã‚ŒãŸ {@link TraitsFactory} ã‚’è¿”ã—ã¾ã™ã€‚
+	 * @return TraitsFactory ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public abstract TraitsFactory getTraitsFactory();
 	
 	/**
-	 * true ƒIƒuƒWƒFƒNƒg‚ğ•Ô‚µ‚Ü‚·B
+	 * true ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã—ã¾ã™ã€‚
 	 * @return the true
 	 */
 	public abstract APrimitive getTrue();
 	
 	/**
-	 * Context ƒIƒuƒWƒFƒNƒg‚ğì¬‚µ‚Ü‚·B
-	 * @param outer ŠO‘¤‚ÌƒRƒ“ƒeƒLƒXƒgƒIƒuƒWƒFƒNƒg
-	 * @return Lobby ƒIƒuƒWƒFƒNƒg
+	 * Context ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * @param outer å¤–å´ã®ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @return Lobby ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public abstract AnubisObject newContext(AnubisObject _this, AnubisObject outer);
 	
 	public abstract AFunction newFunction(CodeBlock body, AnubisObject outer, String... args);
 	
 	/**
-	 * Object ‚É‘Î‰‚·‚é JObject ƒIƒuƒWƒFƒNƒg‚ğì¬‚µ‚Ü‚·B
-	 * @param object ƒIƒuƒWƒFƒNƒg
-	 * @return JObject ƒIƒuƒWƒFƒNƒg
+	 * Object ã«å¯¾å¿œã™ã‚‹ JObject ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * @param object ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @return JObject ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public abstract JObject newJObject(Object object);
 	

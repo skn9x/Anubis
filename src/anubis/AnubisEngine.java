@@ -124,7 +124,7 @@ public class AnubisEngine extends AbstractScriptEngine implements Invocable, Com
 	}
 	
 	private AnubisCompiledScript compileInternal(Reader reader) throws ScriptException {
-		CodeBlock block = newCodeBlock(reader, "anubis", null); // TODO ƒNƒ‰ƒX–¼‚ğ’²®‚·‚é
+		CodeBlock block = newCodeBlock(reader, "anubis", null); // TODO ã‚¯ãƒ©ã‚¹åã‚’èª¿æ•´ã™ã‚‹
 		return new AnubisCompiledScript(this, block);
 	}
 	

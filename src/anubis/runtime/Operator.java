@@ -26,8 +26,8 @@ public class Operator {
 	}
 	
 	/**
-	 * obj ‚ÌƒXƒƒbƒg‚ğQÆ‚µAŠÖ”‚ğ•Ô‹p‚µ‚Ü‚·BƒXƒƒbƒg‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡ $forward ‚ğl—¶‚µ‚Ü‚·B
-	 * ‚»‚ê‚Å‚àŒ©‚Â‚©‚ç‚È‚¢ê‡‚É‚Í SlotNotFoundException ‚ªƒXƒ[‚³‚ê‚Ü‚·B
+	 * obj ã®ã‚¹ãƒ­ãƒƒãƒˆã‚’å‚ç…§ã—ã€é–¢æ•°ã‚’è¿”å´ã—ã¾ã™ã€‚ã‚¹ãƒ­ãƒƒãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆ $forward ã‚’è€ƒæ…®ã—ã¾ã™ã€‚
+	 * ãã‚Œã§ã‚‚è¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã«ã¯ SlotNotFoundException ãŒã‚¹ãƒ­ãƒ¼ã•ã‚Œã¾ã™ã€‚
 	 * @param obj
 	 * @param name
 	 * @return
@@ -53,7 +53,7 @@ public class Operator {
 	}
 	
 	/**
-	 * obj ‚ÌƒXƒƒbƒg‚ğQÆ‚µ‚Ü‚·B‚»‚ê‚Å‚àŒ©‚Â‚©‚ç‚È‚¢ê‡‚É‚Í null ‚ª•Ô‚è‚Ü‚·B
+	 * obj ã®ã‚¹ãƒ­ãƒƒãƒˆã‚’å‚ç…§ã—ã¾ã™ã€‚ãã‚Œã§ã‚‚è¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã«ã¯ null ãŒè¿”ã‚Šã¾ã™ã€‚
 	 * @param obj
 	 * @param name
 	 * @return
@@ -81,7 +81,7 @@ public class Operator {
 	}
 	
 	public static boolean isNull(AnubisObject value) {
-		return JCaster.cast(value) == null; // TODO —–\‚©‚àÄl
+		return JCaster.cast(value) == null; // TODO ä¹±æš´ã‹ã‚‚å†è€ƒ
 	}
 	
 	public static boolean isTrue(AnubisObject value) {
@@ -168,13 +168,13 @@ public class Operator {
 			return (AnubisObject) ex;
 		if (ex instanceof AnubisUserException)
 			return ((AnubisUserException) ex).getValue();
-		return AObjects.getJObject(ex); // TODO ‚±‚±‚¾‚¯ AObjects g‚¤‚Ì‚Í‚È‚ñ‚©Œ™
+		return AObjects.getJObject(ex); // TODO ã“ã“ã ã‘ AObjects ä½¿ã†ã®ã¯ãªã‚“ã‹å«Œ
 	}
 	
 	public static Throwable wrapException(AnubisObject value) {
 		if (value instanceof Throwable)
 			return (Throwable) value;
-		Throwable th = (Throwable) JCaster.as(Throwable.class, value); // TODO ‚±‚±‚¾‚¯ JCaster g‚¤‚Ì‚Í‚È‚ñ‚©Œ™
+		Throwable th = (Throwable) JCaster.as(Throwable.class, value); // TODO ã“ã“ã ã‘ JCaster ä½¿ã†ã®ã¯ãªã‚“ã‹å«Œ
 		if (th != null)
 			return th;
 		return ExceptionProvider.newUserException(value);

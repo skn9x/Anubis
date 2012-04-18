@@ -42,7 +42,7 @@ public class JClass extends AObject {
 	
 	protected void initMethods(Class<?> cls) {
 		Map<String, FunctionAccessor> accessors = new HashMap<String, FunctionAccessor>();
-		// �R���X�g���N�^�쐬
+		// コンストラクタ作成
 		if (!Modifier.isAbstract(cls.getModifiers())) {
 			for (Constructor<?> cc: cls.getDeclaredConstructors()) {
 				if (!Modifier.isPrivate(cc.getModifiers())) {
@@ -55,7 +55,7 @@ public class JClass extends AObject {
 				}
 			}
 		}
-		// ���\�b�h�쐬
+		// メソッド作成
 		for (Method mm: cls.getDeclaredMethods()) {
 			if (!Modifier.isPrivate(mm.getModifiers())) {
 				FunctionAccessor acc = accessors.get(mm.getName());
@@ -66,7 +66,7 @@ public class JClass extends AObject {
 				acc.add(new MethodInvocation(mm));
 			}
 		}
-		// traits �֕ϊ�
+		// traits へ変換
 		for (Entry<String, FunctionAccessor> ent: accessors.entrySet()) {
 			this.setSlot(ent.getKey(), JFunction.valueOf(ent.getValue()), true);
 		}

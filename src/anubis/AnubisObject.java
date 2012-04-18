@@ -5,61 +5,61 @@ package anubis;
  */
 public interface AnubisObject {
 	/**
-	 * ‚±‚ÌƒIƒuƒWƒFƒNƒg(‚¨‚æ‚ÑƒvƒƒgƒIƒuƒWƒFƒNƒg)‚©‚çƒXƒƒbƒg‚ğŒŸõ‚µ‚Ü‚·B
-	 * @param name ƒXƒƒbƒg–¼
-	 * @return ƒXƒƒbƒg‚Éİ’è‚³‚ê‚Ä‚¢‚½ƒIƒuƒWƒFƒNƒg
+	 * ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ(ãŠã‚ˆã³ãƒ—ãƒ­ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ)ã‹ã‚‰ã‚¹ãƒ­ãƒƒãƒˆã‚’æ¤œç´¢ã—ã¾ã™ã€‚
+	 * @param name ã‚¹ãƒ­ãƒƒãƒˆå
+	 * @return ã‚¹ãƒ­ãƒƒãƒˆã«è¨­å®šã•ã‚Œã¦ã„ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 * @see AnubisObject#getSlot(String)
 	 */
 	public AnubisObject findSlot(String name);
 	
 	/**
-	 * ‚±‚ÌƒIƒuƒWƒFƒNƒg(‚¨‚æ‚ÑƒvƒƒgƒIƒuƒWƒFƒNƒg)‚©‚çƒXƒƒbƒgQÆ‚ğŒŸõ‚µ‚Ü‚·B
-	 * @param name ƒXƒƒbƒg–¼
-	 * @return ƒXƒƒbƒg‚Ö‚ÌQÆ
+	 * ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ(ãŠã‚ˆã³ãƒ—ãƒ­ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ)ã‹ã‚‰ã‚¹ãƒ­ãƒƒãƒˆå‚ç…§ã‚’æ¤œç´¢ã—ã¾ã™ã€‚
+	 * @param name ã‚¹ãƒ­ãƒƒãƒˆå
+	 * @return ã‚¹ãƒ­ãƒƒãƒˆã¸ã®å‚ç…§
 	 * @see AnubisObject#findSlot(String)
 	 */
 	public SlotRef findSlotRef(String name);
 	
 	/**
-	 * ‚±‚ÌƒIƒuƒWƒFƒNƒg‚Ì“ÁêƒXƒƒbƒg‚ğ•Ô‚µ‚Ü‚·B
-	 * @param type “ÁêƒXƒƒbƒg‚Ìí—Ş
-	 * @return ƒXƒƒbƒg‚Éİ’è‚³‚ê‚Ä‚¢‚½ƒIƒuƒWƒFƒNƒg
+	 * ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç‰¹æ®Šã‚¹ãƒ­ãƒƒãƒˆã‚’è¿”ã—ã¾ã™ã€‚
+	 * @param type ç‰¹æ®Šã‚¹ãƒ­ãƒƒãƒˆã®ç¨®é¡
+	 * @return ã‚¹ãƒ­ãƒƒãƒˆã«è¨­å®šã•ã‚Œã¦ã„ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public AnubisObject getSlot(SpecialSlot type);
 	
 	/**
-	 * ‚±‚ÌƒIƒuƒWƒFƒNƒg‚©‚çƒXƒƒbƒg‚ğŒŸõ‚µ‚Ü‚·B
-	 * @param name ƒXƒƒbƒg–¼
-	 * @return ƒXƒƒbƒg‚Éİ’è‚³‚ê‚Ä‚¢‚½ƒIƒuƒWƒFƒNƒg
+	 * ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‹ã‚‰ã‚¹ãƒ­ãƒƒãƒˆã‚’æ¤œç´¢ã—ã¾ã™ã€‚
+	 * @param name ã‚¹ãƒ­ãƒƒãƒˆå
+	 * @return ã‚¹ãƒ­ãƒƒãƒˆã«è¨­å®šã•ã‚Œã¦ã„ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 * @see AnubisObject#findSlot(String)
 	 */
 	public AnubisObject getSlot(String name);
 	
 	/**
-	 * ‚±‚ÌƒIƒuƒWƒFƒNƒg‚Ìí—Ş‚ğ•¶š—ñ‚Å•Ô‚µ‚Ü‚·B
-	 * @return ƒIƒuƒWƒFƒNƒg‚Ìí—Ş‚ğ•\‚·•¶š—ñ
+	 * ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç¨®é¡ã‚’æ–‡å­—åˆ—ã§è¿”ã—ã¾ã™ã€‚
+	 * @return ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç¨®é¡ã‚’è¡¨ã™æ–‡å­—åˆ—
 	 */
 	public String getType();
 	
 	/**
-	 * ‚±‚ÌƒIƒuƒWƒFƒNƒg‚Ì“ÁêƒXƒƒbƒg‚ğİ’è‚µ‚Ü‚·BƒIƒuƒWƒFƒNƒg‚ª null ‚Ìê‡‚Í“ÁêƒXƒƒbƒg‚ªíœ‚³‚ê‚Ü‚·B
-	 * @param type “ÁêƒXƒƒbƒg‚Ìí—Ş
-	 * @param value ƒIƒuƒWƒFƒNƒg
+	 * ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç‰¹æ®Šã‚¹ãƒ­ãƒƒãƒˆã‚’è¨­å®šã—ã¾ã™ã€‚ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒ null ã®å ´åˆã¯ç‰¹æ®Šã‚¹ãƒ­ãƒƒãƒˆãŒå‰Šé™¤ã•ã‚Œã¾ã™ã€‚
+	 * @param type ç‰¹æ®Šã‚¹ãƒ­ãƒƒãƒˆã®ç¨®é¡
+	 * @param value ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public void setSlot(SpecialSlot type, AnubisObject value);
 	
 	/**
-	 * ‚±‚ÌƒIƒuƒWƒFƒNƒg‚ÉƒXƒƒbƒg‚ğİ’è‚µ‚Ü‚·BƒIƒuƒWƒFƒNƒg‚ª null ‚Ìê‡‚ÍƒXƒƒbƒg‚ªíœ‚³‚ê‚Ü‚·B
-	 * @param name ƒXƒƒbƒg–¼
-	 * @param value ƒIƒuƒWƒFƒNƒg
+	 * ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ã‚¹ãƒ­ãƒƒãƒˆã‚’è¨­å®šã—ã¾ã™ã€‚ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒ null ã®å ´åˆã¯ã‚¹ãƒ­ãƒƒãƒˆãŒå‰Šé™¤ã•ã‚Œã¾ã™ã€‚
+	 * @param name ã‚¹ãƒ­ãƒƒãƒˆå
+	 * @param value ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public void setSlot(String name, AnubisObject value);
 	
 	/**
-	 * ‚±‚ÌƒIƒuƒWƒFƒNƒg‚ÉƒXƒƒbƒg‚ğİ’è‚µ‚Ü‚·BƒIƒuƒWƒFƒNƒg‚ª null ‚Ìê‡‚ÍƒXƒƒbƒg‚ªíœ‚³‚ê‚Ü‚·B
-	 * @param name ƒXƒƒbƒg–¼
-	 * @param value ƒIƒuƒWƒFƒNƒg
-	 * @param readonly ‚±‚ÌƒXƒƒbƒg‚ğ“Ç‚İæ‚èê—p‚É‚·‚é‚È‚ç‚Î true
+	 * ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ã‚¹ãƒ­ãƒƒãƒˆã‚’è¨­å®šã—ã¾ã™ã€‚ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒ null ã®å ´åˆã¯ã‚¹ãƒ­ãƒƒãƒˆãŒå‰Šé™¤ã•ã‚Œã¾ã™ã€‚
+	 * @param name ã‚¹ãƒ­ãƒƒãƒˆå
+	 * @param value ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @param readonly ã“ã®ã‚¹ãƒ­ãƒƒãƒˆã‚’èª­ã¿å–ã‚Šå°‚ç”¨ã«ã™ã‚‹ãªã‚‰ã° true
 	 */
 	public void setSlot(String name, AnubisObject value, boolean readonly);
 }

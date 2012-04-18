@@ -21,7 +21,7 @@ public class FunctionAccessor {
 				return invoke.invoke(this1, args);
 			}
 			catch (AnubisException ex) {
-				throw ex; // çƒÉXÉçÅ[
+				throw ex; // ÂÜç„Çπ„É≠„Éº
 			}
 			catch (Exception ex) {
 				throw ExceptionProvider.wrapRuntimeException(ex);

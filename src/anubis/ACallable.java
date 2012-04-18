@@ -5,7 +5,7 @@ package anubis;
  */
 public interface ACallable extends AnubisObject {
 	/**
-	 * このオブジェクトを関数として呼び出します。
+	 * 縺薙�ｮ繧ｪ繝悶ず繧ｧ繧ｯ繝医ｒ髢｢謨ｰ縺ｨ縺励※蜻ｼ縺ｳ蜃ｺ縺励∪縺吶�
 	 * @param _this
 	 * @param objects
 	 * @return

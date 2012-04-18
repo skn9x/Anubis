@@ -32,7 +32,7 @@ public class InvocationComparator implements Comparator<Invocation> {
 	}
 	
 	private static int compare(Class<?> cls1, Class<?> cls2) {
-		// ƒTƒuƒNƒ‰ƒX‚Ì‚Ù‚¤‚ª‚æ‚è¬‚³‚¢
+		// ã‚µãƒ–ã‚¯ãƒ©ã‚¹ã®ã»ã†ãŒã‚ˆã‚Šå°ã•ã„
 		if (cls2.isAssignableFrom(cls1))
 			return -1;
 		if (cls1.isAssignableFrom(cls2))
@@ -41,7 +41,7 @@ public class InvocationComparator implements Comparator<Invocation> {
 	}
 	
 	private static int compare(int x, int y) {
-		// ¬‚³‚¢’l‚Ì‚Ù‚¤‚ª‚æ‚è¬‚³‚¢
+		// å°ã•ã„å€¤ã®ã»ã†ãŒã‚ˆã‚Šå°ã•ã„
 		return Integer.valueOf(x).compareTo(y);
 	}
 	

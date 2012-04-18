@@ -51,7 +51,7 @@ public class AObject implements AnubisObject, ADumpable {
 		StringBuilder sb = new StringBuilder();
 		sb.append(debugString());
 		sb.append(" {\n");
-		// “ÁêƒXƒƒbƒg‚Ìƒ_ƒ“ƒv
+		// ç‰¹æ®Šã‚¹ãƒ­ãƒƒãƒˆã®ãƒ€ãƒ³ãƒ—
 		AnubisObject _this = getSlot(SpecialSlot.THIS);
 		AnubisObject _super = getSlot(SpecialSlot.SUPER);
 		AnubisObject _outer = getSlot(SpecialSlot.OUTER);
@@ -64,7 +64,7 @@ public class AObject implements AnubisObject, ADumpable {
 		if (_outer != null) {
 			sb.append(String.format("*   outer = %s;\n", Operator.toString(_outer)));
 		}
-		// ˆê”ÊƒXƒƒbƒg‚Ìƒ_ƒ“ƒv
+		// ä¸€èˆ¬ã‚¹ãƒ­ãƒƒãƒˆã®ãƒ€ãƒ³ãƒ—
 		for (Entry<String, AnubisObject> elm: slots.getSnap().entrySet()) {
 			sb.append(String.format("    %s = %s;\n", ParserHelper.mayQuoteIdentifier(elm.getKey()),
 					Operator.toString(elm.getValue())));

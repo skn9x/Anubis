@@ -104,13 +104,13 @@ public class ExpressionEmitterTest extends AbstractTest {
 	
 	@Test
 	public void testEmitCallExpression() throws Exception {
-		// 0 ˆø”
+		// 0 å¼•æ•°
 		assertAEquals(1, exec("1.`+p`()"));
 		assertAEquals(-2, exec("2.`-n`()"));
 		assertAEquals(3, exec("1.`+p`(@3)"));
 		assertAEquals(-4, exec("2.`-n`(@4)"));
 		
-		// 1 ˆø”
+		// 1 å¼•æ•°
 		assertAEquals(3, exec("1.`+`(2)"));
 		assertAEquals(5, exec("1.`+`(@3, 2)"));
 		assertAEquals(-1, exec("1.`-`(2)"));

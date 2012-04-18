@@ -178,7 +178,7 @@ public class StatementEmitter {
 		try {
 			// expr
 			stmt.getExpression().visit(owner, builder);
-			// TODO null チェック
+			// TODO null 繝√ぉ繝�繧ｯ
 			builder.emitDup();
 			builder.emitStoreLocalVar(var);
 			builder.emitMonitorEnter();
@@ -328,7 +328,7 @@ public class StatementEmitter {
 		try {
 			// expr
 			stmt.getExpression().visit(owner, builder);
-			// TODO null チェック
+			// TODO null 繝√ぉ繝�繧ｯ
 			builder.emitStoreLocalVar(var);
 			// body
 			new TryFinallyEmitter(block, stmt.getLabel()) {

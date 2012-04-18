@@ -284,7 +284,7 @@ public class ExpressionEmitter {
 			builder.emitInvoke(AObjects.class, "getNull");
 			return;
 		}
-		if (value instanceof ATrueObject) { // TODO Factory ƒƒ\ƒbƒh‚ğ APrimitive ‚©‚çŠeíƒIƒuƒWƒFƒNƒg‚É•ÏX‚µ‚½‚¢
+		if (value instanceof ATrueObject) { // TODO Factory ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ APrimitive ã‹ã‚‰å„ç¨®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¤‰æ›´ã—ãŸã„
 			builder.emitInvoke(AObjects.class, "getTrue");
 			return;
 		}

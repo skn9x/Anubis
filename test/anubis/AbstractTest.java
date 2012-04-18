@@ -35,11 +35,11 @@ public class AbstractTest {
 		String className = "sample";
 		ObjectFactory oldfactory = AObjects.setCurrent(factory);
 		try {
-			// ¶¬
+			// ç”Ÿæˆ
 			CodeBlock code = new AsmCodeBlockFactory(className, true).newCodeBlock(node);
 			assertNotNull(code);
 			
-			// exec ŒÄ‚Ño‚µ
+			// exec å‘¼ã³å‡ºã—
 			return code.exec(local);
 		}
 		finally {

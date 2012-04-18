@@ -23,7 +23,7 @@ public class AObjectTest {
 	private AnubisObject obj7 = new AObject();
 	
 	/**
-	 * {@link anubis.runtime.AObject#findSlot(java.lang.String)} ‚Ì‚½‚ß‚ÌƒeƒXƒgEƒƒ\ƒbƒhB
+	 * {@link anubis.runtime.AObject#findSlot(java.lang.String)} ã®ãŸã‚ã®ãƒ†ã‚¹ãƒˆãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 	 */
 	@Test
 	public void testFindSlot() {
@@ -47,7 +47,7 @@ public class AObjectTest {
 	}
 	
 	/**
-	 * {@link anubis.runtime.AObject#findSlot(java.lang.String)} ‚Ì‚½‚ß‚ÌƒeƒXƒgEƒƒ\ƒbƒhB
+	 * {@link anubis.runtime.AObject#findSlot(java.lang.String)} ã®ãŸã‚ã®ãƒ†ã‚¹ãƒˆãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 	 */
 	@Test
 	public void testFindSlot02() {
@@ -65,19 +65,19 @@ public class AObjectTest {
 		_outer.setSlot(OUTER, obj5);
 		
 		obj2.setSlot("a", obj6);
-		obj3.setSlot("a", obj7); // super.outer ‚Íâ‘Î‚Éæ“¾‚³‚ê‚È‚¢
+		obj3.setSlot("a", obj7); // super.outer ã¯çµ¶å¯¾ã«å–å¾—ã•ã‚Œãªã„
 		obj4.setSlot("a", obj7);
 		obj5.setSlot("a", obj7);
 		obj2.setSlot("b", null);
-		obj3.setSlot("b", obj7); // super.outer ‚Íâ‘Î‚Éæ“¾‚³‚ê‚È‚¢
+		obj3.setSlot("b", obj7); // super.outer ã¯çµ¶å¯¾ã«å–å¾—ã•ã‚Œãªã„
 		obj4.setSlot("b", obj6);
 		obj5.setSlot("b", obj7);
 		obj2.setSlot("c", null);
-		obj3.setSlot("c", obj7); // super.outer ‚Íâ‘Î‚Éæ“¾‚³‚ê‚È‚¢
+		obj3.setSlot("c", obj7); // super.outer ã¯çµ¶å¯¾ã«å–å¾—ã•ã‚Œãªã„
 		obj4.setSlot("c", null);
 		obj5.setSlot("c", obj6);
 		obj2.setSlot("d", null);
-		obj3.setSlot("d", obj7); // super.outer ‚Íâ‘Î‚Éæ“¾‚³‚ê‚È‚¢
+		obj3.setSlot("d", obj7); // super.outer ã¯çµ¶å¯¾ã«å–å¾—ã•ã‚Œãªã„
 		obj4.setSlot("d", null);
 		obj5.setSlot("d", null);
 		
@@ -89,7 +89,7 @@ public class AObjectTest {
 	}
 	
 	/**
-	 * {@link anubis.runtime.AObject#findSlot(java.lang.String)} ‚Ì‚½‚ß‚ÌƒeƒXƒgEƒƒ\ƒbƒhB
+	 * {@link anubis.runtime.AObject#findSlot(java.lang.String)} ã®ãŸã‚ã®ãƒ†ã‚¹ãƒˆãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 	 */
 	@Test
 	public void testFindSlot03() {
@@ -113,7 +113,7 @@ public class AObjectTest {
 	}
 	
 	/**
-	 * {@link anubis.runtime.AObject#getSlot(anubis.SpecialSlot)} ‚Ì‚½‚ß‚ÌƒeƒXƒgEƒƒ\ƒbƒhB
+	 * {@link anubis.runtime.AObject#getSlot(anubis.SpecialSlot)} ã®ãŸã‚ã®ãƒ†ã‚¹ãƒˆãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 	 */
 	@Test
 	public void testGetProto() {
@@ -159,7 +159,7 @@ public class AObjectTest {
 	}
 	
 	/**
-	 * {@link anubis.runtime.AObject#getSlot(java.lang.String)} ‚Ì‚½‚ß‚ÌƒeƒXƒgEƒƒ\ƒbƒhB
+	 * {@link anubis.runtime.AObject#getSlot(java.lang.String)} ã®ãŸã‚ã®ãƒ†ã‚¹ãƒˆãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 	 */
 	@Test
 	public void testGetSlot() {

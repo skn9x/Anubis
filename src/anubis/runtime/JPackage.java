@@ -22,7 +22,7 @@ public class JPackage extends AObject {
 			AnubisObject obj = super.getSlot(name);
 			if (obj == null && !name.contains(".")) {
 				String fullName = pack == null ? name : pack.getName() + "." + name;
-				// �N���X�쐬
+				// クラス作成
 				{
 					JClass c = newClass(fullName);
 					if (c != null) {
@@ -30,9 +30,9 @@ public class JPackage extends AObject {
 						return c;
 					}
 				}
-				// TODO �C���^�t�F�C�X�쐬
+				// TODO インタフェイス作成
 				{
-					// �p�b�P�[�W�쐬
+					// パッケージ作成
 					JPackage p = newPackage(fullName);
 					if (p != null) {
 						setSlot(name, p);

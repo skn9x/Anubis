@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.regex.Pattern;
 
 public class ParserHelper {
-	private static final String[] keywords = { // TODO Œ©’¼‚µ
+	private static final String[] keywords = { // TODO éšæ™‚è¦‹ç›´ã—
 		"object",
 		"record",
 		"function",
@@ -54,9 +54,9 @@ public class ParserHelper {
 	}
 	
 	/**
-	 * •¶š—ñ“à‚Ì“Áê•¶š‚ğƒGƒXƒP[ƒv‚µ‚Ü‚·
-	 * @param str “Áê•¶š‚ğŠÜ‚Ş•¶š—ñ
-	 * @return ƒGƒXƒP[ƒv•¶š‚ğŠÜ‚Ş•¶š—ñ
+	 * æ–‡å­—åˆ—å†…ã®ç‰¹æ®Šæ–‡å­—ã‚’ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã—ã¾ã™
+	 * @param str ç‰¹æ®Šæ–‡å­—ã‚’å«ã‚€æ–‡å­—åˆ—
+	 * @return ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—æ–‡å­—ã‚’å«ã‚€æ–‡å­—åˆ—
 	 */
 	public static String escape(String str) {
 		StringBuilder sb = new StringBuilder();
@@ -110,7 +110,7 @@ public class ParserHelper {
 	}
 	
 	/**
-	 * str ‚É¯•Êq‚Æ‚µ‚Ä•s“KØ‚È•¶š‚ğŠÜ‚Ş‚Æ‚«‚Í `` ‚ÅˆÍ‚İ‚Ü‚·B
+	 * str ã«è­˜åˆ¥å­ã¨ã—ã¦ä¸é©åˆ‡ãªæ–‡å­—ã‚’å«ã‚€ã¨ãã¯ `` ã§å›²ã¿ã¾ã™ã€‚
 	 * @param str
 	 * @return
 	 */
@@ -126,9 +126,9 @@ public class ParserHelper {
 	}
 	
 	/**
-	 * ”’lƒg[ƒNƒ“‚ğ Number ƒIƒuƒWƒFƒNƒg‚Öƒp[ƒX‚µ‚Ü‚·B
-	 * @param token ”’lƒg[ƒNƒ“
-	 * @return@Number ƒIƒuƒWƒFƒNƒg
+	 * æ•°å€¤ãƒˆãƒ¼ã‚¯ãƒ³ã‚’ Number ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¸ãƒ‘ãƒ¼ã‚¹ã—ã¾ã™ã€‚
+	 * @param token æ•°å€¤ãƒˆãƒ¼ã‚¯ãƒ³
+	 * @returnã€€Number ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static Number parseNumber(String token) {
 		boolean negate = token.startsWith("-");

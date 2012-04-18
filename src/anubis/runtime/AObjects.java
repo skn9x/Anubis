@@ -8,23 +8,23 @@ import anubis.except.FactoryNotReadyException;
 
 public class AObjects {
 	/**
-	 * ƒJƒŒƒ“ƒg Factory
+	 * ã‚«ãƒ¬ãƒ³ãƒˆ Factory
 	 */
 	private static final ThreadLocal<ObjectFactory> current = new ThreadLocal<ObjectFactory>();
 	
 	/**
-	 * bool ƒIƒuƒWƒFƒNƒg‚ğ•Ô‚µ‚Ü‚·B
-	 * @param bool bool’l
-	 * @return true ‚Ü‚½‚Í false ƒIƒuƒWƒFƒNƒg
+	 * bool ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã—ã¾ã™ã€‚
+	 * @param bool boolå€¤
+	 * @return true ã¾ãŸã¯ false ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static APrimitive getBool(boolean bool) {
 		return bool ? getCurrent().getTrue() : getCurrent().getFalse();
 	}
 	
 	/**
-	 * Œ»İ‚ÌƒXƒŒƒbƒh‚ÉŠÖ˜A•t‚¯‚ç‚ê‚½ Factory ‚ğ•Ô‚µ‚Ü‚·B
-	 * @return Factory ƒCƒ“ƒXƒ^ƒ“ƒX
-	 * @throws FactoryNotReadyException Factory ‚ªŠÖ˜A•t‚¯‚ç‚ê‚Ä‚¢‚È‚¢‚Æ‚«
+	 * ç¾åœ¨ã®ã‚¹ãƒ¬ãƒƒãƒ‰ã«é–¢é€£ä»˜ã‘ã‚‰ã‚ŒãŸ Factory ã‚’è¿”ã—ã¾ã™ã€‚
+	 * @return Factory ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
+	 * @throws FactoryNotReadyException Factory ãŒé–¢é€£ä»˜ã‘ã‚‰ã‚Œã¦ã„ãªã„ã¨ã
 	 */
 	public static ObjectFactory getCurrent() {
 		ObjectFactory result = current.get();
@@ -35,33 +35,33 @@ public class AObjects {
 	}
 	
 	/**
-	 * false ƒIƒuƒWƒFƒNƒg‚ğ•Ô‚µ‚Ü‚·B
-	 * @return false ƒIƒuƒWƒFƒNƒg
+	 * false ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã—ã¾ã™ã€‚
+	 * @return false ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static APrimitive getFalse() {
 		return getCurrent().getFalse();
 	}
 	
 	/**
-	 * Class ‚É‘Î‰‚·‚é JClass ƒIƒuƒWƒFƒNƒg‚ğ•Ô‚µ‚Ü‚·B
-	 * @param cls ƒNƒ‰ƒXƒIƒuƒWƒFƒNƒg
-	 * @return JClass ƒIƒuƒWƒFƒNƒg / ˆø”‚ª null ‚Ìê‡‚Í null
+	 * Class ã«å¯¾å¿œã™ã‚‹ JClass ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã—ã¾ã™ã€‚
+	 * @param cls ã‚¯ãƒ©ã‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @return JClass ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ / å¼•æ•°ãŒ null ã®å ´åˆã¯ null
 	 */
 	public static JClass getJClass(Class<?> cls) {
 		return getCurrent().getJClass(cls);
 	}
 	
 	/**
-	 * Object ‚É‘Î‰‚·‚é JObject ƒIƒuƒWƒFƒNƒg‚ğ•Ô‚µ‚Ü‚·B
-	 * @param object ƒIƒuƒWƒFƒNƒg
-	 * @return JObject ƒIƒuƒWƒFƒNƒg / ˆø”‚ª null ‚Ìê‡‚Í null
+	 * Object ã«å¯¾å¿œã™ã‚‹ JObject ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã—ã¾ã™ã€‚
+	 * @param object ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @return JObject ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ / å¼•æ•°ãŒ null ã®å ´åˆã¯ null
 	 */
 	public static JObject getJObject(Object object) {
 		return getCurrent().getJObject(object);
 	}
 	
 	/**
-	 * null ƒIƒuƒWƒFƒNƒg‚ğ•Ô‚µ‚Ü‚·B
+	 * null ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã—ã¾ã™ã€‚
 	 * @return the null
 	 */
 	public static APrimitive getNull() {
@@ -69,42 +69,42 @@ public class AObjects {
 	}
 	
 	/**
-	 * Number ‚É‘Î‰‚·‚é ANumber ƒIƒuƒWƒFƒNƒg‚ğ•Ô‚µ‚Ü‚·B
-	 * @param value Number ƒIƒuƒWƒFƒNƒg
-	 * @return ANumber ƒIƒuƒWƒFƒNƒg
+	 * Number ã«å¯¾å¿œã™ã‚‹ ANumber ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã—ã¾ã™ã€‚
+	 * @param value Number ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @return ANumber ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static ANumber getNumber(Number value) {
 		return getCurrent().getNumber(value);
 	}
 	
 	/**
-	 * ƒIƒuƒWƒFƒNƒg‚É‘Î‰‚·‚é AnubisObject ‚ğ•Ô‚µ‚Ü‚·B
-	 * @param obj ƒIƒuƒWƒFƒNƒg
-	 * @return AnubisObject ƒCƒ“ƒXƒ^ƒ“ƒX
+	 * ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¯¾å¿œã™ã‚‹ AnubisObject ã‚’è¿”ã—ã¾ã™ã€‚
+	 * @param obj ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @return AnubisObject ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	 */
 	public static AnubisObject getObject(Object obj) {
 		return getCurrent().getObject(obj);
 	}
 	
 	/**
-	 * String ‚É‘Î‰‚·‚é AString ƒIƒuƒWƒFƒNƒg‚ğ•Ô‚µ‚Ü‚·B
-	 * @param value String ƒIƒuƒWƒFƒNƒg
-	 * @return AString ƒIƒuƒWƒFƒNƒg
+	 * String ã«å¯¾å¿œã™ã‚‹ AString ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã—ã¾ã™ã€‚
+	 * @param value String ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @return AString ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static AString getString(String value) {
 		return getCurrent().getString(value);
 	}
 	
 	/**
-	 * Œ»İ‚ÌƒXƒŒƒbƒh‚ÉŠÖ˜A•t‚¯‚ç‚ê‚½ {@link TraitsFactory} ‚ğ•Ô‚µ‚Ü‚·B
-	 * @return TraitsFactory ƒIƒuƒWƒFƒNƒg
+	 * ç¾åœ¨ã®ã‚¹ãƒ¬ãƒƒãƒ‰ã«é–¢é€£ä»˜ã‘ã‚‰ã‚ŒãŸ {@link TraitsFactory} ã‚’è¿”ã—ã¾ã™ã€‚
+	 * @return TraitsFactory ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static TraitsFactory getTraitsFactory() {
 		return getCurrent().getTraitsFactory();
 	}
 	
 	/**
-	 * true ƒIƒuƒWƒFƒNƒg‚ğ•Ô‚µ‚Ü‚·B
+	 * true ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã—ã¾ã™ã€‚
 	 * @return the true
 	 */
 	public static APrimitive getTrue() {
@@ -112,91 +112,91 @@ public class AObjects {
 	}
 	
 	/**
-	 * Context ƒIƒuƒWƒFƒNƒg‚ğì¬‚µ‚Ü‚·B
-	 * @param outer ŠO‘¤‚ÌƒRƒ“ƒeƒLƒXƒgƒIƒuƒWƒFƒNƒg
-	 * @return Context ƒIƒuƒWƒFƒNƒg
+	 * Context ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * @param outer å¤–å´ã®ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @return Context ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static AnubisObject newContext(AnubisObject outer) {
 		return getCurrent().newContext(outer.getSlot(SpecialSlot.THIS), outer);
 	}
 	
 	/**
-	 * Context ƒIƒuƒWƒFƒNƒg‚ğì¬‚µ‚Ü‚·B
-	 * @param outer ŠO‘¤‚ÌƒRƒ“ƒeƒLƒXƒgƒIƒuƒWƒFƒNƒg
-	 * @return Context ƒIƒuƒWƒFƒNƒg
+	 * Context ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * @param outer å¤–å´ã®ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @return Context ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static AnubisObject newContext(AnubisObject _this, AnubisObject outer) {
 		return getCurrent().newContext(_this, outer);
 	}
 	
 	/**
-	 * Function ƒIƒuƒWƒFƒNƒg‚ğì¬‚µ‚Ü‚·B
-	 * @param body ƒ†[ƒU[ƒR[ƒh
-	 * @param outer ŠO‘¤‚ÌƒRƒ“ƒeƒLƒXƒgƒIƒuƒWƒFƒNƒg
-	 * @param args ˆø”
-	 * @return Function ƒIƒuƒWƒFƒNƒg
+	 * Function ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * @param body ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚³ãƒ¼ãƒ‰
+	 * @param outer å¤–å´ã®ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @param args å¼•æ•°
+	 * @return Function ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static AFunction newFunction(CodeBlock body, AnubisObject outer, String... args) {
 		return getCurrent().newFunction(body, outer, args);
 	}
 	
 	/**
-	 * Object ‚É‘Î‰‚·‚é JObject ƒIƒuƒWƒFƒNƒg‚ğì¬‚µ‚Ü‚·B
-	 * @param object ƒIƒuƒWƒFƒNƒg
-	 * @return JObject ƒIƒuƒWƒFƒNƒg
+	 * Object ã«å¯¾å¿œã™ã‚‹ JObject ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * @param object ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @return JObject ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static JObject newJObject(Object object) {
 		return getCurrent().newJObject(object);
 	}
 	
 	/**
-	 * ‹ó‚Ì List ƒIƒuƒWƒFƒNƒg‚ğì¬‚µ‚Ü‚·B
-	 * @return List ƒIƒuƒWƒFƒNƒg
+	 * ç©ºã® List ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * @return List ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static AList newList() {
 		return getCurrent().newList();
 	}
 	
 	/**
-	 * ‹ó‚Ì Map ƒIƒuƒWƒFƒNƒg‚ğì¬‚µ‚Ü‚·B
-	 * @return Map ƒIƒuƒWƒFƒNƒg
+	 * ç©ºã® Map ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * @return Map ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static AMap newMap() {
 		return getCurrent().newMap();
 	}
 	
 	/**
-	 * ƒ†[ƒUƒIƒuƒWƒFƒNƒg‚ğì¬‚µ‚Ü‚·B
-	 * @param outer ŠO‘¤‚ÌƒRƒ“ƒeƒLƒXƒgƒIƒuƒWƒFƒNƒg
-	 * @return ƒIƒuƒWƒFƒNƒg
+	 * ãƒ¦ãƒ¼ã‚¶ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * @param outer å¤–å´ã®ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @return ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static AnubisObject newObject(AnubisObject outer) {
 		return getCurrent().newObject(outer);
 	}
 	
 	/**
-	 * Range ƒIƒuƒWƒFƒNƒg‚ğì¬‚µ‚Ü‚·B
-	 * @param start ŠJn’l
-	 * @param end I—¹’l
-	 * @param step ƒXƒeƒbƒv’l
-	 * @return Range ƒIƒuƒWƒFƒNƒg
+	 * Range ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * @param start é–‹å§‹å€¤
+	 * @param end çµ‚äº†å€¤
+	 * @param step ã‚¹ãƒ†ãƒƒãƒ—å€¤
+	 * @return Range ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static ARange newRange(AnubisObject start, AnubisObject end, AnubisObject step) {
 		return getCurrent().newRange(start, end, step);
 	}
 	
 	/**
-	 * ‹ó‚Ì Set ƒIƒuƒWƒFƒNƒg‚ğì¬‚µ‚Ü‚·B
-	 * @return Set ƒIƒuƒWƒFƒNƒg
+	 * ç©ºã® Set ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆã—ã¾ã™ã€‚
+	 * @return Set ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public static ASet newSet() {
 		return getCurrent().newSet();
 	}
 	
 	/**
-	 * Œ»İ‚ÌƒXƒŒƒbƒh‚É Factory ‚ğŠÖ˜A•t‚¯‚Ü‚·B
-	 * @param factory ŠÖ˜A•t‚¯‚é Factory ƒCƒ“ƒXƒ^ƒ“ƒX / null ‚Ì‚ÍŠÖ˜A•t‚¯‚ğíœ
-	 * @return ’¼‘O‚ÉŠÖ˜A•t‚¯‚ç‚ê‚Ä‚¢‚½ Factory ƒCƒ“ƒXƒ^ƒ“ƒX
+	 * ç¾åœ¨ã®ã‚¹ãƒ¬ãƒƒãƒ‰ã« Factory ã‚’é–¢é€£ä»˜ã‘ã¾ã™ã€‚
+	 * @param factory é–¢é€£ä»˜ã‘ã‚‹ Factory ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ / null ã®æ™‚ã¯é–¢é€£ä»˜ã‘ã‚’å‰Šé™¤
+	 * @return ç›´å‰ã«é–¢é€£ä»˜ã‘ã‚‰ã‚Œã¦ã„ãŸ Factory ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	 */
 	public static ObjectFactory setCurrent(ObjectFactory factory) {
 		ObjectFactory result = current.get();

@@ -10,21 +10,21 @@ public class CodeBuilderTest {
 	public void testFinallize() throws Exception {
 		String className = "abc";
 		
-		// ƒRƒ“ƒpƒCƒ‹
+		// ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«
 		byte[] result = new CodeBuilder(className).finallize();
 		assertNotNull(result);
 		
-		// ƒNƒ‰ƒXƒ[ƒh
+		// ã‚¯ãƒ©ã‚¹ãƒ­ãƒ¼ãƒ‰
 		CustomCodeClassLoader loader = new CustomCodeClassLoader();
 		loader.putClassData(className, result);
 		Class<?> clazz = loader.loadClass(className);
 		assertNotNull(clazz);
 		
-		// ƒIƒuƒWƒFƒNƒg¶¬
+		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆ
 		CodeBlock code = (CodeBlock) clazz.getField("INSTANCE").get(null);
 		assertNotNull(code);
 		
-		// exec ŒÄ‚Ño‚µ
+		// exec å‘¼ã³å‡ºã—
 		assertNull(code.exec(null));
 	}
 }

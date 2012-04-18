@@ -16,13 +16,13 @@ public class Parser {
 
 %}
 
-// \‘¢ƒL[ƒ[ƒh
+// æ§‹é€ ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰
 %token		OBJECT, RECORD, FUNCTION
-// §Œä\‘¢ƒL[ƒ[ƒh
+// åˆ¶å¾¡æ§‹é€ ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰
 %token		DEF, IF, THEN, ELSE, FOR, WHILE, DO, TRY, CATCH, FINALLY, SWITCH, CASE, ASSERT, USING, LOCK, END
-// §Œä\•¶ƒL[ƒ[ƒh
+// åˆ¶å¾¡æ§‹æ–‡ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰
 %token		BREAK, CONTINUE, THROW, RETURN, ATMARK
-// ‰‰Zq
+// æ¼”ç®—å­
 %right		NEWSLOT, ASSIGN, ASSIGN_ADD, ASSIGN_SUB, ASSIGN_MUL, ASSIGN_DIV, ASSIGN_MOD, ASSIGN_TRUEDIV
 %right		QUESTION, COLON
 %left		OR
@@ -40,11 +40,11 @@ public class Parser {
 %left		DOT
 %right		RIGHT_DARROW, RIGHT_ARROW
 %left		LP, RP, LB, RB, LBT, RBT, MAP_LBT, SET_LBT
-// ‹L†
+// è¨˜å·
 %token		COMMA, SEMICOLON, DOT2, COLON2
-// •Ï”
+// å¤‰æ•°
 %token		THIS, SUPER, OUTER, LOCAL
-// ƒŠƒeƒ‰ƒ‹
+// ãƒªãƒ†ãƒ©ãƒ«
 %token<String>	IDENTIFIER, INTEGER, DECIMAL, STRING, NULL, VOID, TRUE, FALSE, REGEX
 
 %type<String>
@@ -96,7 +96,7 @@ compilationUnit:
 		{ $$ = $1; }
 	;
 
-// •¶‚Ì’è‹`
+// æ–‡ã®å®šç¾©
 stmtListOpt:
 		{ $$ = new BlockStatement(); }
 	| stmtList
@@ -181,7 +181,7 @@ caseBody:
 		{ $$ = new CaseElement($2, $4); }
 	;
 
-// ®‚Ì’è‹`
+// å¼ã®å®šç¾©
 exprListOpt:
 		{ $$ = new ArrayList<Expression>(); }
 	| exprList
@@ -199,13 +199,13 @@ exprOpt:
 		{ $$ = $1; }
 	;
 expr:
-	// €
+	// é …
 	term
 		{ $$ = $1; }
-	// “ü‚êq
+	// å…¥ã‚Œå­
 	| LP expr RP
 		{ $$ = $2; }
-	// ’P€‰‰Zq
+	// å˜é …æ¼”ç®—å­
 	| PLUS expr %prec UPLUS
 		{ $$ = newCall($2, "+p"); }
 	| MINUS expr %prec UMINUS
@@ -218,7 +218,7 @@ expr:
 		{ $$ = new UnaryExpression(UnaryOperator.ISFALSE, $1); }
 	| expr ISNULL
 		{ $$ = new UnaryExpression(UnaryOperator.ISNULL, $1); }
-	// “ñ€‰‰Zq
+	// äºŒé …æ¼”ç®—å­
 	| expr MUL expr
 		{ $$ = newCall($1, "*", $3); }
 	| expr DIV expr
@@ -255,10 +255,10 @@ expr:
 		{ $$ = new BinaryExpression(BinaryOperator.XOR, $1, $3); }
 	| expr OR expr
 		{ $$ = new BinaryExpression(BinaryOperator.OR, $1, $3); }
-	// O€‰‰Zq
+	// ä¸‰é …æ¼”ç®—å­
 	| expr QUESTION expr COLON expr
 		{ $$ = new TernaryExpression(TernaryOperator.IFELSE, $1, $3, $5); }
-	// ‘ã“ü‰‰Zq
+	// ä»£å…¥æ¼”ç®—å­
 	| leftvalue NEWSLOT expr
 		{ $$ = newNewSlotCall($1, $3, false); }
 	| leftvalue ASSIGN expr
@@ -275,7 +275,7 @@ expr:
 		{ $$ = newAssignCall($1, "\\", $3); }
 	| leftvalue ASSIGN_MOD expr
 		{ $$ = newAssignCall($1, "%", $3); }
-	// •Ï”ŒÄ‚Ño‚µ
+	// å¤‰æ•°å‘¼ã³å‡ºã—
 	| expr DOT id
 		{ $$ = new GetSlotExpression($1, $3); }
 	| expr DOT THIS
@@ -284,15 +284,15 @@ expr:
 		{ $$ = new GetSpecialExpression($1, SpecialSlot.SUPER); }
 	| expr DOT OUTER
 		{ $$ = new GetSpecialExpression($1, SpecialSlot.OUTER); }
-	// ŠÖ”ŒÄ‚Ño‚µ
+	// é–¢æ•°å‘¼ã³å‡ºã—
 	| IDENTIFIER LP callArgs RP
 		{ $$ = newCall(LocalExpression.INSTANCE, $1, $3); }
 	| expr DOT IDENTIFIER LP callArgs RP
 		{ $$ = newCall($1, $3, $5); }
-	// ƒCƒ“ƒfƒNƒT
+	// ã‚¤ãƒ³ãƒ‡ã‚¯ã‚µ
 	| expr LBT expr RBT
 		{ $$ = new BinaryExpression(BinaryOperator.INDEX, $1, $3); }
-	// ƒXƒ‰ƒCƒT
+	// ã‚¹ãƒ©ã‚¤ã‚µ
 	| expr LBT expr DOT2 expr RBT
 		{ $$ = new TernaryExpression(TernaryOperator.SLICE, $1, $3, $5); }
 	| expr LBT expr DOT2 RBT
@@ -308,28 +308,28 @@ callArgs:
 	| ATMARK expr COMMA exprListOpt
 		{ $$ = new CallArgument($2, $4); }
 	;
-leftvalue:	// ¶•Ó’l
-	// •Ï”
+leftvalue:	// å·¦è¾ºå€¤
+	// å¤‰æ•°
 	id
 		{ $$ = new SetSlotLeftValue(LocalExpression.INSTANCE, $1); }
 	| SUPER
 		{ $$ = new SetSpecialLeftValue(LocalExpression.INSTANCE, SpecialSlot.SUPER); }
 	| OUTER
 		{ $$ = new SetSpecialLeftValue(LocalExpression.INSTANCE, SpecialSlot.OUTER); }
-	// •Ï”QÆ
+	// å¤‰æ•°å‚ç…§
 	| expr DOT id
 		{ $$ = new SetSlotLeftValue($1, $3); }
 	| expr DOT SUPER
 		{ $$ = new SetSpecialLeftValue($1, SpecialSlot.SUPER); }
 	| expr DOT OUTER
 		{ $$ = new SetSpecialLeftValue($1, SpecialSlot.OUTER); }
-	// ƒCƒ“ƒfƒNƒT
+	// ã‚¤ãƒ³ãƒ‡ã‚¯ã‚µ
 	| expr LBT expr RBT
 		{ $$ = new SetIndexLeftValue($1, $3); }
 	;
 
 term:
-	// •Ï”
+	// å¤‰æ•°
 	id
 		{ $$ = new GetSlotExpression(LocalExpression.INSTANCE, $1); }
 	| THIS
@@ -340,17 +340,17 @@ term:
 		{ $$ = new GetSpecialExpression(LocalExpression.INSTANCE, SpecialSlot.OUTER); }
 	| LOCAL
 		{ $$ = LocalExpression.INSTANCE; }
-	// ƒvƒŠƒ~ƒeƒBƒu
+	// ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–
 	| primitive
 		{ $$ = new PrimitiveExpression($1); }
-	// ”z—ñEƒ}ƒbƒvEW‡
+	// é…åˆ—ãƒ»ãƒãƒƒãƒ—ãƒ»é›†åˆ
 	| LBT exprListOpt RBT
 		{ $$ = new NewListExpression($2); }
 	| MAP_LBT mapElementOpt RBT
 		{ $$ = new NewMapExpression($2); }
 	| SET_LBT exprListOpt RBT
 		{ $$ = new NewSetExpression($2); }
-	// ƒŒƒ“ƒW
+	// ãƒ¬ãƒ³ã‚¸
 	| LBT expr DOT2 RBT
 		{ $$ = new NewRangeExpression($2, null, null); }
 	| LBT expr DOT2 expr RBT
@@ -359,7 +359,7 @@ term:
 		{ $$ = new NewRangeExpression($2, null, $5); }
 	| LBT expr DOT2 expr SEMICOLON expr RBT
 		{ $$ = new NewRangeExpression($2, $4, $6); }
-	// ƒIƒuƒWƒFƒNƒg¶¬
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆ
 	| objectExpr
 		{ $$ = $1; }
 	| functionExpr
@@ -381,7 +381,7 @@ mapElement:
 		{ $$ = $1; $1.add(new Pair<Expression, Expression>($3, $5)); }
 	;
 
-// \‘¢‘Ì‚Ì’è‹`
+// æ§‹é€ ä½“ã®å®šç¾©
 objectExpr:
 	OBJECT LB stmtListOpt RB
 		{ $$ = new NewObjectExpression($3); }
@@ -424,7 +424,7 @@ blockExpr:
 		{ $$ = new BlockExpression($3); }
 	;
 
-// ƒvƒŠƒ~ƒeƒBƒu‚Ì’è‹`
+// ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ã®å®šç¾©
 primitive:
 	VOID
 		{ $$ = null; }
@@ -444,7 +444,7 @@ primitive:
 		{ $$ = null; } // TODO
 	;
 
-// ¯•Êq‚Ì’è‹`
+// è­˜åˆ¥å­ã®å®šç¾©
 idListOpt:
 		{ $$ = new ArrayList<String>(); }
 	| idList

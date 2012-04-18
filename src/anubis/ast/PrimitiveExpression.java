@@ -6,7 +6,7 @@ import anubis.runtime.APrimitive;
  * @author SiroKuro
  */
 public class PrimitiveExpression implements Expression {
-	private final APrimitive value; // void ‚·‚È‚í‚¿ null ‚ğ‹–—e‚·‚é
+	private final APrimitive value; // void ã™ãªã‚ã¡ null ã‚’è¨±å®¹ã™ã‚‹
 	
 	public PrimitiveExpression(APrimitive value) {
 		this.value = value;

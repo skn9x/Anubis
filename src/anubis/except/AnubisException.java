@@ -1,7 +1,7 @@
 package anubis.except;
 
 /**
- * AnubisException �́A�X�N���v�g���s���ɃX���[�����e���O�̃X�[�p�[�N���X�ł��B
+ * AnubisException は、スクリプト実行中にスローされる各種例外のスーパークラスです。
  * @author SiroKuro
  */
 public class AnubisException extends RuntimeException {

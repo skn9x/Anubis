@@ -29,7 +29,7 @@ public class ExceptionProviderTest {
 	}
 	
 	/**
-	 * {@link anubis.except.ExceptionProvider#newFactoryNotReady()} ‚Ì‚½‚ß‚ÌƒeƒXƒgEƒƒ\ƒbƒhB
+	 * {@link anubis.except.ExceptionProvider#newFactoryNotReady()} ã®ãŸã‚ã®ãƒ†ã‚¹ãƒˆãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 	 */
 	@Test
 	public void testNewFactoryNotReady() {
@@ -39,7 +39,7 @@ public class ExceptionProviderTest {
 	}
 	
 	/**
-	 * {@link anubis.except.ExceptionProvider#newJOverloadMismatch()} ‚Ì‚½‚ß‚ÌƒeƒXƒgEƒƒ\ƒbƒhB
+	 * {@link anubis.except.ExceptionProvider#newJOverloadMismatch()} ã®ãŸã‚ã®ãƒ†ã‚¹ãƒˆãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 	 */
 	@Test
 	public void testNewJOverloadMismatch() {
@@ -49,7 +49,7 @@ public class ExceptionProviderTest {
 	}
 	
 	/**
-	 * {@link anubis.except.ExceptionProvider#newJOverloadMismatch(java.lang.ClassCastException)} ‚Ì‚½‚ß‚ÌƒeƒXƒgEƒƒ\ƒbƒhB
+	 * {@link anubis.except.ExceptionProvider#newJOverloadMismatch(java.lang.ClassCastException)} ã®ãŸã‚ã®ãƒ†ã‚¹ãƒˆãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 	 */
 	@Test
 	public void testNewJOverloadMismatch2() {
@@ -59,7 +59,7 @@ public class ExceptionProviderTest {
 	}
 	
 	/**
-	 * {@link anubis.except.ExceptionProvider#newNotCallable(anubis.AnubisObject)} ‚Ì‚½‚ß‚ÌƒeƒXƒgEƒƒ\ƒbƒhB
+	 * {@link anubis.except.ExceptionProvider#newNotCallable(anubis.AnubisObject)} ã®ãŸã‚ã®ãƒ†ã‚¹ãƒˆãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 	 */
 	@Test
 	public void testNewNotCallable() {
@@ -69,7 +69,7 @@ public class ExceptionProviderTest {
 	}
 	
 	/**
-	 * {@link anubis.except.ExceptionProvider#newParseException(java.lang.Throwable)} ‚Ì‚½‚ß‚ÌƒeƒXƒgEƒƒ\ƒbƒhB
+	 * {@link anubis.except.ExceptionProvider#newParseException(java.lang.Throwable)} ã®ãŸã‚ã®ãƒ†ã‚¹ãƒˆãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 	 */
 	@Test
 	public void testNewParseException() {
@@ -79,7 +79,7 @@ public class ExceptionProviderTest {
 	}
 	
 	/**
-	 * {@link anubis.except.ExceptionProvider#newParseExceptionByInvalidChars(java.lang.String, java.lang.String, int, int)} ‚Ì‚½‚ß‚ÌƒeƒXƒgEƒƒ\ƒbƒhB
+	 * {@link anubis.except.ExceptionProvider#newParseExceptionByInvalidChars(java.lang.String, java.lang.String, int, int)} ã®ãŸã‚ã®ãƒ†ã‚¹ãƒˆãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 	 */
 	@Test
 	public void testNewParseExceptionByInvalidChars() {
@@ -89,7 +89,7 @@ public class ExceptionProviderTest {
 	}
 	
 	/**
-	 * {@link anubis.except.ExceptionProvider#newParseExceptionByStringNotTerminated(java.lang.String, int, int)} ‚Ì‚½‚ß‚ÌƒeƒXƒgEƒƒ\ƒbƒhB
+	 * {@link anubis.except.ExceptionProvider#newParseExceptionByStringNotTerminated(java.lang.String, int, int)} ã®ãŸã‚ã®ãƒ†ã‚¹ãƒˆãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 	 */
 	@Test
 	public void testNewParseExceptionByStringNotTerminated() {
@@ -99,7 +99,7 @@ public class ExceptionProviderTest {
 	}
 	
 	/**
-	 * {@link anubis.except.ExceptionProvider#newSlotNotFound(anubis.AnubisObject, java.lang.String)} ‚Ì‚½‚ß‚ÌƒeƒXƒgEƒƒ\ƒbƒhB
+	 * {@link anubis.except.ExceptionProvider#newSlotNotFound(anubis.AnubisObject, java.lang.String)} ã®ãŸã‚ã®ãƒ†ã‚¹ãƒˆãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 	 */
 	@Test
 	public void testNewSlotNotFound() {
@@ -109,7 +109,7 @@ public class ExceptionProviderTest {
 	}
 	
 	/**
-	 * {@link anubis.except.ExceptionProvider#newSlotReadonly(java.lang.String)} ‚Ì‚½‚ß‚ÌƒeƒXƒgEƒƒ\ƒbƒhB
+	 * {@link anubis.except.ExceptionProvider#newSlotReadonly(java.lang.String)} ã®ãŸã‚ã®ãƒ†ã‚¹ãƒˆãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 	 */
 	@Test
 	public void testNewSlotReadonly1() {
@@ -119,7 +119,7 @@ public class ExceptionProviderTest {
 	}
 	
 	/**
-	 * {@link anubis.except.ExceptionProvider#newSlotReadonly(anubis.AnubisObject, java.lang.String)} ‚Ì‚½‚ß‚ÌƒeƒXƒgEƒƒ\ƒbƒhB
+	 * {@link anubis.except.ExceptionProvider#newSlotReadonly(anubis.AnubisObject, java.lang.String)} ã®ãŸã‚ã®ãƒ†ã‚¹ãƒˆãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 	 */
 	@Test
 	public void testNewSlotReadonly2() {
@@ -129,7 +129,7 @@ public class ExceptionProviderTest {
 	}
 	
 	/**
-	 * {@link anubis.except.ExceptionProvider#newSlotReadonly(java.lang.Throwable, anubis.AnubisObject, java.lang.String)} ‚Ì‚½‚ß‚ÌƒeƒXƒgEƒƒ\ƒbƒhB
+	 * {@link anubis.except.ExceptionProvider#newSlotReadonly(java.lang.Throwable, anubis.AnubisObject, java.lang.String)} ã®ãŸã‚ã®ãƒ†ã‚¹ãƒˆãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 	 */
 	@Test
 	public void testNewSlotReadonly3() {
@@ -141,7 +141,7 @@ public class ExceptionProviderTest {
 	}
 	
 	/**
-	 * {@link anubis.except.ExceptionProvider#newVoidOperation()} ‚Ì‚½‚ß‚ÌƒeƒXƒgEƒƒ\ƒbƒhB
+	 * {@link anubis.except.ExceptionProvider#newVoidOperation()} ã®ãŸã‚ã®ãƒ†ã‚¹ãƒˆãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 	 */
 	@Test
 	public void testNewVoidOperation() {
@@ -151,7 +151,7 @@ public class ExceptionProviderTest {
 	}
 	
 	/**
-	 * {@link anubis.except.ExceptionProvider#wrapRuntimeException(java.lang.Throwable)} ‚Ì‚½‚ß‚ÌƒeƒXƒgEƒƒ\ƒbƒhB
+	 * {@link anubis.except.ExceptionProvider#wrapRuntimeException(java.lang.Throwable)} ã®ãŸã‚ã®ãƒ†ã‚¹ãƒˆãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 	 */
 	@Test
 	public void testWrapRuntimeException() {

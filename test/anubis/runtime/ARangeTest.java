@@ -13,7 +13,7 @@ public class ARangeTest extends AbstractTest {
 	
 	@Test
 	public void testGetItem() {
-		// ¸‡ƒŠƒXƒg
+		// æ˜‡é †ãƒªã‚¹ãƒˆ
 		{
 			ARange range = new ARange(AObjects.getNumber(1), AObjects.getNumber(2), null);
 			assertNull(range.getItem(AObjects.getObject(-1)));
@@ -22,7 +22,7 @@ public class ARangeTest extends AbstractTest {
 			assertEquals(AObjects.getNumber(2), range.getItem(AObjects.getObject(1)));
 			assertNull(range.getItem(AObjects.getObject(2)));
 		}
-		// –³ŒÀƒŠƒXƒg
+		// ç„¡é™ãƒªã‚¹ãƒˆ
 		{
 			ARange range = new ARange(AObjects.getNumber(3), null, AObjects.getNumber(2));
 			assertNull(range.getItem(AObjects.getObject(-1)));
@@ -32,7 +32,7 @@ public class ARangeTest extends AbstractTest {
 			assertEquals(AObjects.getNumber(6), range.getItem(AObjects.getObject(1.5)));
 			assertEquals(AObjects.getNumber(7), range.getItem(AObjects.getObject(2)));
 		}
-		// ~‡ƒŠƒXƒg
+		// é™é †ãƒªã‚¹ãƒˆ
 		{
 			ARange range = new ARange(AObjects.getNumber(3), AObjects.getNumber(1), AObjects.getNumber(-1));
 			assertNull(range.getItem(AObjects.getObject(-1)));
@@ -47,14 +47,14 @@ public class ARangeTest extends AbstractTest {
 	
 	@Test
 	public void testIterator() {
-		// ‹óRange
+		// ç©ºRange
 		{
 			ARange range = new ARange(AObjects.getNumber(1), AObjects.getNumber(0), null);
 			Iterator<AnubisObject> iter = range.iterator();
 			
 			assertFalse(iter.hasNext());
 		}
-		// ‹ó‚¶‚á‚È‚¢Range
+		// ç©ºã˜ã‚ƒãªã„Range
 		{
 			ARange range = new ARange(AObjects.getNumber(1), AObjects.getNumber(5), AObjects.getNumber(2));
 			Iterator<AnubisObject> iter = range.iterator();

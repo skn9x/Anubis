@@ -39,7 +39,7 @@ public class InvocationTest {
 	}
 	
 	/**
-	 * {@link anubis.runtime.java.Invocation#equals(anubis.runtime.java.Invocation)} ‚Ì‚½‚ß‚ÌƒeƒXƒgEƒƒ\ƒbƒhB
+	 * {@link anubis.runtime.java.Invocation#equals(anubis.runtime.java.Invocation)} ã®ãŸã‚ã®ãƒ†ã‚¹ãƒˆãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 	 */
 	@Test
 	public void testEquals() throws NoSuchMethodException {
@@ -55,7 +55,7 @@ public class InvocationTest {
 	}
 	
 	/**
-	 * {@link anubis.runtime.java.Invocation#getArgsScore()} ‚Ì‚½‚ß‚ÌƒeƒXƒgEƒƒ\ƒbƒhB
+	 * {@link anubis.runtime.java.Invocation#getArgsScore()} ã®ãŸã‚ã®ãƒ†ã‚¹ãƒˆãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 	 */
 	@Test
 	public void testGetArgsScore() throws NoSuchMethodException {
@@ -110,7 +110,7 @@ public class InvocationTest {
 	}
 	
 	/**
-	 * {@link anubis.runtime.java.Invocation#invoke(anubis.AnubisObject, anubis.AnubisObject[])} ‚Ì‚½‚ß‚ÌƒeƒXƒgEƒƒ\ƒbƒhB
+	 * {@link anubis.runtime.java.Invocation#invoke(anubis.AnubisObject, anubis.AnubisObject[])} ã®ãŸã‚ã®ãƒ†ã‚¹ãƒˆãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 	 */
 	@Test
 	public void testInvoke() throws Exception {
@@ -139,7 +139,7 @@ public class InvocationTest {
 	}
 	
 	/**
-	 * {@link anubis.runtime.java.Invocation#invoke(anubis.AnubisObject, anubis.AnubisObject[])} ‚Ì‚½‚ß‚ÌƒeƒXƒgEƒƒ\ƒbƒhB
+	 * {@link anubis.runtime.java.Invocation#invoke(anubis.AnubisObject, anubis.AnubisObject[])} ã®ãŸã‚ã®ãƒ†ã‚¹ãƒˆãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 	 */
 	@Test(expected = JOverloadMismatchException.class)
 	public void testInvoke02() throws Exception {
@@ -151,7 +151,7 @@ public class InvocationTest {
 	}
 	
 	/**
-	 * {@link anubis.runtime.java.Invocation#match(anubis.AnubisObject[])} ‚Ì‚½‚ß‚ÌƒeƒXƒgEƒƒ\ƒbƒhB
+	 * {@link anubis.runtime.java.Invocation#match(anubis.AnubisObject[])} ã®ãŸã‚ã®ãƒ†ã‚¹ãƒˆãƒ»ãƒ¡ã‚½ãƒƒãƒ‰ã€‚
 	 */
 	@Test
 	public void testMatch() throws Exception {

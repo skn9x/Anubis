@@ -26,7 +26,7 @@ public class ParserHelperTest {
 		assertEquals("00FF", getHexCode("\u00FF"));
 		assertEquals("0100", getHexCode("\u0100"));
 		assertEquals("FFFF", getHexCode("\uFFFF"));
-		assertEquals("006100620063304230443046", getHexCode("abcÇ†Ç¢Ç§"));
+		assertEquals("006100620063304230443046", getHexCode("abc„ÅÇ„ÅÑ„ÅÜ"));
 	}
 	
 	@Test

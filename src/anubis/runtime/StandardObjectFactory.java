@@ -101,7 +101,7 @@ public class StandardObjectFactory implements ObjectFactory {
 		if (obj instanceof Class<?>) {
 			return getJClass((Class<?>) obj);
 		}
-		// TODO ëºÇ…Ç‡í«â¡
+		// TODO ‰ªñ„Å´„ÇÇËøΩÂä†
 		return getJObject(obj);
 	}
 	

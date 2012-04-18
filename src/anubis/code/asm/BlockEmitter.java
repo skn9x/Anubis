@@ -31,16 +31,16 @@ public class BlockEmitter {
 	}
 	
 	public void startTryFinallyBlock(String name, Label _break, Label _continue, TryFinallyEmitter _finally) {
-		pushBlock(name, blocks.size() == 0, _break, _continue, _finally); // ˆê”ÔÅ‰‚ÌƒuƒƒbƒN‚Í•K‚¸ Strong ‚É‚·‚é
+		pushBlock(name, blocks.size() == 0, _break, _continue, _finally); // ä¸€ç•ªæœ€åˆã®ãƒ–ãƒ­ãƒƒã‚¯ã¯å¿…ãš Strong ã«ã™ã‚‹
 	}
 	
 	public void startWeakBlock(String name, Label _break, Label _continue) {
-		pushBlock(name, blocks.size() == 0, _break, _continue, null); // ˆê”ÔÅ‰‚ÌƒuƒƒbƒN‚Í•K‚¸ Strong ‚É‚·‚é
+		pushBlock(name, blocks.size() == 0, _break, _continue, null); // ä¸€ç•ªæœ€åˆã®ãƒ–ãƒ­ãƒƒã‚¯ã¯å¿…ãš Strong ã«ã™ã‚‹
 	}
 	
 	private Block emitFinallyBlock(CodeBuilder builder, String name) {
 		if (hasBlock(name)) {
-			for (Block f: new ArrayList<Block>(blocks)) { // finally ‚ğ emit ‚·‚é‚Æ blocks ‚ªXV‚³‚ê‚Ä‚µ‚Ü‚¤Bg‚¢‚½‚¢‚Ì‚ÍŒ»“_‚Å‚Ì iterator
+			for (Block f: new ArrayList<Block>(blocks)) { // finally ã‚’ emit ã™ã‚‹ã¨ blocks ãŒæ›´æ–°ã•ã‚Œã¦ã—ã¾ã†ã€‚ä½¿ã„ãŸã„ã®ã¯ç¾æ™‚ç‚¹ã§ã® iterator
 				if (f.getFinally() != null) {
 					f.getFinally().emitFinally(builder);
 				}

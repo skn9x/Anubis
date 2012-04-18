@@ -1,7 +1,7 @@
 package anubis;
 
 /**
- * AnubisObject ‚ÌƒXƒƒbƒg‚Ö‚ÌQÆ‚ğ•\‚·ƒNƒ‰ƒX‚Å‚·B
+ * AnubisObject ã®ã‚¹ãƒ­ãƒƒãƒˆã¸ã®å‚ç…§ã‚’è¡¨ã™ã‚¯ãƒ©ã‚¹ã§ã™ã€‚
  * @author SiroKuro
  */
 public class SlotRef {
@@ -9,9 +9,9 @@ public class SlotRef {
 	private final String name;
 	
 	/**
-	 * SlotRef ƒIƒuƒWƒFƒNƒg‚ğ‰Šú‰»‚µ‚Ü‚·B
-	 * @param obj QÆæƒXƒƒbƒg‚ğŠÜ‚Ş AnubisObject
-	 * @param name QÆ‚·‚éƒXƒƒbƒg–¼
+	 * SlotRef ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’åˆæœŸåŒ–ã—ã¾ã™ã€‚
+	 * @param obj å‚ç…§å…ˆã‚¹ãƒ­ãƒƒãƒˆã‚’å«ã‚€ AnubisObject
+	 * @param name å‚ç…§ã™ã‚‹ã‚¹ãƒ­ãƒƒãƒˆå
 	 */
 	public SlotRef(AnubisObject obj, String name) {
 		if (obj == null || name == null)
@@ -21,40 +21,40 @@ public class SlotRef {
 	}
 	
 	/**
-	 * ƒXƒƒbƒg‚©‚ç’l‚ğæ“¾‚µ‚Ü‚·B
-	 * @return ƒXƒƒbƒg‚É‘ã“ü‚³‚ê‚Ä‚¢‚½’l
+	 * ã‚¹ãƒ­ãƒƒãƒˆã‹ã‚‰å€¤ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * @return ã‚¹ãƒ­ãƒƒãƒˆã«ä»£å…¥ã•ã‚Œã¦ã„ãŸå€¤
 	 */
 	public AnubisObject get() {
 		return obj.getSlot(name);
 	}
 	
 	/**
-	 * QÆæƒXƒƒbƒg‚ğŠÜ‚Ş KuzhaObject ‚ğ•Ô‚µ‚Ü‚·B
-	 * @return QÆæƒXƒƒbƒg‚ğŠÜ‚Ş  AnubisObject
+	 * å‚ç…§å…ˆã‚¹ãƒ­ãƒƒãƒˆã‚’å«ã‚€ KuzhaObject ã‚’è¿”ã—ã¾ã™ã€‚
+	 * @return å‚ç…§å…ˆã‚¹ãƒ­ãƒƒãƒˆã‚’å«ã‚€  AnubisObject
 	 */
 	public AnubisObject getObject() {
 		return obj;
 	}
 	
 	/**
-	 * QÆ‚µ‚Ä‚¢‚éƒXƒƒbƒg–¼‚ğ•Ô‚µ‚Ü‚·B
-	 * @return QÆ‚µ‚Ä‚¢‚éƒXƒƒbƒg–¼B
+	 * å‚ç…§ã—ã¦ã„ã‚‹ã‚¹ãƒ­ãƒƒãƒˆåã‚’è¿”ã—ã¾ã™ã€‚
+	 * @return å‚ç…§ã—ã¦ã„ã‚‹ã‚¹ãƒ­ãƒƒãƒˆåã€‚
 	 */
 	public String getSlotName() {
 		return name;
 	}
 	
 	/**
-	 * ƒXƒƒbƒg‚É’l‚ğİ’è‚µ‚Ü‚·B
-	 * @param value ƒXƒƒbƒg‚Éİ’è‚·‚é’lB
+	 * ã‚¹ãƒ­ãƒƒãƒˆã«å€¤ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * @param value ã‚¹ãƒ­ãƒƒãƒˆã«è¨­å®šã™ã‚‹å€¤ã€‚
 	 */
 	public void set(AnubisObject value) {
 		obj.setSlot(name, value);
 	}
 	
 	/**
-	 * ƒXƒƒbƒg‚É’l‚ğİ’è‚µ‚Ü‚·B
-	 * @param value ƒXƒƒbƒg‚Éİ’è‚·‚é’lB
+	 * ã‚¹ãƒ­ãƒƒãƒˆã«å€¤ã‚’è¨­å®šã—ã¾ã™ã€‚
+	 * @param value ã‚¹ãƒ­ãƒƒãƒˆã«è¨­å®šã™ã‚‹å€¤ã€‚
 	 */
 	public void set(AnubisObject value, boolean readonly) {
 		obj.setSlot(name, value, readonly);

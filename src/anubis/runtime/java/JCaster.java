@@ -153,7 +153,7 @@ public class JCaster {
 			return null;
 		if (value != null)
 			return toWrappedClass(cls).cast(value);
-		throw new ClassCastException(); // TODO ƒIƒŠƒWƒiƒ‹—áŠO
+		throw new ClassCastException(); // TODO ã‚ªãƒªã‚¸ãƒŠãƒ«ä¾‹å¤–
 	}
 	
 	public static Object[] cast(Class<?>[] cls, AnubisObject[] args) {

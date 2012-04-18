@@ -61,8 +61,8 @@ public class CodeBuilder {
 	private static final Class<?> CN_SUPERCLASS = CompiledCodeBlock.class;
 	private static final String LCN_CODEBLOCK = Type.getDescriptor(CodeBlock.class);//"Lanubis/code/CodeBlock;";
 	private static final String ICN_SUPERCLASS = getInternalName(CN_SUPERCLASS);
-	private static final int VAR_LOCAL = 1; // exec ‚P”Ô–Ú‚Ìˆø” = local
-	private static final int VAR_FREESPACE = 2; // ƒ[ƒJƒ‹•Ï”—pƒtƒŠ[ƒXƒy[ƒX
+	private static final int VAR_LOCAL = 1; // exec ï¼‘ç•ªç›®ã®å¼•æ•° = local
+	private static final int VAR_FREESPACE = 2; // ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç”¨ãƒ•ãƒªãƒ¼ã‚¹ãƒšãƒ¼ã‚¹
 	
 	private final String internalClassName;
 	private final ClassWriter cw;

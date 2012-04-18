@@ -49,17 +49,17 @@ public class Main {
 	@SuppressWarnings("static-access")
 	private static Options newOptions() { // TODO i18n
 		Options result = new Options();
-		result.addOption(OptionBuilder.withLongOpt("help").withDescription("ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ƒIƒvƒVƒ‡ƒ“‚ğ•\¦‚·‚é").create("h"));
-		result.addOption(OptionBuilder.withLongOpt("compile").withDescription("ƒRƒ“ƒpƒCƒ‹‚·‚é").create("c"));
+		result.addOption(OptionBuilder.withLongOpt("help").withDescription("ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’è¡¨ç¤ºã™ã‚‹").create("h"));
+		result.addOption(OptionBuilder.withLongOpt("compile").withDescription("ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã™ã‚‹").create("c"));
 		result.addOption(OptionBuilder.withLongOpt("directory").hasArg().withArgName("directory").withDescription(
-				"¶¬‚³‚ê‚½ƒNƒ‰ƒXƒtƒ@ƒCƒ‹‚Ìo—Íæ‚ğw’è‚·‚é").create("d"));
+				"ç”Ÿæˆã•ã‚ŒãŸã‚¯ãƒ©ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«ã®å‡ºåŠ›å…ˆã‚’æŒ‡å®šã™ã‚‹").create("d"));
 		result.addOption(OptionBuilder.withLongOpt("file").hasArg().withArgName("sourcefile").withDescription(
-				"ƒ\[ƒXƒtƒ@ƒCƒ‹‚ğw’è‚·‚é").create("f"));
+				"ã‚½ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æŒ‡å®šã™ã‚‹").create("f"));
 		result.addOption(OptionBuilder.withLongOpt("line").hasArg().withArgName("code").withDescription(
-				"ˆø”‚Éw’è‚ÌƒR[ƒh‚ğÀs‚·‚é").create("l"));
-		result.addOption(OptionBuilder.withDescription("‘Î˜bƒ‚[ƒh‚ÉƒƒS‚ğ•\¦‚µ‚È‚¢").create("nologo"));
-		result.addOption(OptionBuilder.withDescription("‘Î˜bƒ‚[ƒh‚Éƒvƒƒ“ƒvƒg‚ğ•\¦‚µ‚È‚¢").create("noprompt"));
-		result.addOption(OptionBuilder.withDescription("assert ‚ğ—LŒø‚É‚·‚é").create("ea"));
+				"å¼•æ•°ã«æŒ‡å®šã®ã‚³ãƒ¼ãƒ‰ã‚’å®Ÿè¡Œã™ã‚‹").create("l"));
+		result.addOption(OptionBuilder.withDescription("å¯¾è©±ãƒ¢ãƒ¼ãƒ‰æ™‚ã«ãƒ­ã‚´ã‚’è¡¨ç¤ºã—ãªã„").create("nologo"));
+		result.addOption(OptionBuilder.withDescription("å¯¾è©±ãƒ¢ãƒ¼ãƒ‰æ™‚ã«ãƒ—ãƒ­ãƒ³ãƒ—ãƒˆã‚’è¡¨ç¤ºã—ãªã„").create("noprompt"));
+		result.addOption(OptionBuilder.withDescription("assert ã‚’æœ‰åŠ¹ã«ã™ã‚‹").create("ea"));
 		return result;
 	}
 	
