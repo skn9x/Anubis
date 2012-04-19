@@ -132,7 +132,7 @@ public class AnubisEngine extends AbstractScriptEngine implements Invocable, Com
 		ObjectFactory oldFactory = AObjects.setCurrent(factory);
 		try {
 			CompilationUnit node = new Parser().parse(code);
-			AsmCodeBlockFactory codeFactory = new AsmCodeBlockFactory(className, false);
+			AsmCodeBlockFactory codeFactory = new AsmCodeBlockFactory(className, true); // TODO デバッグモード
 			CodeBlock result = codeFactory.newCodeBlock(node);
 			if (dir != null) {
 				try {
