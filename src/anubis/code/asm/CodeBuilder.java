@@ -71,11 +71,16 @@ public class CodeBuilder {
 	private int var = VAR_FREESPACE;
 	
 	public CodeBuilder(String className) {
+		this(className, null);
+	}
+	
+	public CodeBuilder(String className, String filename) {
 		this.internalClassName = className.replace('.', '/');
 		this.cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 		
 		// public [ClassName] extends [BASE_CLASS] {
 		cw.visit(V1_5, ACC_PUBLIC, internalClassName, null, ICN_SUPERCLASS, new String[0]);
+		cw.visitSource(filename != null ? filename : "[unknown]", null);
 		
 		// public AnubisObject exec(AnubisObject local) {
 		try {
@@ -254,6 +259,12 @@ public class CodeBuilder {
 		if (var < VAR_FREESPACE) {
 			var = VAR_FREESPACE;
 		}
+	}
+	
+	public void mark(String filename, int line) {
+		org.objectweb.asm.Label L01 = new org.objectweb.asm.Label();
+		mv.visitLineNumber(line, L01);
+		mv.visitLabel(L01);
 	}
 	
 	public Label newLabel() {

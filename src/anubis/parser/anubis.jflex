@@ -21,6 +21,7 @@ import anubis.ast.Position;
 	private static final String lineSeparator = "\n";
 	private int token;
 	private Token value = null;
+	private String filename = null;
 	
 	public boolean advance() throws java.io.IOException {
 		token = yylex();
@@ -35,21 +36,37 @@ import anubis.ast.Position;
 		return value;
 	}
 	
+	public void setSourceFileName(String filename) {
+		this.filename = filename;
+	}
+	
+	public String getSourceFileName() {
+		return filename;
+	}
+	
+	public int getLine() {
+		return yyline + 1;
+	}
+	
+	public int getColumn() {
+		return yycolumn + 1;
+	}
+	
 	private void errorInvalidChars(String text) {
-		throw ExceptionProvider.newParseExceptionByInvalidChars(text, ParserHelper.getHexCode(text), yyline, yycolumn);
+		throw ExceptionProvider.newParseExceptionByInvalidChars(text, ParserHelper.getHexCode(text), getLine(), getColumn());
 	}
 	
 	private void errorStringNotTerminated(String name) {
-		throw ExceptionProvider.newParseExceptionByStringNotTerminated(name, yyline, yycolumn);
+		throw ExceptionProvider.newParseExceptionByStringNotTerminated(name, getLine(), getColumn());
 	}
 	
 	private int tk(int token) {
-		value = new Token(token, yytext(), new Position(yyline, yycolumn));
+		value = new Token(token, yytext(), new Position(getSourceFileName(), getLine(), getColumn()));
 		return token;
 	}
 	
 	private void btk(int token) {
-		value = new Token(token, new Position(yyline, yycolumn));
+		value = new Token(token, new Position(getSourceFileName(), getLine(), getColumn()));
 	}
 %}
 

@@ -17,81 +17,55 @@ public class Parser {
 %}
 
 // 構造キーワード
-%token		OBJECT, RECORD, FUNCTION
+%token<Token>		OBJECT, RECORD, FUNCTION
 // 制御構造キーワード
-%token		DEF, IF, THEN, ELSE, FOR, WHILE, DO, TRY, CATCH, FINALLY, SWITCH, CASE, ASSERT, USING, LOCK, END
+%token<Token>		DEF, IF, THEN, ELSE, FOR, WHILE, DO, TRY, CATCH, FINALLY, SWITCH, CASE, ASSERT, USING, LOCK, END
 // 制御構文キーワード
-%token		BREAK, CONTINUE, THROW, RETURN, ATMARK
+%token<Token>		BREAK, CONTINUE, THROW, RETURN, ATMARK
 // 演算子
-%right		NEWSLOT, ASSIGN, ASSIGN_ADD, ASSIGN_SUB, ASSIGN_MUL, ASSIGN_DIV, ASSIGN_MOD, ASSIGN_TRUEDIV
-%right		QUESTION, COLON
-%left		OR
-%left		XOR
-%left		AND
-%left		EQ, NEQ
-%left		LT, LTEQ, GT, GTEQ
-%nonassoc	RFIND, RREPL
-%left		IFNULL
-%left		PLUS, MINUS
-%left		MUL, DIV, MOD, TRUEDIV
-%right		NOT
-%left		ISNULL, ISTRUE, ISFALSE
-%right		UPLUS, UMINUS
-%left		DOT
-%right		RIGHT_DARROW, RIGHT_ARROW
-%left		LP, RP, LB, RB, LBT, RBT, MAP_LBT, SET_LBT
+%right<Token>		NEWSLOT, ASSIGN, ASSIGN_ADD, ASSIGN_SUB, ASSIGN_MUL, ASSIGN_DIV, ASSIGN_MOD, ASSIGN_TRUEDIV
+%right<Token>		QUESTION, COLON
+%left <Token>		OR
+%left <Token>		XOR
+%left <Token>		AND
+%left <Token>		EQ, NEQ
+%left <Token>		LT, LTEQ, GT, GTEQ
+%nonassoc<Token>	RFIND, RREPL
+%left <Token>		IFNULL
+%left <Token>		PLUS, MINUS
+%left <Token>		MUL, DIV, MOD, TRUEDIV
+%right<Token>		NOT
+%left <Token>		ISNULL, ISTRUE, ISFALSE
+%right<Token>		UPLUS, UMINUS
+%left <Token>		DOT
+%right<Token>		RIGHT_DARROW, RIGHT_ARROW
+%left <Token>		LP, RP, LB, RB, LBT, RBT, MAP_LBT, SET_LBT
 // 記号
-%token		COMMA, SEMICOLON, DOT2, COLON2
+%token<Token>		COMMA, SEMICOLON, DOT2, COLON2
 // 変数
-%token		THIS, SUPER, OUTER, LOCAL
+%token<Token>		THIS, SUPER, OUTER, LOCAL
 // リテラル
-%token<Token>	IDENTIFIER, INTEGER, DECIMAL, STRING, NULL, VOID, TRUE, FALSE, REGEX
+%token<Token>		IDENTIFIER, INTEGER, DECIMAL, STRING, NULL, VOID, TRUE, FALSE, REGEX
 
-%type<String>
-	idOpt,
-	id,
-	labelOpt,
-%type<List<String>>
-	idListOpt,
-	idList
-%type<APrimitive>
-	primitive
-%type<List<Expression>>
-	exprListOpt,
-	exprList
-%type<Expression>
-	exprOpt,
-	expr,
-	term,
-	objectExpr,
-	functionExpr,
-	blockExpr
-%type<LeftValue>
-	leftvalue
-%type<Statement>
-	stmtListOpt,
-	stmtList,
-	stmt,
-	cmdStmt,
-	elseStmtOpt,
-	elseStmt
-%type<List<CaseElement>>
-	caseList
-%type<CaseElement>
-	caseBody
-%type<List<Pair<Expression, Expression>>>
-	mapElementOpt,
-	mapElement
-%type<CompilationUnit>
-	compilationUnit
-%type<CallArgument>
-	callArgs
+%type<String>				idOpt, id, labelOpt,
+%type<List<String>>			idListOpt, idList
+%type<APrimitive>			primitive
+%type<List<Expression>>		exprListOpt, exprList
+%type<Expression>			exprOpt, expr, term, objectExpr, functionExpr, blockExpr
+%type<LeftValue>			leftvalue 
+%type<BlockStatement>		stmtListOpt, stmtList 
+%type<Statement>			stmt, cmdStmt, elseStmtOpt, elseStmt
+%type<List<CaseElement>>	caseList
+%type<CaseElement>			caseBody
+%type<List<Pair<Expression, Expression>>>	mapElementOpt, mapElement
+%type<CompilationUnit>		compilationUnit
+%type<CallArgument>			callArgs
 
 %%
 
 compilationUnit:
 	expr
-		{ $$ = new ReturnStatement($1); }
+		{ $$ = new ReturnStatement($1).setPos($1.getPos()); }
 	| stmtListOpt
 		{ $$ = $1; }
 	;
@@ -104,45 +78,45 @@ stmtListOpt:
 	;
 stmtList:
 	stmt
-		{ $$ = new BlockStatement().append($1); }
+		{ $$ = new BlockStatement().append($1).setPos($1.getPos()); }
 	| stmtList stmt
-		{ $$ = ((BlockStatement)$1).append($2); }
+		{ $$ = $1.append($2); }
 	;
 stmt:
 	SEMICOLON
-		{ $$ = EmptyStatement.INSTANCE; }
+		{ $$ = new EmptyStatement().setPos($1.getPos()); }
 	| cmdStmt SEMICOLON
 		{ $$ = $1; }
 	| cmdStmt ATMARK IF expr SEMICOLON
-		{ $$ = new IfStatement($4, $1, EmptyStatement.INSTANCE); }
+		{ $$ = new IfStatement($4, $1, EmptyStatement.INSTANCE).setPos($3.getPos()); }
 	| cmdStmt ATMARK FOR id COLON expr SEMICOLON
-		{ $$ = new ForStatement($4, $6, $1, EmptyStatement.INSTANCE); }
+		{ $$ = new ForStatement($4, $6, $1, EmptyStatement.INSTANCE).setPos($3.getPos()); }
 	| cmdStmt ATMARK WHILE expr SEMICOLON
-		{ $$ = new WhileStatement($4, $1, EmptyStatement.INSTANCE); }
+		{ $$ = new WhileStatement($4, $1, EmptyStatement.INSTANCE).setPos($3.getPos()); }
 	| DEF leftvalue ASSIGN expr SEMICOLON
-		{ $$ = new ExpressionStatement(newNewSlotCall($2, $4, true)); }
+		{ $$ = new ExpressionStatement(newNewSlotCall($2, $4, true)).setPos($1.getPos()); }
 	| labelOpt IF expr THEN stmtList elseStmtOpt END
-		{ $$ = new IfStatement($1, $3, $5, $6); }
+		{ $$ = new IfStatement($1, $3, $5, $6).setPos($2.getPos()); }
 	| labelOpt FOR id COLON expr DO stmtListOpt elseStmtOpt END
-		{ $$ = new ForStatement($1, $3, $5, $7, $8); }
+		{ $$ = new ForStatement($1, $3, $5, $7, $8).setPos($2.getPos()); }
 	| labelOpt WHILE expr DO stmtListOpt elseStmtOpt END
-		{ $$ = new WhileStatement($1, $3, $5, $6); }
+		{ $$ = new WhileStatement($1, $3, $5, $6).setPos($2.getPos()); }
 	| labelOpt TRY stmtListOpt CATCH id DO stmtListOpt END
-		{ $$ = new TryCatchStatement($1, $3, $5, $7); }
+		{ $$ = new TryCatchStatement($1, $3, $5, $7).setPos($2.getPos()); }
 	| labelOpt TRY stmtListOpt FINALLY stmtListOpt END
-		{ $$ = new TryFinallyStatement($1, $3, $5); }
+		{ $$ = new TryFinallyStatement($1, $3, $5).setPos($2.getPos()); }
 	| labelOpt TRY stmtListOpt CATCH id DO stmtListOpt FINALLY stmtListOpt END
-		{ $$ = new TryFinallyStatement($1, new TryCatchStatement($3, $5, $7), $9); }
+		{ $$ = new TryFinallyStatement($1, new TryCatchStatement($3, $5, $7), $9).setPos($2.getPos()); }
 	| labelOpt SWITCH expr caseList elseStmtOpt END
-		{ $$ = new SwitchStatement($1, $3, $4, $5); }
+		{ $$ = new SwitchStatement($1, $3, $4, $5).setPos($2.getPos()); }
 	| labelOpt ASSERT expr SEMICOLON
-		{ $$ = new AssertStatement($1, $3); }
+		{ $$ = new AssertStatement($1, $3).setPos($2.getPos()); }
 	| labelOpt ASSERT expr elseStmt END
-		{ $$ = new AssertStatement($1, $3, $4); }
+		{ $$ = new AssertStatement($1, $3, $4).setPos($2.getPos()); }
 	| labelOpt USING expr DO stmtListOpt END
-		{ $$ = new UsingStatement($1, $3, $5); }
+		{ $$ = new UsingStatement($1, $3, $5).setPos($2.getPos()); }
 	| labelOpt LOCK expr DO stmtListOpt END
-		{ $$ = new LockStatement($1, $3, $5); }
+		{ $$ = new LockStatement($1, $3, $5).setPos($2.getPos()); }
 	;
 labelOpt:
 		{ $$ = null; }
@@ -151,15 +125,15 @@ labelOpt:
 	;
 cmdStmt:
 	expr
-		{ $$ = new ExpressionStatement($1); }
+		{ $$ = new ExpressionStatement($1).setPos($1.getPos()); }
 	| RETURN exprOpt
-		{ $$ = new ReturnStatement($2); }
+		{ $$ = new ReturnStatement($2).setPos($1.getPos()); }
 	| BREAK idOpt
-		{ $$ = new BreakStatement($2); }
+		{ $$ = new BreakStatement($2).setPos($1.getPos()); }
 	| CONTINUE idOpt
-		{ $$ = new ContinueStatement($2); }
+		{ $$ = new ContinueStatement($2).setPos($1.getPos()); }
 	| THROW exprOpt
-		{ $$ = new ThrowStatement($2); }
+		{ $$ = new ThrowStatement($2).setPos($1.getPos()); }
 	;
 elseStmtOpt:
 		{ $$ = EmptyStatement.INSTANCE; }
@@ -168,7 +142,7 @@ elseStmtOpt:
 	;
 elseStmt:
 	ELSE stmtListOpt
-		{ $$ = $2; }
+		{ $$ = $2.setPos($1.getPos()); }
 	;
 caseList:
 	caseBody
@@ -178,7 +152,7 @@ caseList:
 	;
 caseBody:
 	CASE expr THEN stmtListOpt
-		{ $$ = new CaseElement($2, $4); }
+		{ $$ = new CaseElement($2, $4).setPos($1.getPos()); }
 	;
 
 // 式の定義
@@ -207,165 +181,163 @@ expr:
 		{ $$ = $2; }
 	// 単項演算子
 	| PLUS expr %prec UPLUS
-		{ $$ = newCall($2, "+p"); }
+		{ $$ = newCall($2, "+p").setPos($1.getPos()); }
 	| MINUS expr %prec UMINUS
-		{ $$ = newCall($2, "-n"); }
+		{ $$ = newCall($2, "-n").setPos($1.getPos()); }
 	| NOT expr
-		{ $$ = new UnaryExpression(UnaryOperator.NOT, $2); }
+		{ $$ = new UnaryExpression(UnaryOperator.NOT, $2).setPos($1.getPos()); }
 	| expr ISTRUE
-		{ $$ = new UnaryExpression(UnaryOperator.ISTRUE, $1); }
+		{ $$ = new UnaryExpression(UnaryOperator.ISTRUE, $1).setPos($2.getPos()); }
 	| expr ISFALSE
-		{ $$ = new UnaryExpression(UnaryOperator.ISFALSE, $1); }
+		{ $$ = new UnaryExpression(UnaryOperator.ISFALSE, $1).setPos($2.getPos()); }
 	| expr ISNULL
-		{ $$ = new UnaryExpression(UnaryOperator.ISNULL, $1); }
+		{ $$ = new UnaryExpression(UnaryOperator.ISNULL, $1).setPos($2.getPos()); }
 	// 二項演算子
 	| expr MUL expr
-		{ $$ = newCall($1, "*", $3); }
+		{ $$ = newCall($1, "*", $3).setPos($2.getPos()); }
 	| expr DIV expr
-		{ $$ = newCall($1, "/", $3); }
+		{ $$ = newCall($1, "/", $3).setPos($2.getPos()); }
 	| expr MOD expr
-		{ $$ = newCall($1, "%", $3); }
+		{ $$ = newCall($1, "%", $3).setPos($2.getPos()); }
 	| expr TRUEDIV expr
-		{ $$ = newCall($1, "\\", $3); }
+		{ $$ = newCall($1, "\\", $3).setPos($2.getPos()); }
 	| expr PLUS expr
-		{ $$ = newCall($1, "+", $3); }
+		{ $$ = newCall($1, "+", $3).setPos($2.getPos()); }
 	| expr MINUS expr
-		{ $$ = newCall($1, "-", $3); }
+		{ $$ = newCall($1, "-", $3).setPos($2.getPos()); }
 	| expr IFNULL expr
-		{ $$ = new BinaryExpression(BinaryOperator.IFNULL, $1, $3); }
+		{ $$ = new BinaryExpression(BinaryOperator.IFNULL, $1, $3).setPos($2.getPos()); }
 	| expr RFIND expr
-		{ $$ = newCall($1, "=~", $3); }
+		{ $$ = newCall($1, "=~", $3).setPos($2.getPos()); }
 	| expr RREPL expr RIGHT_ARROW expr
-		{ $$ = newCall($1, "=^", $3, $5); }
+		{ $$ = newCall($1, "=^", $3, $5).setPos($2.getPos()); }
 	| expr EQ expr
-		{ $$ = new BinaryExpression(BinaryOperator.EQUALS, $1, $3); }
+		{ $$ = new BinaryExpression(BinaryOperator.EQUALS, $1, $3).setPos($2.getPos()); }
 	| expr NEQ expr
-		{ $$ = new BinaryExpression(BinaryOperator.NOTEQUALS, $1, $3); }
+		{ $$ = new BinaryExpression(BinaryOperator.NOTEQUALS, $1, $3).setPos($2.getPos()); }
 	| expr LT expr
-		{ $$ = newCall($1, "<", $3); }
+		{ $$ = newCall($1, "<", $3).setPos($2.getPos()); }
 	| expr LTEQ expr
-		{ $$ = newCall($1, "<=", $3); }
+		{ $$ = newCall($1, "<=", $3).setPos($2.getPos()); }
 	| expr GT expr
-		{ $$ = newCall($1, ">", $3); }
+		{ $$ = newCall($1, ">", $3).setPos($2.getPos()); }
 	| expr GTEQ expr
-		{ $$ = newCall($1, ">=", $3); }
+		{ $$ = newCall($1, ">=", $3).setPos($2.getPos()); }
 	| expr AND expr
-		{ $$ = new BinaryExpression(BinaryOperator.AND, $1, $3); }
+		{ $$ = new BinaryExpression(BinaryOperator.AND, $1, $3).setPos($2.getPos()); }
 	| expr XOR expr
-		{ $$ = new BinaryExpression(BinaryOperator.XOR, $1, $3); }
+		{ $$ = new BinaryExpression(BinaryOperator.XOR, $1, $3).setPos($2.getPos()); }
 	| expr OR expr
-		{ $$ = new BinaryExpression(BinaryOperator.OR, $1, $3); }
+		{ $$ = new BinaryExpression(BinaryOperator.OR, $1, $3).setPos($2.getPos()); }
 	// 三項演算子
 	| expr QUESTION expr COLON expr
-		{ $$ = new TernaryExpression(TernaryOperator.IFELSE, $1, $3, $5); }
+		{ $$ = new TernaryExpression(TernaryOperator.IFELSE, $1, $3, $5).setPos($2.getPos()); }
 	// 代入演算子
 	| leftvalue NEWSLOT expr
-		{ $$ = newNewSlotCall($1, $3, false); }
+		{ $$ = newNewSlotCall($1, $3, false).setPos($2.getPos()); }
 	| leftvalue ASSIGN expr
-		{ $$ = newAssignCall($1, null, $3); }
+		{ $$ = newAssignCall($1, null, $3).setPos($2.getPos()); }
 	| leftvalue ASSIGN_ADD expr
-		{ $$ = newAssignCall($1, "+", $3); }
+		{ $$ = newAssignCall($1, "+", $3).setPos($2.getPos()); }
 	| leftvalue ASSIGN_SUB expr
-		{ $$ = newAssignCall($1, "-", $3); }
+		{ $$ = newAssignCall($1, "-", $3).setPos($2.getPos()); }
 	| leftvalue ASSIGN_MUL expr
-		{ $$ = newAssignCall($1, "*", $3); }
+		{ $$ = newAssignCall($1, "*", $3).setPos($2.getPos()); }
 	| leftvalue ASSIGN_DIV expr
-		{ $$ = newAssignCall($1, "/", $3); }
+		{ $$ = newAssignCall($1, "/", $3).setPos($2.getPos()); }
 	| leftvalue ASSIGN_TRUEDIV expr
-		{ $$ = newAssignCall($1, "\\", $3); }
+		{ $$ = newAssignCall($1, "\\", $3).setPos($2.getPos()); }
 	| leftvalue ASSIGN_MOD expr
-		{ $$ = newAssignCall($1, "%", $3); }
+		{ $$ = newAssignCall($1, "%", $3).setPos($2.getPos()); }
 	// 変数呼び出し
 	| expr DOT id
-		{ $$ = new GetSlotExpression($1, $3); }
+		{ $$ = new GetSlotExpression($1, $3).setPos($2.getPos()); }
 	| expr DOT THIS
-		{ $$ = new GetSpecialExpression($1, SpecialSlot.THIS); }
+		{ $$ = new GetSpecialExpression($1, SpecialSlot.THIS).setPos($2.getPos()); }
 	| expr DOT SUPER
-		{ $$ = new GetSpecialExpression($1, SpecialSlot.SUPER); }
+		{ $$ = new GetSpecialExpression($1, SpecialSlot.SUPER).setPos($2.getPos()); }
 	| expr DOT OUTER
-		{ $$ = new GetSpecialExpression($1, SpecialSlot.OUTER); }
+		{ $$ = new GetSpecialExpression($1, SpecialSlot.OUTER).setPos($2.getPos()); }
 	// 関数呼び出し
 	| IDENTIFIER LP callArgs RP
-		{ $$ = newCall(LocalExpression.INSTANCE, $1.getText(), $3); }
+		{ $$ = newCall(LocalExpression.INSTANCE, $1.getText(), $3).setPos($1.getPos()); }
 	| expr DOT IDENTIFIER LP callArgs RP
-		{ $$ = newCall($1, $3.getText(), $5); }
+		{ $$ = newCall($1, $3.getText(), $5).setPos($3.getPos()); }
 	// インデクサ
 	| expr LBT expr RBT
-		{ $$ = new BinaryExpression(BinaryOperator.INDEX, $1, $3); }
+		{ $$ = new BinaryExpression(BinaryOperator.INDEX, $1, $3).setPos($2.getPos()); }
 	// スライサ
 	| expr LBT expr DOT2 expr RBT
-		{ $$ = new TernaryExpression(TernaryOperator.SLICE, $1, $3, $5); }
+		{ $$ = new TernaryExpression(TernaryOperator.SLICE, $1, $3, $5).setPos($2.getPos()); }
 	| expr LBT expr DOT2 RBT
-		{ $$ = new TernaryExpression(TernaryOperator.SLICE, $1, $3, new PrimitiveExpression(null)); }
+		{ $$ = new TernaryExpression(TernaryOperator.SLICE, $1, $3, new PrimitiveExpression(null)).setPos($2.getPos()); }
 	| expr LBT DOT2 expr RBT
-		{ $$ = new TernaryExpression(TernaryOperator.SLICE, $1, new PrimitiveExpression(null), $4); }
+		{ $$ = new TernaryExpression(TernaryOperator.SLICE, $1, new PrimitiveExpression(null), $4).setPos($2.getPos()); }
 	;
 callArgs:
 	exprListOpt
 		{ $$ = new CallArgument(null, $1); }
 	| ATMARK expr
-		{ $$ = new CallArgument($2); }
+		{ $$ = new CallArgument($2).setPos($1.getPos()); }
 	| ATMARK expr COMMA exprListOpt
-		{ $$ = new CallArgument($2, $4); }
+		{ $$ = new CallArgument($2, $4).setPos($1.getPos()); }
 	;
 leftvalue:	// 左辺値
 	// 変数
-	id
-		{ $$ = new SetSlotLeftValue(LocalExpression.INSTANCE, $1); }
+	IDENTIFIER
+		{ $$ = new SetSlotLeftValue(LocalExpression.INSTANCE, $1.getText()).setPos($1.getPos()); }
 	| SUPER
-		{ $$ = new SetSpecialLeftValue(LocalExpression.INSTANCE, SpecialSlot.SUPER); }
+		{ $$ = new SetSpecialLeftValue(LocalExpression.INSTANCE, SpecialSlot.SUPER).setPos($1.getPos()); }
 	| OUTER
-		{ $$ = new SetSpecialLeftValue(LocalExpression.INSTANCE, SpecialSlot.OUTER); }
+		{ $$ = new SetSpecialLeftValue(LocalExpression.INSTANCE, SpecialSlot.OUTER).setPos($1.getPos()); }
 	// 変数参照
 	| expr DOT id
-		{ $$ = new SetSlotLeftValue($1, $3); }
+		{ $$ = new SetSlotLeftValue($1, $3).setPos($2.getPos()); }
 	| expr DOT SUPER
-		{ $$ = new SetSpecialLeftValue($1, SpecialSlot.SUPER); }
+		{ $$ = new SetSpecialLeftValue($1, SpecialSlot.SUPER).setPos($2.getPos()); }
 	| expr DOT OUTER
-		{ $$ = new SetSpecialLeftValue($1, SpecialSlot.OUTER); }
+		{ $$ = new SetSpecialLeftValue($1, SpecialSlot.OUTER).setPos($2.getPos()); }
 	// インデクサ
 	| expr LBT expr RBT
-		{ $$ = new SetIndexLeftValue($1, $3); }
+		{ $$ = new SetIndexLeftValue($1, $3).setPos($2.getPos()); }
 	;
 
 term:
 	// 変数
-	id
-		{ $$ = new GetSlotExpression(LocalExpression.INSTANCE, $1); }
+	IDENTIFIER
+		{ $$ = new GetSlotExpression(LocalExpression.INSTANCE, $1.getText()).setPos($1.getPos()); }
 	| THIS
-		{ $$ = new GetSpecialExpression(LocalExpression.INSTANCE, SpecialSlot.THIS); }
+		{ $$ = new GetSpecialExpression(LocalExpression.INSTANCE, SpecialSlot.THIS).setPos($1.getPos()); }
 	| SUPER
-		{ $$ = new GetSpecialExpression(LocalExpression.INSTANCE, SpecialSlot.SUPER); }
+		{ $$ = new GetSpecialExpression(LocalExpression.INSTANCE, SpecialSlot.SUPER).setPos($1.getPos()); }
 	| OUTER
-		{ $$ = new GetSpecialExpression(LocalExpression.INSTANCE, SpecialSlot.OUTER); }
+		{ $$ = new GetSpecialExpression(LocalExpression.INSTANCE, SpecialSlot.OUTER).setPos($1.getPos()); }
 	| LOCAL
-		{ $$ = LocalExpression.INSTANCE; }
+		{ $$ = new LocalExpression().setPos($1.getPos()); }
 	// プリミティブ
 	| primitive
 		{ $$ = new PrimitiveExpression($1); }
 	// 配列・マップ・集合
 	| LBT exprListOpt RBT
-		{ $$ = new NewListExpression($2); }
+		{ $$ = new NewListExpression($2).setPos($1.getPos()); }
 	| MAP_LBT mapElementOpt RBT
-		{ $$ = new NewMapExpression($2); }
+		{ $$ = new NewMapExpression($2).setPos($1.getPos()); }
 	| SET_LBT exprListOpt RBT
-		{ $$ = new NewSetExpression($2); }
+		{ $$ = new NewSetExpression($2).setPos($1.getPos()); }
 	// レンジ
 	| LBT expr DOT2 RBT
-		{ $$ = new NewRangeExpression($2, null, null); }
+		{ $$ = new NewRangeExpression($2, null, null).setPos($1.getPos()); }
 	| LBT expr DOT2 expr RBT
-		{ $$ = new NewRangeExpression($2, $4, null); }
+		{ $$ = new NewRangeExpression($2, $4, null).setPos($1.getPos()); }
 	| LBT expr DOT2 SEMICOLON expr RBT
-		{ $$ = new NewRangeExpression($2, null, $5); }
+		{ $$ = new NewRangeExpression($2, null, $5).setPos($1.getPos()); }
 	| LBT expr DOT2 expr SEMICOLON expr RBT
-		{ $$ = new NewRangeExpression($2, $4, $6); }
+		{ $$ = new NewRangeExpression($2, $4, $6).setPos($1.getPos()); }
 	// オブジェクト生成
 	| objectExpr
 		{ $$ = $1; }
 	| functionExpr
 		{ $$ = $1; }
-	| recordExpr
-		{ $$ = null; } // TODO
 	| blockExpr
 		{ $$ = $1; }
 	;
@@ -384,44 +356,21 @@ mapElement:
 // 構造体の定義
 objectExpr:
 	OBJECT LB stmtListOpt RB
-		{ $$ = new NewObjectExpression($3); }
+		{ $$ = new NewObjectExpression($3).setPos($1.getPos()); }
 	;
 functionExpr:
 	FUNCTION LP idListOpt RP LB stmtListOpt RB
-		{ $$ = new NewFunctionExpression($3, $6); }
+		{ $$ = new NewFunctionExpression($3, $6).setPos($1.getPos()); }
 	| LB idListOpt RIGHT_ARROW expr RB
-		{ $$ = new NewFunctionExpression($2, new ReturnStatement($4)); }
+		{ $$ = new NewFunctionExpression($2, new ReturnStatement($4)).setPos($1.getPos()); }
 	| LB idListOpt RIGHT_DARROW stmtListOpt RB
-		{ $$ = new NewFunctionExpression($2, $4); }
-	;
-recordExpr:
-	RECORD LB recordElementListOpt RB
-		// TODO
-	;
-recordElementListOpt:
-		// TODO
-	| recordElementList
-		// TODO
-	;
-recordElementList:
-	recordElement
-		// TODO
-	| recordElementList COMMA recordElement
-		// TODO
-	;
-recordElement:
-	primitive
-		// TODO
-	| id
-		// TODO
-	| id LBT INTEGER RBT
-		// TODO
+		{ $$ = new NewFunctionExpression($2, $4).setPos($1.getPos()); }
 	;
 blockExpr:
 	DO LB RB
-		{ $$ = new BlockExpression(EmptyStatement.INSTANCE); }
+		{ $$ = new BlockExpression((EmptyStatement) new EmptyStatement().setPos($1.getPos())).setPos($1.getPos()); }
 	| DO LB stmtList RB
-		{ $$ = new BlockExpression($3); }
+		{ $$ = new BlockExpression($3).setPos($1.getPos()); }
 	;
 
 // プリミティブの定義
@@ -440,8 +389,6 @@ primitive:
 		{ $$ = AObjects.getNumber(ParserHelper.parseNumber($1.getText())); }
 	| STRING
 		{ $$ = AObjects.getString($1.getText()); }
-	| REGEX
-		{ $$ = null; } // TODO
 	;
 
 // 識別子の定義
@@ -545,9 +492,15 @@ id:
 	}
 	
 	public CompilationUnit parse(Reader source) {
+		return parse(source, null);
+	}
+	
+	public CompilationUnit parse(Reader source, String filename) {
 		Parser yyparser = new Parser();
 		try {
-			return (CompilationUnit) yyparser.yyparse(new Scanner(source));
+			Scanner scanner = new Scanner(source);
+			scanner.setSourceFileName(filename);
+			return (CompilationUnit) yyparser.yyparse(scanner);
 		}
 		catch (Parser.yyException ye) {
 			throw ExceptionProvider.newParseException(ye);

@@ -93,7 +93,7 @@ public class Main {
 					}
 				}
 				try {
-					AnubisObject obj = engine.evalForRepl(code.toString());
+					AnubisObject obj = engine.evalForRepl(code.toString(), "stdin");
 					if (obj != null) {
 						System.out.println("--> " + Operator.toString(obj));
 					}

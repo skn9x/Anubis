@@ -179,8 +179,6 @@ public class ParserTest {
 		parse("$[1, 2]");
 		parse("object{}");
 		parse("object{ 1; 2; 3; }");
-		parse("record{}");
-		parse("record{ 1, 2, \"abc\", a, b[123] }");
 		parse("function(){}");
 		parse("function(a, b, c){ 1; 2; 3; }");
 		parse("{-> 123}");

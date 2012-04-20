@@ -70,10 +70,10 @@ public class AnubisTestRunner extends Runner {
 		}
 	}
 	
-	private void run(Reader reader) throws ScriptException {
+	private void run(Reader reader, String filename) throws ScriptException {
 		AnubisEngineFactory factory = new AnubisEngineFactory();
 		AnubisEngine engine = (AnubisEngine) factory.getScriptEngine();
-		engine.eval(reader);
+		engine.eval(reader, engine.getContext(), filename);
 	}
 	
 	private void run(String filename) throws ScriptException, IOException {
@@ -86,7 +86,7 @@ public class AnubisTestRunner extends Runner {
 		}
 		Reader reader = new BufferedReader(new InputStreamReader(in));
 		try {
-			run(reader);
+			run(reader, filename);
 		}
 		finally {
 			reader.close();

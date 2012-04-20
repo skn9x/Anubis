@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.script.AbstractScriptEngine;
 import javax.script.Bindings;
 import javax.script.Compilable;
@@ -28,8 +30,9 @@ import anubis.runtime.java.JCaster;
  * @author SiroKuro
  */
 public class AnubisEngine extends AbstractScriptEngine implements Invocable, Compilable {
-	private final AnubisEngineFactory owner;
+	private static final Pattern patCn = Pattern.compile("^[A-Za-z_$][A-Za-z0-9_$]*");
 	
+	private final AnubisEngineFactory owner;
 	private final ObjectFactory factory;
 	
 	public AnubisEngine(AnubisEngineFactory owner) {
@@ -65,12 +68,12 @@ public class AnubisEngine extends AbstractScriptEngine implements Invocable, Com
 	
 	@Override
 	public CompiledScript compile(Reader reader) throws ScriptException {
-		return compileInternal(reader);
+		return compileInternal(reader, null);
 	}
 	
 	@Override
 	public CompiledScript compile(String code) throws ScriptException {
-		return compileInternal(new StringReader(code));
+		return compileInternal(new StringReader(code), null);
 	}
 	
 	@Override
@@ -80,7 +83,11 @@ public class AnubisEngine extends AbstractScriptEngine implements Invocable, Com
 	
 	@Override
 	public Object eval(Reader code, ScriptContext context) throws ScriptException {
-		AnubisCompiledScript script = compileInternal(code);
+		return eval(code, context, null);
+	}
+	
+	public Object eval(Reader code, ScriptContext context, String srcfilename) throws ScriptException {
+		AnubisCompiledScript script = compileInternal(code, srcfilename);
 		return script.eval(context);
 	}
 	
@@ -89,8 +96,8 @@ public class AnubisEngine extends AbstractScriptEngine implements Invocable, Com
 		return eval(new StringReader(code), context);
 	}
 	
-	public AnubisObject evalForRepl(String code) throws ScriptException {
-		AnubisCompiledScript script = compileInternal(new StringReader(code));
+	public AnubisObject evalForRepl(String code, String srcfilename) throws ScriptException {
+		AnubisCompiledScript script = compileInternal(new StringReader(code), srcfilename);
 		return script.exec(getContext());
 	}
 	
@@ -123,15 +130,15 @@ public class AnubisEngine extends AbstractScriptEngine implements Invocable, Com
 		return null;
 	}
 	
-	private AnubisCompiledScript compileInternal(Reader reader) throws ScriptException {
-		CodeBlock block = newCodeBlock(reader, "anubis", null); // TODO クラス名を調整する
+	private AnubisCompiledScript compileInternal(Reader reader, String srcfilename) throws ScriptException {
+		CodeBlock block = newCodeBlock(reader, getCnFromSn(srcfilename), srcfilename, null);
 		return new AnubisCompiledScript(this, block);
 	}
 	
-	private CodeBlock newCodeBlock(Reader code, String className, File dir) {
+	private CodeBlock newCodeBlock(Reader code, String className, String srcfilename, File dir) {
 		ObjectFactory oldFactory = AObjects.setCurrent(factory);
 		try {
-			CompilationUnit node = new Parser().parse(code);
+			CompilationUnit node = new Parser().parse(code, srcfilename);
 			AsmCodeBlockFactory codeFactory = new AsmCodeBlockFactory(className, true); // TODO デバッグモード
 			CodeBlock result = codeFactory.newCodeBlock(node);
 			if (dir != null) {
@@ -155,6 +162,21 @@ public class AnubisEngine extends AbstractScriptEngine implements Invocable, Com
 		AnubisObject local = AObjects.getObject(context.getBindings(ScriptContext.ENGINE_SCOPE));
 		local.setSlot(SpecialSlot.OUTER, global);
 		return local;
+	}
+	
+	private static String getCnFromSn(String srcfilename) {
+		if (srcfilename == null) {
+			return "an";
+		}
+		else {
+			Matcher mm = patCn.matcher(srcfilename);
+			if (mm.find()) {
+				return mm.group();
+			}
+			else {
+				return srcfilename;
+			}
+		}
 	}
 	
 	private static class AnubisCompiledScript extends CompiledScript {

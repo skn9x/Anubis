@@ -6,11 +6,12 @@ package anubis.ast;
 public abstract class Node {
 	private Position pos = null;
 	
-	public Position getPosition() {
+	public Position getPos() {
 		return pos;
 	}
 	
-	public void setPosition(Position pos) {
+	public Node setPos(Position pos) {
 		this.pos = pos;
+		return this;
 	}
 }
