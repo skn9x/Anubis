@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class NewListExpression implements Expression {
+public class NewListExpression extends Expression {
 	private final List<Expression> exprs;
 	
 	public NewListExpression(Expression... exprs) {

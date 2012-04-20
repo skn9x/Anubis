@@ -1,6 +1,6 @@
 package anubis.ast;
 
-public class ReturnStatement implements Statement {
+public class ReturnStatement extends Statement {
 	private final Expression expr;
 	
 	public ReturnStatement() {

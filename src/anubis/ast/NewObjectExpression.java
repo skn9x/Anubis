@@ -1,6 +1,6 @@
 package anubis.ast;
 
-public class NewObjectExpression implements Expression {
+public class NewObjectExpression extends Expression {
 	private final Statement statement;
 	
 	public NewObjectExpression(Statement statement) {

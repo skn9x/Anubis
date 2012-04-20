@@ -1,6 +1,6 @@
 package anubis.ast;
 
-public class ThrowStatement implements Statement {
+public class ThrowStatement extends Statement {
 	private final Expression expr;
 	
 	public ThrowStatement() {

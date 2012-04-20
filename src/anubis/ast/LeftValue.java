@@ -1,6 +1,6 @@
 package anubis.ast;
 
-public abstract class LeftValue {
+public abstract class LeftValue extends Node {
 	private final Expression expr;
 	
 	protected LeftValue(Expression expr) {

@@ -5,7 +5,7 @@ import anubis.runtime.APrimitive;
 /**
  * @author SiroKuro
  */
-public class PrimitiveExpression implements Expression {
+public class PrimitiveExpression extends Expression {
 	private final APrimitive value; // void すなわち null を許容する
 	
 	public PrimitiveExpression(APrimitive value) {

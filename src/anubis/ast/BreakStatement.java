@@ -1,6 +1,6 @@
 package anubis.ast;
 
-public class BreakStatement implements Statement {
+public class BreakStatement extends Statement {
 	private final String label;
 	
 	public BreakStatement() {

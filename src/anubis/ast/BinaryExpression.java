@@ -3,7 +3,7 @@ package anubis.ast;
 /**
  * @author SiroKuro
  */
-public class BinaryExpression implements Expression {
+public class BinaryExpression extends Expression {
 	private final Expression left;
 	private final BinaryOperator operator;
 	private final Expression right;

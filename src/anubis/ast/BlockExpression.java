@@ -1,6 +1,6 @@
 package anubis.ast;
 
-public class BlockExpression implements Expression {
+public class BlockExpression extends Expression {
 	private final Statement stmt;
 	
 	public BlockExpression(Statement stmt) {

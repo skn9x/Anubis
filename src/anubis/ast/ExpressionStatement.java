@@ -3,7 +3,7 @@ package anubis.ast;
 /**
  * @author SiroKuro
  */
-public class ExpressionStatement implements Statement {
+public class ExpressionStatement extends Statement {
 	private final Expression expr;
 	
 	public ExpressionStatement(Expression expr) {

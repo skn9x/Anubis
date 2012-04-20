@@ -45,7 +45,7 @@ public class Parser {
 // 変数
 %token		THIS, SUPER, OUTER, LOCAL
 // リテラル
-%token<String>	IDENTIFIER, INTEGER, DECIMAL, STRING, NULL, VOID, TRUE, FALSE, REGEX
+%token<Token>	IDENTIFIER, INTEGER, DECIMAL, STRING, NULL, VOID, TRUE, FALSE, REGEX
 
 %type<String>
 	idOpt,
@@ -147,7 +147,7 @@ stmt:
 labelOpt:
 		{ $$ = null; }
 	| IDENTIFIER COLON
-		{ $$ = $1; }
+		{ $$ = $1.getText(); }
 	;
 cmdStmt:
 	expr
@@ -286,9 +286,9 @@ expr:
 		{ $$ = new GetSpecialExpression($1, SpecialSlot.OUTER); }
 	// 関数呼び出し
 	| IDENTIFIER LP callArgs RP
-		{ $$ = newCall(LocalExpression.INSTANCE, $1, $3); }
+		{ $$ = newCall(LocalExpression.INSTANCE, $1.getText(), $3); }
 	| expr DOT IDENTIFIER LP callArgs RP
-		{ $$ = newCall($1, $3, $5); }
+		{ $$ = newCall($1, $3.getText(), $5); }
 	// インデクサ
 	| expr LBT expr RBT
 		{ $$ = new BinaryExpression(BinaryOperator.INDEX, $1, $3); }
@@ -435,11 +435,11 @@ primitive:
 	| FALSE
 		{ $$ = AObjects.getFalse(); }
 	| INTEGER
-		{ $$ = AObjects.getNumber(ParserHelper.parseNumber($1)); }
+		{ $$ = AObjects.getNumber(ParserHelper.parseNumber($1.getText())); }
 	| DECIMAL
-		{ $$ = AObjects.getNumber(ParserHelper.parseNumber($1)); }
+		{ $$ = AObjects.getNumber(ParserHelper.parseNumber($1.getText())); }
 	| STRING
-		{ $$ = AObjects.getString($1); }
+		{ $$ = AObjects.getString($1.getText()); }
 	| REGEX
 		{ $$ = null; } // TODO
 	;
@@ -463,7 +463,7 @@ idOpt:
 	;
 id:
 	IDENTIFIER
-		{ $$ = $1; }
+		{ $$ = $1.getText(); }
 	;
 
 %%

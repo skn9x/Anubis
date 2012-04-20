@@ -1,6 +1,6 @@
 package anubis.ast;
 
-public class NewRangeExpression implements Expression {
+public class NewRangeExpression extends Expression {
 	private final Expression start;
 	private final Expression end;
 	private final Expression step;

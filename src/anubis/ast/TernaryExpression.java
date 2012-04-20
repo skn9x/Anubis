@@ -3,7 +3,7 @@ package anubis.ast;
 /**
  * @author SiroKuro
  */
-public class TernaryExpression implements Expression {
+public class TernaryExpression extends Expression {
 	private final TernaryOperator operator;
 	private final Expression left, middle, right;
 	

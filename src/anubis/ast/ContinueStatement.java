@@ -1,6 +1,6 @@
 package anubis.ast;
 
-public class ContinueStatement implements Statement {
+public class ContinueStatement extends Statement {
 	private final String label;
 	
 	public ContinueStatement() {

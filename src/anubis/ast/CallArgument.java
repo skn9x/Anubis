@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author SiroKuro
  */
-public class CallArgument {
+public class CallArgument extends Node {
 	private final Expression _this;
 	private final List<Expression> params;
 	

@@ -3,6 +3,6 @@ package anubis.ast;
 /**
  * @author SiroKuro
  */
-public interface Expression extends CompilationUnit {
+public abstract class Expression extends CompilationUnit {
 	
 }

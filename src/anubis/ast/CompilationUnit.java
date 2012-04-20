@@ -3,6 +3,6 @@ package anubis.ast;
 /**
  * @author SiroKuro
  */
-public interface CompilationUnit extends Node {
-	
+public abstract class CompilationUnit extends Node {
+	public abstract <Arg, Ret> Ret visit(AstVisitor<Arg, Ret> visitor, Arg object);
 }

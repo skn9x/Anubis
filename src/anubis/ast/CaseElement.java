@@ -1,6 +1,6 @@
 package anubis.ast;
 
-public class CaseElement {
+public class CaseElement extends Node {
 	private final Expression value;
 	private final Statement _then;
 	
@@ -11,11 +11,11 @@ public class CaseElement {
 		this._then = _then;
 	}
 	
-	public Expression getValue() {
-		return value;
-	}
-	
 	public Statement getThen() {
 		return _then;
+	}
+	
+	public Expression getValue() {
+		return value;
 	}
 }

@@ -1524,7 +1524,7 @@ case 24:
   break;
 case 25:
 					// line 150 "src/anubis/parser/anubis.jay"
-  { yyVal = ((String)yyVals[-1+yyTop]); }
+  { yyVal = ((Token)yyVals[-1+yyTop]).getText(); }
   break;
 case 26:
 					// line 154 "src/anubis/parser/anubis.jay"
@@ -1752,11 +1752,11 @@ case 81:
   break;
 case 82:
 					// line 289 "src/anubis/parser/anubis.jay"
-  { yyVal = newCall(LocalExpression.INSTANCE, ((String)yyVals[-3+yyTop]), ((CallArgument)yyVals[-1+yyTop])); }
+  { yyVal = newCall(LocalExpression.INSTANCE, ((Token)yyVals[-3+yyTop]).getText(), ((CallArgument)yyVals[-1+yyTop])); }
   break;
 case 83:
 					// line 291 "src/anubis/parser/anubis.jay"
-  { yyVal = newCall(((Expression)yyVals[-5+yyTop]), ((String)yyVals[-3+yyTop]), ((CallArgument)yyVals[-1+yyTop])); }
+  { yyVal = newCall(((Expression)yyVals[-5+yyTop]), ((Token)yyVals[-3+yyTop]).getText(), ((CallArgument)yyVals[-1+yyTop])); }
   break;
 case 84:
 					// line 294 "src/anubis/parser/anubis.jay"
@@ -1940,15 +1940,15 @@ case 136:
   break;
 case 137:
 					// line 438 "src/anubis/parser/anubis.jay"
-  { yyVal = AObjects.getNumber(ParserHelper.parseNumber(((String)yyVals[0+yyTop]))); }
+  { yyVal = AObjects.getNumber(ParserHelper.parseNumber(((Token)yyVals[0+yyTop]).getText())); }
   break;
 case 138:
 					// line 440 "src/anubis/parser/anubis.jay"
-  { yyVal = AObjects.getNumber(ParserHelper.parseNumber(((String)yyVals[0+yyTop]))); }
+  { yyVal = AObjects.getNumber(ParserHelper.parseNumber(((Token)yyVals[0+yyTop]).getText())); }
   break;
 case 139:
 					// line 442 "src/anubis/parser/anubis.jay"
-  { yyVal = AObjects.getString(((String)yyVals[0+yyTop])); }
+  { yyVal = AObjects.getString(((Token)yyVals[0+yyTop]).getText()); }
   break;
 case 140:
 					// line 444 "src/anubis/parser/anubis.jay"
@@ -1980,7 +1980,7 @@ case 146:
   break;
 case 147:
 					// line 466 "src/anubis/parser/anubis.jay"
-  { yyVal = ((String)yyVals[0+yyTop]); }
+  { yyVal = ((Token)yyVals[0+yyTop]).getText(); }
   break;
 					// line 1987 "-"
         }

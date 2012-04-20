@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import anubis.runtime.util.Pair;
 
-public class NewMapExpression implements Expression {
+public class NewMapExpression extends Expression {
 	private final List<Pair<Expression, Expression>> exprs;
 	
 	public NewMapExpression(List<Pair<Expression, Expression>> exprs) {

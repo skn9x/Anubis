@@ -1,6 +1,6 @@
 package anubis.ast;
 
-public abstract class LabelStatement implements Statement {
+public abstract class LabelStatement extends Statement {
 	private final String label;
 	
 	public LabelStatement(String label) {

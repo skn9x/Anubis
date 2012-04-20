@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class NewFunctionExpression implements Expression {
+public class NewFunctionExpression extends Expression {
 	private final List<String> argNames;
 	private final Statement statement;
 	

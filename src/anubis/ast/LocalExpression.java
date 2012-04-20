@@ -3,7 +3,7 @@ package anubis.ast;
 /**
  * @author SiroKuro
  */
-public class LocalExpression implements Expression {
+public class LocalExpression extends Expression {
 	public static final LocalExpression INSTANCE = new LocalExpression();
 	
 	@Override

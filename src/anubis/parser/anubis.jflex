@@ -1,6 +1,7 @@
 package anubis.parser;
 import java.io.*;
 import anubis.except.*;
+import anubis.ast.Position;
 
 @SuppressWarnings("unused")
 %%
@@ -19,8 +20,7 @@ import anubis.except.*;
 %{
 	private static final String lineSeparator = "\n";
 	private int token;
-	private String value;
-	private final StringBuilder string = new StringBuilder();
+	private Token value = null;
 	
 	public boolean advance() throws java.io.IOException {
 		token = yylex();
@@ -31,7 +31,7 @@ import anubis.except.*;
 		return token;
 	}
 	
-	public String value() {
+	public Token value() {
 		return value;
 	}
 	
@@ -41,6 +41,15 @@ import anubis.except.*;
 	
 	private void errorStringNotTerminated(String name) {
 		throw ExceptionProvider.newParseExceptionByStringNotTerminated(name, yyline, yycolumn);
+	}
+	
+	private int tk(int token) {
+		value = new Token(token, yytext(), new Position(yyline, yycolumn));
+		return token;
+	}
+	
+	private void btk(int token) {
+		value = new Token(token, new Position(yyline, yycolumn));
 	}
 %}
 
@@ -66,99 +75,99 @@ WSP			= [\ \t]
 %%
 
 <YYINITIAL>{
-	"object"	{ return Parser.OBJECT; }
-	"record"	{ return Parser.RECORD; }
-	"function"	{ return Parser.FUNCTION; }
-	"end"		{ return Parser.END; }
-	"def"		{ return Parser.DEF; }
-	"if"		{ return Parser.IF; }
-	"then"		{ return Parser.THEN; }
-	"else"		{ return Parser.ELSE; }
-	"for"		{ return Parser.FOR; }
-	"while"		{ return Parser.WHILE; }
-	"do"		{ return Parser.DO; }
-	"try"		{ return Parser.TRY; }
-	"catch"		{ return Parser.CATCH; }
-	"finally"	{ return Parser.FINALLY; }
-	"switch"	{ return Parser.SWITCH; }
-	"case"		{ return Parser.CASE; }
-	"assert"	{ return Parser.ASSERT; }
-	"using"		{ return Parser.USING; }
-	"lock"		{ return Parser.LOCK; }
-	"break"		{ return Parser.BREAK; }
-	"continue"	{ return Parser.CONTINUE; }
-	"throw"		{ return Parser.THROW; }
-	"return"	{ return Parser.RETURN; }
-	"or"		{ return Parser.OR; }
-	"xor"		{ return Parser.XOR; }
-	"and"		{ return Parser.AND; }
-	"not"		{ return Parser.NOT; }
-	"istrue"	{ return Parser.ISTRUE; }
-	"isfalse"	{ return Parser.ISFALSE; }
-	"isnull"	{ return Parser.ISNULL; }
-	"this"		{ return Parser.THIS; }
-	"super"		{ return Parser.SUPER; }
-	"outer"		{ return Parser.OUTER; }
-	"local"		{ return Parser.LOCAL; }
-	"null"		{ return Parser.NULL; }
-	"void"		{ return Parser.VOID; }
-	"true"		{ return Parser.TRUE; }
-	"false"		{ return Parser.FALSE; }
-	"@"			{ return Parser.ATMARK; }
-	":="		{ return Parser.NEWSLOT; }
-	"="			{ return Parser.ASSIGN; }
-	"+="		{ return Parser.ASSIGN_ADD; }
-	"-="		{ return Parser.ASSIGN_SUB; }
-	"*="		{ return Parser.ASSIGN_MUL; }
-	"/="		{ return Parser.ASSIGN_DIV; }
-	"\\="		{ return Parser.ASSIGN_TRUEDIV; }
-	"%="		{ return Parser.ASSIGN_MOD; }
-	"?"			{ return Parser.QUESTION; }
-	":"			{ return Parser.COLON; }
-	"=="		{ return Parser.EQ; }
-	"!="		{ return Parser.NEQ; }
-	"<>"		{ return Parser.NEQ; }
-	"<"			{ return Parser.LT; }
-	"<="		{ return Parser.LTEQ; }
-	">"			{ return Parser.GT; }
-	">="		{ return Parser.GTEQ; }
-	"??"		{ return Parser.IFNULL; }
-	"+"			{ return Parser.PLUS; }
-	"-"			{ return Parser.MINUS; }
-	"*"			{ return Parser.MUL; }
-	"/"			{ return Parser.DIV; }
-	"%"			{ return Parser.MOD; }
-	"\\"		{ return Parser.TRUEDIV; }
-	"."			{ return Parser.DOT; }
-	"=~"		{ return Parser.RFIND; }
-	"=^"		{ return Parser.RREPL; }
-	"->"		{ return Parser.RIGHT_ARROW; }
-	"=>"		{ return Parser.RIGHT_DARROW; }
-	"("			{ return Parser.LP; }
-	")"			{ return Parser.RP; }
-	"{"			{ return Parser.LB; }
-	"}"			{ return Parser.RB; }
-	"["			{ return Parser.LBT; }
-	"]"			{ return Parser.RBT; }
-	"%["		{ return Parser.MAP_LBT; }
-	"$["		{ return Parser.SET_LBT; }
-	","			{ return Parser.COMMA; }
-	";"			{ return Parser.SEMICOLON; }
-	".."		{ return Parser.DOT2; }
-	"::"		{ return Parser.COLON2; }
+	"object"	{ return tk(Parser.OBJECT); }
+	"record"	{ return tk(Parser.RECORD); }
+	"function"	{ return tk(Parser.FUNCTION); }
+	"end"		{ return tk(Parser.END); }
+	"def"		{ return tk(Parser.DEF); }
+	"if"		{ return tk(Parser.IF); }
+	"then"		{ return tk(Parser.THEN); }
+	"else"		{ return tk(Parser.ELSE); }
+	"for"		{ return tk(Parser.FOR); }
+	"while"		{ return tk(Parser.WHILE); }
+	"do"		{ return tk(Parser.DO); }
+	"try"		{ return tk(Parser.TRY); }
+	"catch"		{ return tk(Parser.CATCH); }
+	"finally"	{ return tk(Parser.FINALLY); }
+	"switch"	{ return tk(Parser.SWITCH); }
+	"case"		{ return tk(Parser.CASE); }
+	"assert"	{ return tk(Parser.ASSERT); }
+	"using"		{ return tk(Parser.USING); }
+	"lock"		{ return tk(Parser.LOCK); }
+	"break"		{ return tk(Parser.BREAK); }
+	"continue"	{ return tk(Parser.CONTINUE); }
+	"throw"		{ return tk(Parser.THROW); }
+	"return"	{ return tk(Parser.RETURN); }
+	"or"		{ return tk(Parser.OR); }
+	"xor"		{ return tk(Parser.XOR); }
+	"and"		{ return tk(Parser.AND); }
+	"not"		{ return tk(Parser.NOT); }
+	"istrue"	{ return tk(Parser.ISTRUE); }
+	"isfalse"	{ return tk(Parser.ISFALSE); }
+	"isnull"	{ return tk(Parser.ISNULL); }
+	"this"		{ return tk(Parser.THIS); }
+	"super"		{ return tk(Parser.SUPER); }
+	"outer"		{ return tk(Parser.OUTER); }
+	"local"		{ return tk(Parser.LOCAL); }
+	"null"		{ return tk(Parser.NULL); }
+	"void"		{ return tk(Parser.VOID); }
+	"true"		{ return tk(Parser.TRUE); }
+	"false"		{ return tk(Parser.FALSE); }
+	"@"			{ return tk(Parser.ATMARK); }
+	":="		{ return tk(Parser.NEWSLOT); }
+	"="			{ return tk(Parser.ASSIGN); }
+	"+="		{ return tk(Parser.ASSIGN_ADD); }
+	"-="		{ return tk(Parser.ASSIGN_SUB); }
+	"*="		{ return tk(Parser.ASSIGN_MUL); }
+	"/="		{ return tk(Parser.ASSIGN_DIV); }
+	"\\="		{ return tk(Parser.ASSIGN_TRUEDIV); }
+	"%="		{ return tk(Parser.ASSIGN_MOD); }
+	"?"			{ return tk(Parser.QUESTION); }
+	":"			{ return tk(Parser.COLON); }
+	"=="		{ return tk(Parser.EQ); }
+	"!="		{ return tk(Parser.NEQ); }
+	"<>"		{ return tk(Parser.NEQ); }
+	"<"			{ return tk(Parser.LT); }
+	"<="		{ return tk(Parser.LTEQ); }
+	">"			{ return tk(Parser.GT); }
+	">="		{ return tk(Parser.GTEQ); }
+	"??"		{ return tk(Parser.IFNULL); }
+	"+"			{ return tk(Parser.PLUS); }
+	"-"			{ return tk(Parser.MINUS); }
+	"*"			{ return tk(Parser.MUL); }
+	"/"			{ return tk(Parser.DIV); }
+	"%"			{ return tk(Parser.MOD); }
+	"\\"		{ return tk(Parser.TRUEDIV); }
+	"."			{ return tk(Parser.DOT); }
+	"=~"		{ return tk(Parser.RFIND); }
+	"=^"		{ return tk(Parser.RREPL); }
+	"->"		{ return tk(Parser.RIGHT_ARROW); }
+	"=>"		{ return tk(Parser.RIGHT_DARROW); }
+	"("			{ return tk(Parser.LP); }
+	")"			{ return tk(Parser.RP); }
+	"{"			{ return tk(Parser.LB); }
+	"}"			{ return tk(Parser.RB); }
+	"["			{ return tk(Parser.LBT); }
+	"]"			{ return tk(Parser.RBT); }
+	"%["		{ return tk(Parser.MAP_LBT); }
+	"$["		{ return tk(Parser.SET_LBT); }
+	","			{ return tk(Parser.COMMA); }
+	";"			{ return tk(Parser.SEMICOLON); }
+	".."		{ return tk(Parser.DOT2); }
+	"::"		{ return tk(Parser.COLON2); }
+
+	{INTEGER}	{ return tk(Parser.INTEGER); }
+	{DECIMAL}	{ return tk(Parser.DECIMAL); }
 	
-	{INTEGER}	{ value = yytext(); return Parser.INTEGER; }
-	{DECIMAL}	{ value = yytext(); return Parser.DECIMAL; }
-	
-	{NAME}		{ value = yytext(); return Parser.IDENTIFIER; }
+	{NAME}		{ return tk(Parser.IDENTIFIER); }
 	
 	"/*"		{ yybegin(BLOCK_COMMENT); }
 	"#"			{ yybegin(LINE_COMMENT); }
 	"//"		{ yybegin(LINE_COMMENT); }
-	"\""		{ string.setLength(0); yybegin(LINE_STRING); }
-	"\"\"\""	{ string.setLength(0); yybegin(BLOCK_STRING); }
-	"'"			{ string.setLength(0); yybegin(SIMPLE_STRING); }
-	"`"			{ string.setLength(0); yybegin(LINE_SYMBOL); }
+	"\""		{ btk(Parser.STRING); yybegin(LINE_STRING); }
+	"\"\"\""	{ btk(Parser.STRING); yybegin(BLOCK_STRING); }
+	"'"			{ btk(Parser.STRING); yybegin(SIMPLE_STRING); }
+	"`"			{ btk(Parser.IDENTIFIER); yybegin(LINE_SYMBOL); }
 	
 	{EOL}		{}
 	{WSP}		{}
@@ -166,40 +175,40 @@ WSP			= [\ \t]
 }
 
 <LINE_STRING>{
-	"\""				{ value = string.toString(); yybegin(YYINITIAL); return Parser.STRING; }
-	[^\n\r\"\'`\\]+		{ string.append( yytext() ); }
+	"\""				{ yybegin(YYINITIAL); return value.getToken(); }
+	[^\n\r\"\'`\\]+		{ value.append( yytext() ); }
 	<<EOF>>				{ errorStringNotTerminated("string"); }
 }
 <LINE_SYMBOL>{
-	"`"					{ value = string.toString(); yybegin(YYINITIAL); return Parser.IDENTIFIER; }
-	[^\n\r\"\'`\\]+		{ string.append( yytext() ); }
+	"`"					{ yybegin(YYINITIAL); return value.getToken(); }
+	[^\n\r\"\'`\\]+		{ value.append( yytext() ); }
 	<<EOF>>				{ errorStringNotTerminated("symbol"); }
 }
 <LINE_STRING, LINE_SYMBOL>{
-	"\\t"		{ string.append('\t'); }
-	"\\n"		{ string.append('\n'); }
-	"\\N"		{ string.append(System.getProperty("line.separator", "\n")); }
-	"\\r"		{ string.append('\r'); }
-	"\\R"		{ string.append(System.getProperty("line.separator", "\r")); }
-	"\\b"		{ string.append('\b'); }
-	"\\f"		{ string.append('\f'); }
-	"\\\""		{ string.append('\"'); }
-	"\\\'"		{ string.append('\''); }
-	"\\`"		{ string.append('`'); }
-	"\\\\"		{ string.append('\\'); }
+	"\\t"		{ value.append('\t'); }
+	"\\n"		{ value.append('\n'); }
+	"\\N"		{ value.append(System.getProperty("line.separator", "\n")); }
+	"\\r"		{ value.append('\r'); }
+	"\\R"		{ value.append(System.getProperty("line.separator", "\r")); }
+	"\\b"		{ value.append('\b'); }
+	"\\f"		{ value.append('\f'); }
+	"\\\""		{ value.append('\"'); }
+	"\\\'"		{ value.append('\''); }
+	"\\`"		{ value.append('`'); }
+	"\\\\"		{ value.append('\\'); }
 }
 <BLOCK_STRING>{
-	"\"\"\""		{ value = string.toString(); yybegin(YYINITIAL); return Parser.STRING; }
-	"^{WSP}.*$"		{ string.append(1 <= yytext().length() ? yytext().substring(1) : yytext()); }
-	{EOL}			{ string.append( lineSeparator ); }
+	"\"\"\""		{ yybegin(YYINITIAL); return value.getToken(); }
+	"^{WSP}.*$"		{ value.append(1 <= yytext().length() ? yytext().substring(1) : yytext()); }
+	{EOL}			{ value.append( lineSeparator ); }
 	<<EOF>>			{ errorStringNotTerminated("string"); }
 	.				{ errorInvalidChars(yytext()); }
 }
 <SIMPLE_STRING> {
-	"\'"			{ value = string.toString(); yybegin(YYINITIAL); return Parser.STRING; }
-	"\'\'"			{ string.append( "\'" ); }
-	[^\n\r\']+		{ string.append( yytext() ); }
-	{EOL}			{ string.append( lineSeparator ); }
+	"\'"			{ yybegin(YYINITIAL); return value.getToken(); }
+	"\'\'"			{ value.append( "\'" ); }
+	[^\n\r\']+		{ value.append( yytext() ); }
+	{EOL}			{ value.append( lineSeparator ); }
 	<<EOF>>			{ errorStringNotTerminated("string"); }
 }
 <BLOCK_COMMENT>{

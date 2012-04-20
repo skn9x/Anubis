@@ -1,6 +1,6 @@
 package anubis.ast;
 
-public class EmptyStatement implements Statement {
+public class EmptyStatement extends Statement {
 	public static final EmptyStatement INSTANCE = new EmptyStatement();
 	
 	@Override

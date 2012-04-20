@@ -3,7 +3,7 @@ package anubis.ast;
 /**
  * @author SiroKuro
  */
-public class CallExpression implements Expression {
+public class CallExpression extends Expression {
 	private final Expression expr;
 	private final String funcName;
 	private final CallArgument args;

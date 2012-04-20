@@ -3,7 +3,7 @@ package anubis.ast;
 /**
  * @author SiroKuro
  */
-public class GetSlotExpression implements Expression {
+public class GetSlotExpression extends Expression {
 	private final Expression expr;
 	private final String name;
 	

@@ -5,7 +5,7 @@ import anubis.SpecialSlot;
 /**
  * @author SiroKuro
  */
-public class GetSpecialExpression implements Expression {
+public class GetSpecialExpression extends Expression {
 	private final Expression expr;
 	private final SpecialSlot name;
 	
