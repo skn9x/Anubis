@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
+import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
@@ -73,7 +74,8 @@ public class AnubisTestRunner extends Runner {
 	private void run(Reader reader, String filename) throws ScriptException {
 		AnubisEngineFactory factory = new AnubisEngineFactory();
 		AnubisEngine engine = (AnubisEngine) factory.getScriptEngine();
-		engine.eval(reader, engine.getContext(), filename);
+		engine.put(ScriptEngine.FILENAME, filename);
+		engine.eval(reader);
 	}
 	
 	private void run(String filename) throws ScriptException, IOException {

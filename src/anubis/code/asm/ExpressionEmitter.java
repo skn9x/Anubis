@@ -1,7 +1,6 @@
 package anubis.code.asm;
 
 import java.util.List;
-import anubis.ACallable;
 import anubis.AnubisObject;
 import anubis.SpecialSlot;
 import anubis.ast.BinaryExpression;
@@ -146,24 +145,18 @@ public class ExpressionEmitter {
 		if (arg.getThis() == null) {
 			// expr, expr
 			builder.emitDup();
-			
-			// expr, func
-			builder.pushString(name);
-			builder.emitInvoke(Operator.class, "findFunction", AnubisObject.class, String.class);
-			
-			// func, expr
-			builder.emitSwap();
 		}
 		else {
-			// func
-			builder.pushString(name);
-			builder.emitInvoke(Operator.class, "findFunction", AnubisObject.class, String.class);
-			
-			// func, this
+			// expr, this
 			arg.getThis().visit(owner, builder);
 		}
 		
-		// func, this, args
+		// expr, this, name
+		builder.pushString(name);
+		// expr, name, this
+		builder.emitSwap();
+		
+		// expr, name, this, args
 		List<Expression> params = arg.getParams();
 		builder.emitNewArray(AnubisObject.class, params.size());
 		for (int index = 0; index < params.size(); index++) {
@@ -174,7 +167,8 @@ public class ExpressionEmitter {
 		}
 		
 		// result
-		builder.emitInvoke(ACallable.class, "call", AnubisObject.class, AnubisObject[].class);
+		builder.emitInvoke(Operator.class, "opCall", AnubisObject.class, String.class, AnubisObject.class,
+				AnubisObject[].class);
 	}
 	
 	public void emit(CodeBuilder builder, GetSlotExpression expr) {

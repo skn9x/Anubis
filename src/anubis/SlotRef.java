@@ -29,8 +29,8 @@ public class SlotRef {
 	}
 	
 	/**
-	 * 参照先スロットを含む KuzhaObject を返します。
-	 * @return 参照先スロットを含む  AnubisObject
+	 * スロット参照先のオブジェクトを返します。
+	 * @return スロット参照先のオブジェクト
 	 */
 	public AnubisObject getObject() {
 		return obj;

@@ -40,6 +40,11 @@ public class JClass extends AObject {
 		return cls;
 	}
 	
+	@Override
+	public String toString() {
+		return super.toString() + "(" + cls.getName() + ")";
+	}
+	
 	protected void initMethods(Class<?> cls) {
 		Map<String, FunctionAccessor> accessors = new HashMap<String, FunctionAccessor>();
 		// コンストラクタ作成
@@ -58,6 +63,7 @@ public class JClass extends AObject {
 		// メソッド作成
 		for (Method mm: cls.getDeclaredMethods()) {
 			if (!Modifier.isPrivate(mm.getModifiers())) {
+				mm.setAccessible(true);
 				FunctionAccessor acc = accessors.get(mm.getName());
 				if (acc == null) {
 					acc = new FunctionAccessor();
@@ -70,10 +76,5 @@ public class JClass extends AObject {
 		for (Entry<String, FunctionAccessor> ent: accessors.entrySet()) {
 			this.setSlot(ent.getKey(), JFunction.valueOf(ent.getValue()), true);
 		}
-	}
-	
-	@Override
-	public String toString() {
-		return super.toString() + "(" + cls.getName() + ")";
 	}
 }

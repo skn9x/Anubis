@@ -110,22 +110,6 @@ public class ParserHelper {
 	}
 	
 	/**
-	 * str に識別子として不適切な文字を含むときは `` で囲みます。
-	 * @param str
-	 * @return
-	 */
-	public static String mayQuoteIdentifier(String str) {
-		if (str == null) {
-			return "";
-		}
-		else {
-			if (Arrays.binarySearch(keywords, str) < 0 && identifier.matcher(str).find())
-				return str;
-			return "`" + escape(str) + "`";
-		}
-	}
-	
-	/**
 	 * 数値トークンを Number オブジェクトへパースします。
 	 * @param token 数値トークン
 	 * @return　Number オブジェクト
@@ -154,5 +138,25 @@ public class ParserHelper {
 				return negate ? result.negate() : result;
 			}
 		}
+	}
+	
+	/**
+	 * str に識別子として不適切な文字を含むときは `` で囲みます。
+	 * @param str
+	 * @return
+	 */
+	public static String quoteIdentifier(String str) {
+		if (str == null) {
+			return "``";
+		}
+		else {
+			if (Arrays.binarySearch(keywords, str) < 0 && identifier.matcher(str).matches())
+				return str;
+			return "`" + escape(str) + "`";
+		}
+	}
+	
+	public static String quoteString(String text) {
+		return "\"" + escape(text) + "\"";
 	}
 }

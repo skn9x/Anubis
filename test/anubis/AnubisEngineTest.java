@@ -2,16 +2,15 @@ package anubis;
 
 import static org.junit.Assert.assertEquals;
 import java.math.BigInteger;
-import javax.script.ScriptEngine;
 import org.junit.Before;
 import org.junit.Test;
 
 public class AnubisEngineTest {
-	private ScriptEngine engine;
+	private AnubisEngine engine;
 	
 	@Before
 	public void setUp() throws Exception {
-		engine = new AnubisEngineFactory().getScriptEngine();
+		engine = (AnubisEngine) new AnubisEngineFactory().getScriptEngine();
 	}
 	
 	@Test
@@ -30,5 +29,50 @@ public class AnubisEngineTest {
 		assertEquals("abcdef", engine.eval("x"));
 		assertEquals("ABC", engine.eval("def text = 'ABC'; return text;"));
 		assertEquals("ABC", engine.eval("text"));
+	}
+	
+	@Test
+	public void testGetInterface01() throws Exception {
+		engine.eval("add = { x -> x + 11};");
+		Calc calc = engine.getInterface(Calc.class);
+		assertEquals(24, calc.add(13));
+	}
+	
+	@Test
+	public void testGetInterface02() throws Exception {
+		Object obj = engine.eval("return object{ add = { x -> x + 11}; };");
+		Calc calc = engine.getInterface(obj, Calc.class);
+		assertEquals(24, calc.add(13));
+	}
+	
+	@Test
+	public void testInvokeFunction() throws Exception {
+		engine.eval("add1 = { x -> x + 1};");
+		assertEquals(BigInteger.valueOf(3), engine.invokeFunction("add1", 2));
+	}
+	
+	@Test
+	public void testInvokeMethod() throws Exception {
+		Object obj = engine.eval("return object{ add1 = { x -> x + 1 }; };");
+		assertEquals(BigInteger.valueOf(3), engine.invokeMethod(obj, "add1", 2));
+		
+		Object obj2 = new SampleCalc(3);
+		assertEquals(BigInteger.valueOf(8), engine.invokeMethod(obj2, "add", 5));
+	}
+	
+	private interface Calc {
+		public int add(int x);
+	}
+	
+	private static class SampleCalc implements Calc {
+		private final int value;
+		
+		public SampleCalc(int value) {
+			this.value = value;
+		}
+		
+		public int add(int x) {
+			return value + x;
+		}
 	}
 }

@@ -7,6 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import anubis.ast.CompilationUnit;
 import anubis.code.CodeBlock;
+import anubis.code.Option;
 import anubis.code.asm.AsmCodeBlockFactory;
 import anubis.parser.Parser;
 import anubis.runtime.AObject;
@@ -32,11 +33,12 @@ public class AbstractTest {
 	}
 	
 	public AnubisObject exec(CompilationUnit node) throws Exception {
-		String className = "sample";
 		ObjectFactory oldfactory = AObjects.setCurrent(factory);
 		try {
 			// 生成
-			CodeBlock code = new AsmCodeBlockFactory(className, true).newCodeBlock(node);
+			Option option = new Option();
+			option.setProgramName("sample");
+			CodeBlock code = new AsmCodeBlockFactory().newCodeBlock(node, option);
 			assertNotNull(code);
 			
 			// exec 呼び出し

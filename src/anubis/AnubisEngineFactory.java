@@ -1,15 +1,29 @@
 package anubis;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import javax.script.Bindings;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
+import javax.script.SimpleBindings;
+import anubis.parser.ParserHelper;
 
 /**
+ * Anubis の ScriptEngineFactory です。
  * @author SiroKuro
  */
 public class AnubisEngineFactory implements ScriptEngineFactory {
+	private Bindings global = new SimpleBindings();
+	
+	public AnubisEngineFactory() {
+		global.put(ScriptEngine.ENGINE, getEngineName());
+		global.put(ScriptEngine.ENGINE_VERSION, getEngineVersion());
+		global.put(ScriptEngine.NAME, getEngineName());
+		global.put(ScriptEngine.LANGUAGE, getLanguageName());
+		global.put(ScriptEngine.LANGUAGE_VERSION, getLanguageVersion());
+		global.put("THREADING", "MULTITHREADED");
+	}
 	
 	@Override
 	public String getEngineName() {
@@ -24,14 +38,11 @@ public class AnubisEngineFactory implements ScriptEngineFactory {
 	
 	@Override
 	public List<String> getExtensions() {
-		return Arrays.asList(new String[]{
-			"anubis", "an"
-		});
+		return constList("anubis", "an");
 	}
 	
 	public Bindings getGlobalBindings() {
-		// TODO Auto-generated method stub
-		return null;
+		return global;
 	}
 	
 	@Override
@@ -45,43 +56,60 @@ public class AnubisEngineFactory implements ScriptEngineFactory {
 	}
 	
 	@Override
-	public String getMethodCallSyntax(String arg0, String arg1, String... arg2) {
-		// TODO Auto-generated method stub
-		return null;
+	public String getMethodCallSyntax(String obj, String name, String... args) {
+		StringBuilder result = new StringBuilder();
+		result.append(ParserHelper.quoteIdentifier(obj));
+		result.append(".");
+		result.append(ParserHelper.quoteIdentifier(name));
+		result.append("(");
+		for (int i = 0; i < args.length; i++) {
+			if (i != 0)
+				result.append(", ");
+			result.append(ParserHelper.quoteIdentifier(args[i]));
+		}
+		result.append(")");
+		return result.toString();
 	}
 	
 	@Override
 	public List<String> getMimeTypes() {
-		// TODO Auto-generated method stub
-		return null;
+		return constList("application/x-anubis");
 	}
 	
 	@Override
 	public List<String> getNames() {
-		return Arrays.asList("anubis", "Anubis", "AnubisLanguage", "AnubisScript");
+		return constList("anubis", "Anubis", "AnubisLanguage", "AnubisScript");
 	}
 	
 	@Override
-	public String getOutputStatement(String arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public String getOutputStatement(String text) {
+		return "console.puts(" + ParserHelper.quoteString(text) + ")";
 	}
 	
 	@Override
-	public Object getParameter(String arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public Object getParameter(String key) {
+		return global.get(key);
 	}
 	
 	@Override
-	public String getProgram(String... arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public String getProgram(String... stats) {
+		StringBuilder result = new StringBuilder();
+		if (stats != null) {
+			for (String stat: stats) {
+				result.append(stat);
+				result.append("; ");
+			}
+		}
+		return result.toString();
 	}
 	
 	@Override
 	public ScriptEngine getScriptEngine() {
 		return new AnubisEngine(this);
+	}
+	
+	private static <T> List<T> constList(T... args) {
+		return Collections.unmodifiableList(Arrays.asList(args));
 	}
 	
 }

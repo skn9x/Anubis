@@ -2,8 +2,8 @@ package anubis.parser;
 
 import static anubis.parser.ParserHelper.escape;
 import static anubis.parser.ParserHelper.getHexCode;
-import static anubis.parser.ParserHelper.mayQuoteIdentifier;
 import static anubis.parser.ParserHelper.parseNumber;
+import static anubis.parser.ParserHelper.quoteIdentifier;
 import static org.junit.Assert.assertEquals;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -31,11 +31,11 @@ public class ParserHelperTest {
 	
 	@Test
 	public void testMayQuoteIdentifier() {
-		assertEquals("", mayQuoteIdentifier(null));
-		assertEquals("``", mayQuoteIdentifier(""));
-		assertEquals("`123`", mayQuoteIdentifier("123"));
-		assertEquals("abc123", mayQuoteIdentifier("abc123"));
-		assertEquals("`object`", mayQuoteIdentifier("object"));
+		assertEquals("``", quoteIdentifier(null));
+		assertEquals("``", quoteIdentifier(""));
+		assertEquals("`123`", quoteIdentifier("123"));
+		assertEquals("abc123", quoteIdentifier("abc123"));
+		assertEquals("`object`", quoteIdentifier("object"));
 	}
 	
 	@Test

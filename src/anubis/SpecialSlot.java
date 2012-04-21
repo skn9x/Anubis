@@ -1,8 +1,20 @@
 package anubis;
 
 /**
+ * AnubisObject の特殊スロットを表す列挙体です。
  * @author SiroKuro
  */
 public enum SpecialSlot {
-	THIS, SUPER, OUTER,
+	/**
+	 * this スロット
+	 */
+	THIS,
+	/**
+	 * super スロット
+	 */
+	SUPER,
+	/**
+	 * outer スロット
+	 */
+	OUTER,
 }

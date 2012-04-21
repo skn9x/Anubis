@@ -9,24 +9,32 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CustomCodeClassLoader extends ClassLoader {
-	private final Map<String, CustomCodeClassLoader.ClassData> clss = new HashMap<String, CustomCodeClassLoader.ClassData>();
+	private final Map<String, ClassData> clss = new HashMap<String, ClassData>();
+	private final String programName;
 	private final ClassLoader parent;
+	private int count = 0;
 	
-	public CustomCodeClassLoader() {
+	public CustomCodeClassLoader(String programName) {
+		this.programName = programName;
 		this.parent = this.getClass().getClassLoader();
 	}
 	
-	public CustomCodeClassLoader(ClassLoader parent) {
-		if (parent == null)
-			throw new IllegalArgumentException();
-		this.parent = parent;
-	}
-	
-	public Collection<CustomCodeClassLoader.ClassData> getClassData() {
+	public Collection<ClassData> getClassData() {
 		return clss.values();
 	}
 	
+	public synchronized String newClassName() {
+		if (count++ == 0) {
+			return programName;
+		}
+		else {
+			return programName + "$" + count;
+		}
+	}
+	
 	public void putClassData(String name, byte[] data) {
+		if (clss.containsKey(name))
+			throw new IllegalStateException("duplicated classname: " + name);
 		clss.put(name, new ClassData(name, data));
 	}
 	

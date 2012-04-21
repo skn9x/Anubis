@@ -66,7 +66,7 @@ public class AObject implements AnubisObject, ADumpable {
 		}
 		// 一般スロットのダンプ
 		for (Entry<String, AnubisObject> elm: slots.getSnap().entrySet()) {
-			sb.append(String.format("    %s = %s;\n", ParserHelper.mayQuoteIdentifier(elm.getKey()),
+			sb.append(String.format("    %s = %s;\n", ParserHelper.quoteIdentifier(elm.getKey()),
 					Operator.toString(elm.getValue())));
 		}
 		sb.append("}");

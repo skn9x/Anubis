@@ -35,16 +35,17 @@ import anubis.ast.TryFinallyStatement;
 import anubis.ast.UnaryExpression;
 import anubis.ast.UsingStatement;
 import anubis.ast.WhileStatement;
+import anubis.code.Option;
 
 public class CodeGenerator implements AstVisitor<CodeBuilder, CodeBuilder> {
 	private final ExpressionEmitter emit_expr = new ExpressionEmitter(this);
 	private final StatementEmitter emit_stmt = new StatementEmitter(this);
 	private final AsmCodeBlockFactory owner;
-	private final boolean debug;
+	private final Option option;
 	
-	public CodeGenerator(AsmCodeBlockFactory owner, boolean debug) {
+	public CodeGenerator(AsmCodeBlockFactory owner, Option option) {
 		this.owner = owner;
-		this.debug = debug;
+		this.option = option;
 	}
 	
 	@Override
@@ -270,12 +271,12 @@ public class CodeGenerator implements AstVisitor<CodeBuilder, CodeBuilder> {
 		return builder.finallize();
 	}
 	
-	public boolean isDebug() {
-		return debug;
+	public Option getOption() {
+		return option;
 	}
 	
 	public Class<?> newCodeBlockClass(CompilationUnit node) {
-		return owner.newCodeBlockClass(node);
+		return owner.newCodeBlockClass(node, getOption());
 	}
 	
 	private void mark(CodeBuilder builder, Node node) {

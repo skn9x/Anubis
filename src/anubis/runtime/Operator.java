@@ -8,7 +8,6 @@ import anubis.AIndexable;
 import anubis.AIterable;
 import anubis.ASliceable;
 import anubis.AnubisObject;
-import anubis.SlotRef;
 import anubis.except.AnubisException;
 import anubis.except.AnubisUserException;
 import anubis.except.ExceptionProvider;
@@ -88,13 +87,9 @@ public class Operator {
 		return !isFalse(value);
 	}
 	
-	public static AnubisObject opAssignSlot(AnubisObject object, String name, AnubisObject value) {
-		SlotRef ref = object.findSlotRef(name);
-		if (ref != null)
-			ref.set(value);
-		else
-			object.setSlot(name, value);
-		return value;
+	public static AnubisObject opCall(AnubisObject object, String funcname, AnubisObject _this, AnubisObject... args) {
+		ACallable func = findFunction(object, funcname);
+		return func.call(_this, args);
 	}
 	
 	public static AnubisObject opClose(AnubisObject obj) {

@@ -86,6 +86,15 @@ public class AObjects {
 		return getCurrent().getObject(obj);
 	}
 	
+	public static AnubisObject[] getObjects(Object... objs) {
+		AnubisObject[] result = new AnubisObject[objs.length];
+		ObjectFactory factory = getCurrent();
+		for (int i = 0; i < result.length; i++) {
+			result[i] = factory.getObject(objs[i]);
+		}
+		return result;
+	}
+	
 	/**
 	 * String に対応する AString オブジェクトを返します。
 	 * @param value String オブジェクト

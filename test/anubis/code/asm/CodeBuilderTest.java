@@ -15,7 +15,7 @@ public class CodeBuilderTest {
 		assertNotNull(result);
 		
 		// クラスロード
-		CustomCodeClassLoader loader = new CustomCodeClassLoader();
+		CustomCodeClassLoader loader = new CustomCodeClassLoader(className);
 		loader.putClassData(className, result);
 		Class<?> clazz = loader.loadClass(className);
 		assertNotNull(clazz);

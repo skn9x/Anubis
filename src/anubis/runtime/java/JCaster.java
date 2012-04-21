@@ -147,7 +147,7 @@ public class JCaster {
 		return obj;
 	}
 	
-	public static Object cast(Class<?> cls, AnubisObject arg) {
+	public static Object cast(Class<?> cls, AnubisObject arg) { // プリミティブ型を考慮するので return-type は Object にする
 		Object value = DEEPCAST.start(arg, cls);
 		if (value == NULL)
 			return null;

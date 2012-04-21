@@ -3,6 +3,7 @@ package anubis.console;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -65,6 +66,7 @@ public class Main {
 	
 	private static void repl(boolean nologo, boolean noprompt) {
 		AnubisEngine engine = (AnubisEngine) factory.getScriptEngine();
+		engine.put(ScriptEngine.FILENAME, "stdin");
 		if (!nologo) {
 			System.out.printf("%s(%s) on java(%s), %s", factory.getEngineName(), factory.getEngineVersion(),
 					System.getProperty("java.version", "unknown version"),
@@ -93,7 +95,7 @@ public class Main {
 					}
 				}
 				try {
-					AnubisObject obj = engine.evalForRepl(code.toString(), "stdin");
+					AnubisObject obj = engine.evalForRepl(code.toString());
 					if (obj != null) {
 						System.out.println("--> " + Operator.toString(obj));
 					}

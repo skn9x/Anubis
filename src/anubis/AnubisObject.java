@@ -1,6 +1,7 @@
 package anubis;
 
 /**
+ * Anubis で扱うオブジェクトのルートとなるインタフェイスです。
  * @author SiroKuro
  */
 public interface AnubisObject {

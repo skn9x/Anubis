@@ -32,27 +32,28 @@ public class StatementEmitter {
 	}
 	
 	public void emit(CodeBuilder builder, AssertStatement stmt) {
-		if (owner.isDebug()) {
-			Label _END = builder.newLabel();
-			// condition
-			stmt.getCondition().visit(owner, builder);
-			builder.emitInvoke(Operator.class, "isTrue", AnubisObject.class);
-			builder.emitIfTrue(_END);
-			// else
-			if (stmt.getElse() == null) {
-				builder.emitInvoke(Operator.class, "fail");
-			}
-			else {
-				block.startWeakBlock(stmt.getLabel(), _END, _END);
-				try {
-					stmt.getElse().visit(owner, builder);
-				}
-				finally {
-					block.endBlock();
-				}
-			}
-			builder.emitLabel(_END);
+		if (owner.getOption().isDisableAssertion()) {
+			return;
 		}
+		Label _END = builder.newLabel();
+		// condition
+		stmt.getCondition().visit(owner, builder);
+		builder.emitInvoke(Operator.class, "isTrue", AnubisObject.class);
+		builder.emitIfTrue(_END);
+		// else
+		if (stmt.getElse() == null) {
+			builder.emitInvoke(Operator.class, "fail");
+		}
+		else {
+			block.startWeakBlock(stmt.getLabel(), _END, _END);
+			try {
+				stmt.getElse().visit(owner, builder);
+			}
+			finally {
+				block.endBlock();
+			}
+		}
+		builder.emitLabel(_END);
 	}
 	
 	public void emit(CodeBuilder builder, BlockStatement stmt) {
