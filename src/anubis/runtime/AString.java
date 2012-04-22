@@ -1,11 +1,10 @@
 package anubis.runtime;
 
-import anubis.ACastable;
 
 /**
  * @author SiroKuro
  */
-public class AString extends APrimitive implements ACastable {
+public class AString extends APrimitive {
 	private final String value;
 	
 	public AString(String value) {

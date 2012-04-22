@@ -7,23 +7,29 @@ import anubis.AnubisObject;
 /**
  * @author SiroKuro
  */
-public class ANumberPowerFunction extends AbstractNumberFunction2 {
+public class ANumberGreaterThan extends AbstractNumberFunction2 {
+	public static final ANumberGreaterThan INSTANCE = new ANumberGreaterThan();
+	
 	/**
 	 * @param owner
 	 * @param name
 	 * @param factory
 	 */
-	public ANumberPowerFunction(AnubisObject owner, String name) {
+	public ANumberGreaterThan(AnubisObject owner, String name) {
 		super(owner, name);
+	}
+	
+	private ANumberGreaterThan() {
+		super();
 	}
 	
 	@Override
 	public Number operate(BigDecimal x, BigDecimal y) {
-		return x.pow(y.intValue());
+		return x.compareTo(y) > 0 ? y : null;
 	}
 	
 	@Override
 	public Number operate(BigInteger x, BigInteger y) {
-		return x.pow(y.intValue());
+		return x.compareTo(y) > 0 ? y : null;
 	}
 }

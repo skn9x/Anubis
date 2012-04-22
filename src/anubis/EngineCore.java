@@ -3,7 +3,6 @@ package anubis;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
-import javax.script.Bindings;
 import javax.script.CompiledScript;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
@@ -23,17 +22,14 @@ import anubis.runtime.java.JCaster;
  * AnubisEngine の実際の実行を担うオブジェクトです。
  * @author SiroKuro
  */
-class EngineCore {
+public class EngineCore {
+	private static final ThreadLocal<ScriptContext> currentContext = new ThreadLocal<ScriptContext>();
 	private final AnubisEngine owner;
 	private final ObjectFactory factory;
 	
 	public EngineCore(AnubisEngine owner, ObjectFactory factory) {
 		this.owner = owner;
 		this.factory = factory;
-	}
-	
-	public AnubisObject asAnubis(Object obj) {
-		return factory.getObject(obj);
 	}
 	
 	public Object asJava(AnubisObject obj) {
@@ -45,50 +41,50 @@ class EngineCore {
 		return new AnubisCompiledScript(block);
 	}
 	
-	public Object internalInvoke(Class<?> type, Object obj, String name, Object... args) throws ScriptException, NoSuchMethodException {
-		ObjectFactory oldFactory = AObjects.setCurrent(factory);
+	public Object internalInvoke(final Class<?> type, final Object obj, final String name, final Object... args) throws ScriptException, NoSuchMethodException {
 		try {
-			AnubisObject aobj = obj != null ? AObjects.getObject(obj) : newLocal(owner.getContext());
-			// TODO NoSuchMethodException の対処
-			AnubisObject result = Operator.opCall(aobj, name, aobj, AObjects.getObjects(args));
-			return type == null ? asJava(result) : JCaster.cast(type, result);
+			return run(factory, owner.getContext(), new Execution<Object>() {
+				@Override
+				public Object exec(ScriptContext context) {
+					AnubisObject aobj = obj != null ? AObjects.getObject(obj) : newLocal(owner.getContext());
+					// TODO NoSuchMethodException の対処
+					AnubisObject result = Operator.opCall(aobj, name, aobj, AObjects.getObjects(args));
+					return type == null ? asJava(result) : JCaster.cast(type, result);
+				}
+			});
 		}
-		catch (Exception ex) {
+		catch (RuntimeException ex) {
 			throw new ScriptException(ex);
-		}
-		finally {
-			AObjects.setCurrent(oldFactory);
 		}
 	}
 	
-	private CodeBlock newCodeBlock(Reader code, ScriptContext context, File dir) {
-		ObjectFactory oldFactory = AObjects.setCurrent(factory);
-		try {
-			Option option = newOption(context);
-			CompilationUnit node = new Parser().parse(code, option.getSrcFileName());
-			AsmCodeBlockFactory codeFactory = new AsmCodeBlockFactory();
-			CodeBlock result = codeFactory.newCodeBlock(node, option);
-			if (dir != null) {
-				try {
-					codeFactory.saveClassFiles(dir);
+	private CodeBlock newCodeBlock(final Reader code, ScriptContext context, final File dir) {
+		return run(factory, context, new Execution<CodeBlock>() {
+			@Override
+			public CodeBlock exec(ScriptContext context) {
+				Option option = newOption(context);
+				CompilationUnit node = new Parser().parse(code, option.getSrcFileName());
+				AsmCodeBlockFactory codeFactory = new AsmCodeBlockFactory();
+				CodeBlock result = codeFactory.newCodeBlock(node, option);
+				if (dir != null) {
+					try {
+						codeFactory.saveClassFiles(dir);
+					}
+					catch (IOException ex) {
+						ExceptionProvider.newParseException(ex);
+					}
 				}
-				catch (IOException ex) {
-					ExceptionProvider.newParseException(ex);
-				}
+				return result;
 			}
-			return result;
-		}
-		finally {
-			AObjects.setCurrent(oldFactory);
-		}
+		});
+	}
+	
+	public static ScriptContext getCurrentContext() {
+		return currentContext.get();
 	}
 	
 	private static AnubisObject newLocal(ScriptContext context) {
-		Bindings bind_global = context.getBindings(ScriptContext.GLOBAL_SCOPE);
-		AnubisObject global = bind_global == null ? null : AObjects.getObject(bind_global);
-		AnubisObject local = AObjects.getObject(context.getBindings(ScriptContext.ENGINE_SCOPE));
-		local.setSlot(SpecialSlot.OUTER, global);
-		return local;
+		return AObjects.getObject(context);
 	}
 	
 	private static Option newOption(ScriptContext context) {
@@ -96,6 +92,24 @@ class EngineCore {
 		result.setSrcFileName(Utils.asString(context.getAttribute(ScriptEngine.FILENAME)));
 		result.setProgramName(Utils.getCnFromSn(result.getSrcFileName()));
 		result.setDisableAssertion(Operator.isFalse(AObjects.getObject(context.getAttribute("anubis.disableAssertion"))));
+		return result;
+	}
+	
+	private static <T> T run(ObjectFactory factory, ScriptContext context, Execution<T> exec) {
+		ObjectFactory oldFactory = AObjects.setCurrent(factory);
+		ScriptContext oldContext = setCurrentContext(context);
+		try {
+			return exec.exec(context);
+		}
+		finally {
+			setCurrentContext(oldContext);
+			AObjects.setCurrent(oldFactory);
+		}
+	}
+	
+	private static ScriptContext setCurrentContext(ScriptContext context) {
+		ScriptContext result = currentContext.get();
+		currentContext.set(context);
 		return result;
 	}
 	
@@ -112,16 +126,17 @@ class EngineCore {
 		}
 		
 		public AnubisObject exec(ScriptContext context) throws ScriptException {
-			ObjectFactory oldFactory = AObjects.setCurrent(factory);
 			try {
-				AnubisObject local = newLocal(context);
-				return block.exec(local);
+				return EngineCore.run(factory, context, new Execution<AnubisObject>() {
+					@Override
+					public AnubisObject exec(ScriptContext context) {
+						AnubisObject local = newLocal(context);
+						return block.exec(local);
+					}
+				});
 			}
-			catch (Exception ex) {
+			catch (RuntimeException ex) {
 				throw new ScriptException(ex);
-			}
-			finally {
-				AObjects.setCurrent(oldFactory);
 			}
 		}
 		
@@ -129,5 +144,9 @@ class EngineCore {
 		public ScriptEngine getEngine() {
 			return owner;
 		}
+	}
+	
+	private interface Execution<T> {
+		public T exec(ScriptContext context);
 	}
 }

@@ -7,29 +7,23 @@ import anubis.AnubisObject;
 /**
  * @author SiroKuro
  */
-public class ANumberMultiplyFunction extends AbstractNumberFunction2 {
-	public static final ANumberMultiplyFunction INSTANCE = new ANumberMultiplyFunction();
-	
-	public ANumberMultiplyFunction() {
-		;
-	}
-	
+public class ANumberTrueDivide extends AbstractNumberFunction2 {
 	/**
 	 * @param owner
 	 * @param name
 	 * @param factory
 	 */
-	public ANumberMultiplyFunction(AnubisObject owner, String name) {
+	public ANumberTrueDivide(AnubisObject owner, String name) {
 		super(owner, name);
 	}
 	
 	@Override
 	public Number operate(BigDecimal x, BigDecimal y) {
-		return x.multiply(y);
+		return x.divide(y);
 	}
 	
 	@Override
 	public Number operate(BigInteger x, BigInteger y) {
-		return x.multiply(y);
+		return operate(new BigDecimal(x), new BigDecimal(y));
 	}
 }

@@ -4,14 +4,14 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import anubis.AnubisObject;
 
-public class ANumberIsMinusFunction extends AbstractNumberFunction1 {
-	public static final ANumberIsMinusFunction INSTANCE = new ANumberIsMinusFunction();
+public class ANumberIsMinus extends AbstractNumberFunction1 {
+	public static final ANumberIsMinus INSTANCE = new ANumberIsMinus();
 	
-	public ANumberIsMinusFunction() {
+	public ANumberIsMinus() {
 		super();
 	}
 	
-	public ANumberIsMinusFunction(AnubisObject owner, String name) {
+	public ANumberIsMinus(AnubisObject owner, String name) {
 		super(owner, name);
 	}
 	

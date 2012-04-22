@@ -96,9 +96,16 @@ public class AObjectTest {
 		// obj.super = _super;
 		// _super.super = obj;
 		// _super.a = obj2;
+		// obj3.super = obj
 		obj.setSlot(SUPER, _super);
 		_super.setSlot(SUPER, obj);
+		obj3.setSlot(SUPER, obj);
 		_super.setSlot("a", obj2);
+		
+		assertSame(obj2, obj.findSlot("a"));
+		assertNull(obj.findSlot("c"));
+		assertSame(obj2, obj3.findSlot("a"));
+		assertNull(obj3.findSlot("c"));
 		
 		// obj.outer = _outer;
 		// _outer.outer = obj;
@@ -107,7 +114,6 @@ public class AObjectTest {
 		_outer.setSlot(OUTER, obj);
 		_outer.setSlot("b", obj3);
 		
-		assertSame(obj2, obj.findSlot("a"));
 		assertSame(obj3, obj.findSlot("b"));
 		assertNull(obj.findSlot("c"));
 	}

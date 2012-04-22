@@ -2,12 +2,11 @@ package anubis.runtime;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import anubis.ACastable;
 
 /**
  * @author SiroKuro
  */
-public abstract class ANumber extends APrimitive implements ACastable {
+public abstract class ANumber extends APrimitive {
 	@Override
 	public Object asJava() {
 		return getNumber();

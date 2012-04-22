@@ -8,9 +8,9 @@ import anubis.runtime.AString;
 import anubis.runtime.Utils;
 import anubis.runtime.java.JCaster;
 
-public class AStringAddFunction extends _1 {
+public class AStringAdd extends _1 {
 	
-	public AStringAddFunction(AnubisObject owner, String name) {
+	public AStringAdd(AnubisObject owner, String name) {
 		super(owner, name);
 	}
 	

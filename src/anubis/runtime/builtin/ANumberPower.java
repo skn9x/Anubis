@@ -7,29 +7,23 @@ import anubis.AnubisObject;
 /**
  * @author SiroKuro
  */
-public class ANumberAddFunction extends AbstractNumberFunction2 {
-	public static final ANumberAddFunction INSTANCE = new ANumberAddFunction();
-	
+public class ANumberPower extends AbstractNumberFunction2 {
 	/**
 	 * @param owner
 	 * @param name
 	 * @param factory
 	 */
-	public ANumberAddFunction(AnubisObject owner, String name) {
+	public ANumberPower(AnubisObject owner, String name) {
 		super(owner, name);
-	}
-	
-	private ANumberAddFunction() {
-		super();
 	}
 	
 	@Override
 	public Number operate(BigDecimal x, BigDecimal y) {
-		return x.add(y);
+		return x.pow(y.intValue());
 	}
 	
 	@Override
 	public Number operate(BigInteger x, BigInteger y) {
-		return x.add(y);
+		return x.pow(y.intValue());
 	}
 }

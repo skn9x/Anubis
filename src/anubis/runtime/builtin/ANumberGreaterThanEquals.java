@@ -7,23 +7,23 @@ import anubis.AnubisObject;
 /**
  * @author SiroKuro
  */
-public class ANumberRemainderFunction extends AbstractNumberFunction2 {
+public class ANumberGreaterThanEquals extends AbstractNumberFunction2 {
 	/**
 	 * @param owner
 	 * @param name
 	 * @param factory
 	 */
-	public ANumberRemainderFunction(AnubisObject owner, String name) {
+	public ANumberGreaterThanEquals(AnubisObject owner, String name) {
 		super(owner, name);
 	}
 	
 	@Override
 	public Number operate(BigDecimal x, BigDecimal y) {
-		return x.remainder(y);
+		return x.compareTo(y) >= 0 ? y : null;
 	}
 	
 	@Override
 	public Number operate(BigInteger x, BigInteger y) {
-		return x.remainder(y);
+		return x.compareTo(y) >= 0 ? y : null;
 	}
 }

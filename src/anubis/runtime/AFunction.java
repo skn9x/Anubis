@@ -22,7 +22,7 @@ public abstract class AFunction extends AObject implements ACallable {
 	 * @return
 	 */
 	public static ACallable partial(final ACallable func, final AnubisObject... pArgs) {
-		return new AFunction() {
+		return new AFunction() { // TODO traits の接続
 			@Override
 			public AnubisObject call(AnubisObject _this, AnubisObject... args) {
 				AnubisObject[] newArgs = new AnubisObject[args.length + 1];

@@ -7,13 +7,13 @@ import anubis.runtime.AObjects;
 /**
  * @author SiroKuro
  */
-public class ARootNotEqualsFunction extends ABuiltinFunction._1 {
+public class ARootNotEquals extends ABuiltinFunction._1 {
 	/**
 	 * @param owner
 	 * @param name
 	 * @param factory
 	 */
-	public ARootNotEqualsFunction(AnubisObject owner, String name) {
+	public ARootNotEquals(AnubisObject owner, String name) {
 		super(owner, name);
 	}
 	

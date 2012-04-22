@@ -8,8 +8,8 @@ import anubis.runtime.AString;
 import anubis.runtime.Operator;
 import anubis.runtime.Utils;
 
-public class ARootSetSlotFunction extends _3 {
-	public ARootSetSlotFunction(AnubisObject owner, String name) {
+public class ARootSetSlot extends _3 {
+	public ARootSetSlot(AnubisObject owner, String name) {
 		super(owner, name);
 	}
 	

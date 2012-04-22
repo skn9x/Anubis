@@ -1,8 +1,7 @@
 package anubis.runtime;
 
-import anubis.ACastable;
 
-public class ATrueObject extends APrimitive implements ACastable {
+public class ATrueObject extends APrimitive {
 	@Override
 	public Object asJava() {
 		return Boolean.TRUE;

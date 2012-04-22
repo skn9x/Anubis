@@ -1,5 +1,6 @@
 package anubis.runtime;
 
+import java.util.IdentityHashMap;
 import anubis.AnubisObject;
 import anubis.SpecialSlot;
 
@@ -8,44 +9,32 @@ import anubis.SpecialSlot;
  */
 public abstract class ProtoVisitor<A, R> {
 	public R start(AnubisObject _this, A arg) {
-		if (_this != null) {
+		IdentityHashMap<AnubisObject, Object> visited = new IdentityHashMap<AnubisObject, Object>();
+		while (_this != null && firstpass(_this, visited)) {
 			R result = visit(_this, arg);
 			if (result != null) {
 				return result;
 			}
-			result = startFromSuper(_this, _this.getSlot(SpecialSlot.SUPER), arg);
-			if (result != null) {
-				return result;
+			AnubisObject _super = _this.getSlot(SpecialSlot.SUPER);
+			while (_super != null && firstpass(_super, visited)) {
+				result = visit(_super, arg);
+				if (result != null) {
+					return result;
+				}
+				_super = _super.getSlot(SpecialSlot.SUPER);
 			}
-			result = startFromOuter(_this, _this.getSlot(SpecialSlot.OUTER), arg);
-			if (result != null) {
-				return result;
-			}
-		}
-		return null;
-	}
-	
-	private R startFromOuter(AnubisObject _this, AnubisObject _outer, A arg) {
-		while (_outer != null && _outer != _this) {
-			R result = startFromSuper(_this, _outer, arg);
-			if (result != null) {
-				return result;
-			}
-			_outer = _outer.getSlot(SpecialSlot.OUTER);
-		}
-		return null;
-	}
-	
-	private R startFromSuper(AnubisObject _this, AnubisObject _super, A arg) {
-		while (_super != null && _super != _this) {
-			R result = visit(_super, arg);
-			if (result != null) {
-				return result;
-			}
-			_super = _super.getSlot(SpecialSlot.SUPER);
+			_this = _this.getSlot(SpecialSlot.OUTER);
 		}
 		return null;
 	}
 	
 	protected abstract R visit(AnubisObject obj, A arg);
+	
+	public static boolean firstpass(AnubisObject object, IdentityHashMap<AnubisObject, Object> visited) {
+		if (visited == null)
+			return true;
+		boolean result = visited.containsKey(object);
+		visited.put(object, object);
+		return !result;
+	}
 }

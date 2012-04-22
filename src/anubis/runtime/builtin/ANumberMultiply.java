@@ -7,23 +7,29 @@ import anubis.AnubisObject;
 /**
  * @author SiroKuro
  */
-public class ANumberGreaterThanEqualsFunction extends AbstractNumberFunction2 {
+public class ANumberMultiply extends AbstractNumberFunction2 {
+	public static final ANumberMultiply INSTANCE = new ANumberMultiply();
+	
+	public ANumberMultiply() {
+		;
+	}
+	
 	/**
 	 * @param owner
 	 * @param name
 	 * @param factory
 	 */
-	public ANumberGreaterThanEqualsFunction(AnubisObject owner, String name) {
+	public ANumberMultiply(AnubisObject owner, String name) {
 		super(owner, name);
 	}
 	
 	@Override
 	public Number operate(BigDecimal x, BigDecimal y) {
-		return x.compareTo(y) >= 0 ? y : null;
+		return x.multiply(y);
 	}
 	
 	@Override
 	public Number operate(BigInteger x, BigInteger y) {
-		return x.compareTo(y) >= 0 ? y : null;
+		return x.multiply(y);
 	}
 }

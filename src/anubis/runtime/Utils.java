@@ -50,7 +50,7 @@ public class Utils {
 		return num.getNumber().intValue();
 	}
 	
-	public static <T extends AnubisObject> T cast(AnubisObject obj, Class<T> cls) {
+	public static <T extends AnubisObject> T cast(AnubisObject obj, Class<T> cls) { // TODO null を返したときの対処を入れる
 		return cls.cast(CAST.start(obj, cls));
 	}
 }

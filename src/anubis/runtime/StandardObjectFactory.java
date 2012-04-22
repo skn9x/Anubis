@@ -3,11 +3,13 @@ package anubis.runtime;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import javax.script.Bindings;
+import javax.script.ScriptContext;
 import anubis.AnubisObject;
 import anubis.SpecialSlot;
 import anubis.code.CodeBlock;
 import anubis.runtime.java.BindingsSlotTable;
 import anubis.runtime.java.JFieldSlotTable;
+import anubis.runtime.java.ScriptContextSlotTable;
 import anubis.runtime.util.Cache;
 
 /**
@@ -18,6 +20,7 @@ public class StandardObjectFactory implements ObjectFactory {
 	private final Cache<Object, JObject> cacheJObject = new Cache<Object, JObject>();
 	private final Cache<Number, ANumber> cacheNumber = new Cache<Number, ANumber>();
 	private final Cache<Bindings, AObject> cacheBindings = new Cache<Bindings, AObject>();
+	private final Cache<ScriptContext, AObject> cacheScriptContext = new Cache<ScriptContext, AObject>();
 	
 	private final TraitsFactory traits = new StandardTraitsFactory();
 	private final ATrueObject TRUE = traits.attach(new ATrueObject());
@@ -50,6 +53,12 @@ public class StandardObjectFactory implements ObjectFactory {
 		@Override
 		public AObject initialize(Bindings bindings) {
 			return traits.attach(new AObject(new BindingsSlotTable(bindings)));
+		}
+	};
+	private final Initializer<ScriptContext, AObject> INITIALIZER_SCRIPTCONTEXT = new Initializer<ScriptContext, AObject>() {
+		@Override
+		public AObject initialize(ScriptContext context) {
+			return traits.attach(new ANamedObject(ObjectType.LOBBY, new ScriptContextSlotTable(context)));
 		}
 	};
 	
@@ -95,7 +104,10 @@ public class StandardObjectFactory implements ObjectFactory {
 		if (obj instanceof String) {
 			return getString((String) obj);
 		}
-		if (obj instanceof Bindings) {
+		if (obj instanceof ScriptContext) {
+			return getObject(cacheScriptContext, (ScriptContext) obj, INITIALIZER_SCRIPTCONTEXT);
+		}
+		if (obj instanceof Bindings) { // TODO 後で Map と統合する
 			return getObject(cacheBindings, (Bindings) obj, INITIALIZER_BINDINGS);
 		}
 		if (obj instanceof Class<?>) {
