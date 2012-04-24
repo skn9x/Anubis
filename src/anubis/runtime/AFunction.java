@@ -22,14 +22,14 @@ public abstract class AFunction extends AObject implements ACallable {
 	 * @return
 	 */
 	public static ACallable partial(final ACallable func, final AnubisObject... pArgs) {
-		return new AFunction() { // TODO traits の接続
+		return AObjects.getTraitsFactory().attach(new AFunction() {
 			@Override
 			public AnubisObject call(AnubisObject _this, AnubisObject... args) {
-				AnubisObject[] newArgs = new AnubisObject[args.length + 1];
+				AnubisObject[] newArgs = new AnubisObject[args.length + pArgs.length];
 				System.arraycopy(pArgs, 0, newArgs, 0, pArgs.length);
 				System.arraycopy(args, 0, newArgs, pArgs.length, args.length);
 				return func.call(_this, newArgs);
 			}
-		};
+		});
 	}
 }

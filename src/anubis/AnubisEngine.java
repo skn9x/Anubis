@@ -96,6 +96,10 @@ public class AnubisEngine extends AbstractScriptEngine implements Invocable, Com
 		}));
 	}
 	
+	public ObjectFactory getObjectFactory() {
+		return core.getObjectFactory();
+	}
+	
 	@Override
 	public Object invokeFunction(String name, Object... args) throws ScriptException, NoSuchMethodException {
 		return core.internalInvoke(null, null, name, args);

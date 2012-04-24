@@ -6,6 +6,8 @@ import anubis.AnubisObject;
 import anubis.SpecialSlot;
 import anubis.runtime.builtin.AFunctionInvoke;
 import anubis.runtime.builtin.AFunctionInvokeWith;
+import anubis.runtime.builtin.AFunctionPartial;
+import anubis.runtime.builtin.ALobbyExit;
 import anubis.runtime.builtin.ALobbyPrint;
 import anubis.runtime.builtin.ALobbyPrintError;
 import anubis.runtime.builtin.ANumberAdd;
@@ -64,8 +66,14 @@ public class StandardTraitsFactory implements TraitsFactory {
 		return object;
 	}
 	
+	@Override
 	public AnubisObject getRoot() {
 		return root;
+	}
+	
+	@Override
+	public AnubisObject getTraits(String name) {
+		return traits.get(name);
 	}
 	
 	protected <T extends AnubisObject> T attachRoot(T object) {
@@ -86,16 +94,16 @@ public class StandardTraitsFactory implements TraitsFactory {
 	}
 	
 	protected AnubisObject newRoot() {
-		return new ANamedObject("[root traits]");
+		return new ANamedObject("Root");
 	}
 	
 	protected Map<String, AnubisObject> newTraits() {
 		Map<String, AnubisObject> traits = new HashMap<String, AnubisObject>();
-		traits.put(ObjectType.FUNCTION, attachRoot(new ANamedObject("[function traits]")));
-		traits.put(ObjectType.NUMBER, attachRoot(new ANamedObject("[number traits]")));
-		traits.put(ObjectType.REGEX, attachRoot(new ANamedObject("[regex traits]")));
-		traits.put(ObjectType.STRING, attachRoot(new ANamedObject("[string traits]")));
-		traits.put(ObjectType.LOBBY, attachRoot(new ANamedObject("[lobby traits]")));
+		traits.put(ObjectType.FUNCTION, attachRoot(new ANamedObject("FunctionTraits")));
+		traits.put(ObjectType.NUMBER, attachRoot(new ANamedObject("NumberTraits")));
+		traits.put(ObjectType.REGEX, attachRoot(new ANamedObject("RegexTraits")));
+		traits.put(ObjectType.STRING, attachRoot(new ANamedObject("StringTraits")));
+		traits.put(ObjectType.LOBBY, attachRoot(new ANamedObject("LobbyTraits")));
 		return traits;
 	}
 	
@@ -106,6 +114,7 @@ public class StandardTraitsFactory implements TraitsFactory {
 			public void init(AnubisObject trait) {
 				attach(new AFunctionInvoke(trait, "invoke"));
 				attach(new AFunctionInvokeWith(trait, "invokeWith"));
+				attach(new AFunctionPartial(trait, "partial"));
 			}
 		});
 		result.put(ObjectType.NUMBER, new Initializer() {
@@ -140,7 +149,7 @@ public class StandardTraitsFactory implements TraitsFactory {
 		result.put(ObjectType.LOBBY, new Initializer() {
 			@Override
 			public void init(AnubisObject trait) {
-				AObject console = attach(new AObject());
+				AObject console = attach(new ANamedObject("Console"));
 				trait.setSlot("console", console);
 				{
 					attach(new ALobbyPrint(console, "print", false));
@@ -149,6 +158,7 @@ public class StandardTraitsFactory implements TraitsFactory {
 					attach(new ALobbyPrintError(console, "printlnerr", true));
 					attach(new ALobbyPrint(console, "puts", true));
 				}
+				attach(new ALobbyExit(trait, "exit"));
 			}
 		});
 		return result;

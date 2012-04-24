@@ -2,6 +2,7 @@ package anubis.runtime;
 
 import java.util.Arrays;
 import anubis.AnubisObject;
+import anubis.parser.ParserHelper;
 
 /**
  * @author SiroKuro
@@ -17,7 +18,7 @@ public abstract class ABuiltinFunction extends AFunction {
 		assert owner != null;
 		assert name != null;
 		register(owner, name);
-		this.name = String.format("function(%s/%s)", Operator.toDebugString(owner), name);
+		this.name = String.format("function(%s/%s)", Operator.toString(owner), ParserHelper.quoteIdentifier(name));
 	}
 	
 	public ABuiltinFunction register(AnubisObject owner, String name) {

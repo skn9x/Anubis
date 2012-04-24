@@ -11,6 +11,7 @@ import anubis.ast.CompilationUnit;
 import anubis.code.CodeBlock;
 import anubis.code.Option;
 import anubis.code.asm.AsmCodeBlockFactory;
+import anubis.except.AnubisExitError;
 import anubis.except.ExceptionProvider;
 import anubis.parser.Parser;
 import anubis.runtime.AObjects;
@@ -36,6 +37,10 @@ public class EngineCore {
 		return JCaster.cast(obj);
 	}
 	
+	public ObjectFactory getObjectFactory() {
+		return factory;
+	}
+	
 	public AnubisCompiledScript internalCompile(Reader reader, ScriptContext context) throws ScriptException {
 		CodeBlock block = newCodeBlock(reader, context, null);
 		return new AnubisCompiledScript(block);
@@ -52,6 +57,9 @@ public class EngineCore {
 					return type == null ? asJava(result) : JCaster.cast(type, result);
 				}
 			});
+		}
+		catch (AnubisExitError exit) {
+			return type == null ? asJava(exit.getValue()) : JCaster.cast(type, exit.getValue());
 		}
 		catch (RuntimeException ex) {
 			throw new ScriptException(ex);
@@ -134,6 +142,9 @@ public class EngineCore {
 						return block.exec(local);
 					}
 				});
+			}
+			catch (AnubisExitError exit) {
+				return exit.getValue();
 			}
 			catch (RuntimeException ex) {
 				throw new ScriptException(ex);

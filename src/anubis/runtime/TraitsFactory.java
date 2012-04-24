@@ -13,5 +13,7 @@ public interface TraitsFactory {
 	 * @return the root
 	 */
 	public AnubisObject getRoot();
+
+	public abstract AnubisObject getTraits(String name);
 	
 }

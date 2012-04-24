@@ -1,5 +1,6 @@
 package anubis.runtime;
 
+import anubis.parser.ParserHelper;
 
 /**
  * @author SiroKuro
@@ -59,6 +60,16 @@ public class AString extends APrimitive {
 	@Override
 	public String toString() {
 		return getValue();
+	}
+	
+	@Override
+	protected Object debugValue() {
+		final int MAX_LENGTH = 32;
+		String result = getValue();
+		if (result != null && MAX_LENGTH < result.length()) {
+			result = result.substring(0, MAX_LENGTH) + "...";
+		}
+		return ParserHelper.quoteString(result);
 	}
 	
 	/**
