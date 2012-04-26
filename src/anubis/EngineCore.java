@@ -99,7 +99,7 @@ public class EngineCore {
 		Option result = new Option();
 		result.setSrcFileName(Utils.asString(context.getAttribute(ScriptEngine.FILENAME)));
 		result.setProgramName(Utils.getCnFromSn(result.getSrcFileName()));
-		result.setDisableAssertion(Operator.isFalse(AObjects.getObject(context.getAttribute("anubis.disableAssertion"))));
+		result.setDisableAssertion(Operator.isTrue(AObjects.getObject(context.getAttribute("anubis.disableAssertion"))));
 		return result;
 	}
 	

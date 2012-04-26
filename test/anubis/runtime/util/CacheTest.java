@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
-import org.junit.Ignore;
 import org.junit.Test;
 import anubis.runtime.AString;
 import anubis.runtime.ObjectFactory;
@@ -14,7 +13,6 @@ import anubis.runtime.StandardObjectFactory;
 public class CacheTest {
 	
 	@Test
-	@Ignore
 	public void test() {
 		ObjectFactory factory = new StandardObjectFactory();
 		Cache<String, AString> cache = new Cache<String, AString>();

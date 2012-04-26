@@ -1,0 +1,6 @@
+do {
+	fib = { x ->
+		x <= 1 ? 1 : fib(x - 1) + fib(x - 2)
+	};
+	console.puts("fib(20) = {0}", fib(20));
+};

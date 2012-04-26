@@ -9,19 +9,28 @@ import anubis.SpecialSlot;
  */
 public abstract class ProtoVisitor<A, R> {
 	public R start(AnubisObject _this, A arg) {
-		IdentityHashMap<AnubisObject, Object> visited = new IdentityHashMap<AnubisObject, Object>();
-		while (_this != null && firstpass(_this, visited)) {
+		IdentityHashMap<AnubisObject, Object> outer_visited = new IdentityHashMap<AnubisObject, Object>();
+		while (_this != null) {
 			R result = visit(_this, arg);
 			if (result != null) {
 				return result;
 			}
 			AnubisObject _super = _this.getSlot(SpecialSlot.SUPER);
-			while (_super != null && firstpass(_super, visited)) {
-				result = visit(_super, arg);
-				if (result != null) {
-					return result;
-				}
-				_super = _super.getSlot(SpecialSlot.SUPER);
+			if (_super != null) {
+				IdentityHashMap<AnubisObject, Object> super_visited = new IdentityHashMap<AnubisObject, Object>();
+				do {
+					result = visit(_super, arg);
+					if (result != null) {
+						return result;
+					}
+					if (secondpass(_super, super_visited)) {
+						break;
+					}
+					_super = _super.getSlot(SpecialSlot.SUPER);
+				} while (_super != null);
+			}
+			if (secondpass(_this, outer_visited)) {
+				break;
 			}
 			_this = _this.getSlot(SpecialSlot.OUTER);
 		}
@@ -30,11 +39,11 @@ public abstract class ProtoVisitor<A, R> {
 	
 	protected abstract R visit(AnubisObject obj, A arg);
 	
-	public static boolean firstpass(AnubisObject object, IdentityHashMap<AnubisObject, Object> visited) {
+	public static boolean secondpass(AnubisObject object, IdentityHashMap<AnubisObject, Object> visited) {
 		if (visited == null)
-			return true;
+			return false;
 		boolean result = visited.containsKey(object);
-		visited.put(object, object);
-		return !result;
+		visited.put(object, null);
+		return result;
 	}
 }
