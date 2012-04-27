@@ -3,6 +3,7 @@ package anubis;
 import static org.junit.Assert.assertEquals;
 import java.math.BigInteger;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class AnubisEngineTest {
@@ -29,6 +30,18 @@ public class AnubisEngineTest {
 		assertEquals("abcdef", engine.eval("x"));
 		assertEquals("ABC", engine.eval("def text = 'ABC'; return text;"));
 		assertEquals("ABC", engine.eval("text"));
+	}
+	
+	/**
+	 * 繰り返し eval してみて PermGen が溢れないことを確認してみる
+	 * @throws Exception
+	 */
+	@Test
+	@Ignore("長いしあまり重要ではないテスト")
+	public void testEvalLoop() throws Exception {
+		for (int i = 0; i < 100000; i++) {
+			assertEquals(BigInteger.ONE, engine.eval("1"));
+		}
 	}
 	
 	@Test

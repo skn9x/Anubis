@@ -6,5 +6,5 @@ do {
 			return tarai(tarai(x - 1, y, z), tarai(y - 1, z, x), tarai(z - 1, x, y));
 		end
 	};
-	console.puts("tarai = {0}", tarai(9, 4, 1));
+	console.puts("{0} = {1}", "tarai(9, 4, 1)", tarai(9, 4, 1));
 };

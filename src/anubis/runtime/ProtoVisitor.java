@@ -1,6 +1,7 @@
 package anubis.runtime;
 
-import java.util.IdentityHashMap;
+import java.util.ArrayList;
+import java.util.List;
 import anubis.AnubisObject;
 import anubis.SpecialSlot;
 
@@ -9,41 +10,63 @@ import anubis.SpecialSlot;
  */
 public abstract class ProtoVisitor<A, R> {
 	public R start(AnubisObject _this, A arg) {
-		IdentityHashMap<AnubisObject, Object> outer_visited = new IdentityHashMap<AnubisObject, Object>();
-		while (_this != null) {
+		if (_this != null) {
 			R result = visit(_this, arg);
 			if (result != null) {
 				return result;
 			}
-			AnubisObject _super = _this.getSlot(SpecialSlot.SUPER);
-			if (_super != null) {
-				IdentityHashMap<AnubisObject, Object> super_visited = new IdentityHashMap<AnubisObject, Object>();
-				do {
-					result = visit(_super, arg);
-					if (result != null) {
-						return result;
-					}
-					if (secondpass(_super, super_visited)) {
-						break;
-					}
-					_super = _super.getSlot(SpecialSlot.SUPER);
-				} while (_super != null);
+			result = visitToSuper(_this.getSlot(SpecialSlot.SUPER), arg);
+			if (result != null) {
+				return result;
 			}
-			if (secondpass(_this, outer_visited)) {
-				break;
+			result = visitToOuter(_this.getSlot(SpecialSlot.OUTER), arg);
+			if (result != null) {
+				return result;
 			}
-			_this = _this.getSlot(SpecialSlot.OUTER);
 		}
 		return null;
 	}
 	
 	protected abstract R visit(AnubisObject obj, A arg);
 	
-	public static boolean secondpass(AnubisObject object, IdentityHashMap<AnubisObject, Object> visited) {
-		if (visited == null)
-			return false;
-		boolean result = visited.containsKey(object);
-		visited.put(object, null);
-		return result;
+	private R visitToOuter(AnubisObject _outer, A arg) {
+		if (_outer != null) {
+			List<AnubisObject> visited = new ArrayList<AnubisObject>(5);
+			do {
+				R result = visitToSuper(_outer, arg);
+				if (result != null || secondpass(_outer, visited)) {
+					return result;
+				}
+				_outer = _outer.getSlot(SpecialSlot.OUTER);
+			} while (_outer != null);
+		}
+		return null;
+	}
+	
+	private R visitToSuper(AnubisObject _super, A arg) {
+		if (_super != null) {
+			List<AnubisObject> visited = new ArrayList<AnubisObject>(5);
+			do {
+				R result = visit(_super, arg);
+				if (result != null || secondpass(_super, visited)) {
+					return result;
+				}
+				_super = _super.getSlot(SpecialSlot.SUPER);
+			} while (_super != null);
+		}
+		return null;
+	}
+	
+	public static boolean secondpass(AnubisObject object, List<AnubisObject> visited) {
+		if (visited != null) {
+			int size = visited.size();
+			for (int i = 0; i < size; i++) {
+				if (visited.get(i) == object) {
+					return true;
+				}
+			}
+			visited.add(object);
+		}
+		return false;
 	}
 }
