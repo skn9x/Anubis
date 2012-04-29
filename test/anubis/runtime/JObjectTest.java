@@ -34,7 +34,7 @@ public class JObjectTest {
 	
 	@Test
 	public void testNewInstance02() throws Exception {
-		JClass jcls = AObjects.getJClass(String.class);
+		JClass jcls = (JClass) AObjects.getObject(String.class);
 		JFunction func = (JFunction) jcls.findSlot("new");
 		AnubisObject obj = func.call(jcls, new AString("abc"));
 		assertNotNull(obj);

@@ -114,7 +114,7 @@ public class InvocationTest {
 	 */
 	@Test
 	public void testInvoke() throws Exception {
-		JObject _this = AObjects.getJObject(new Sample());
+		JObject _this = (JObject) AObjects.getObject(new Sample());
 		{
 			Invocation i1 = method(Sample.class, "foo");
 			assertEquals(AInteger.valueOf(123), i1.invoke(_this));
@@ -143,7 +143,7 @@ public class InvocationTest {
 	 */
 	@Test(expected = JOverloadMismatchException.class)
 	public void testInvoke02() throws Exception {
-		JObject _this = AObjects.getJObject(new Sample());
+		JObject _this = (JObject) AObjects.getObject(new Sample());
 		{
 			Invocation i1 = method(Sample.class, "foo", Integer.TYPE);
 			assertEquals(AInteger.valueOf(124), i1.invoke(_this, ADecimal.valueOf(124)));

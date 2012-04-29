@@ -65,6 +65,10 @@ public class Operator {
 		return obj.findSlot(name);
 	}
 	
+	public static AnubisObject getBool(boolean bool) {
+		return bool ? AObjects.getTrue() : AObjects.getFalse();
+	}
+	
 	public static Iterator<AnubisObject> getIterator(AnubisObject obj) {
 		if (obj instanceof AIterable) {
 			return ((AIterable) obj).getAIterator();
@@ -163,7 +167,7 @@ public class Operator {
 			return (AnubisObject) ex;
 		if (ex instanceof AnubisUserException)
 			return ((AnubisUserException) ex).getValue();
-		return AObjects.getJObject(ex); // TODO ここだけ AObjects 使うのはなんか嫌
+		return AObjects.getObject(ex);
 	}
 	
 	public static Throwable wrapException(AnubisObject value) {

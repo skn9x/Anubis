@@ -22,7 +22,7 @@ public abstract class AFunction extends AObject implements ACallable {
 	 * @return
 	 */
 	public static ACallable partial(final ACallable func, final AnubisObject... pArgs) {
-		return AObjects.getTraitsFactory().attach(new AFunction() {
+		return AObjects.attachTraits(new AFunction() {
 			@Override
 			public AnubisObject call(AnubisObject _this, AnubisObject... args) {
 				AnubisObject[] newArgs = new AnubisObject[args.length + pArgs.length];

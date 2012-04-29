@@ -10,6 +10,7 @@ import anubis.runtime.builtin.AFunctionPartial;
 import anubis.runtime.builtin.ALobbyExit;
 import anubis.runtime.builtin.ALobbyPrint;
 import anubis.runtime.builtin.ALobbyPrintError;
+import anubis.runtime.builtin.ALobbyUse;
 import anubis.runtime.builtin.ANumberAdd;
 import anubis.runtime.builtin.ANumberDivide;
 import anubis.runtime.builtin.ANumberGreaterThan;
@@ -159,6 +160,7 @@ public class StandardTraitsFactory implements TraitsFactory {
 					attach(new ALobbyPrint(console, "puts", true));
 				}
 				attach(new ALobbyExit(trait, "exit"));
+				attach(new ALobbyUse(trait, "use"));
 			}
 		});
 		return result;

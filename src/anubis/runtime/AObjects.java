@@ -13,12 +13,13 @@ public class AObjects {
 	private static final ThreadLocal<ObjectFactory> current = new ThreadLocal<ObjectFactory>();
 	
 	/**
-	 * bool オブジェクトを返します。
-	 * @param bool bool値
-	 * @return true または false オブジェクト
+	 * オブジェクトに Trait を紐付けます。
+	 * @param object オブジェクト
+	 * @return object そのもの
 	 */
-	public static APrimitive getBool(boolean bool) {
-		return bool ? getCurrent().getTrue() : getCurrent().getFalse();
+	public static <T extends AnubisObject> T attachTraits(T object) {
+		getTraitsFactory().attach(object);
+		return object;
 	}
 	
 	/**
@@ -40,24 +41,6 @@ public class AObjects {
 	 */
 	public static APrimitive getFalse() {
 		return getCurrent().getFalse();
-	}
-	
-	/**
-	 * Class に対応する JClass オブジェクトを返します。
-	 * @param cls クラスオブジェクト
-	 * @return JClass オブジェクト / 引数が null の場合は null
-	 */
-	public static JClass getJClass(Class<?> cls) {
-		return getCurrent().getJClass(cls);
-	}
-	
-	/**
-	 * Object に対応する JObject オブジェクトを返します。
-	 * @param object オブジェクト
-	 * @return JObject オブジェクト / 引数が null の場合は null
-	 */
-	public static JObject getJObject(Object object) {
-		return getCurrent().getJObject(object);
 	}
 	
 	/**

@@ -14,20 +14,6 @@ public interface ObjectFactory {
 	public abstract APrimitive getFalse();
 	
 	/**
-	 * Class に対応する JClass オブジェクトを返します。
-	 * @param cls クラスオブジェクト
-	 * @return JClass オブジェクト / 引数が null の場合は null
-	 */
-	public abstract JClass getJClass(Class<?> cls);
-	
-	/**
-	 * Object に対応する JObject オブジェクトを返します。
-	 * @param object オブジェクト
-	 * @return JObject オブジェクト / 引数が null の場合は null
-	 */
-	public abstract JObject getJObject(Object object);
-	
-	/**
 	 * null オブジェクトを返します。
 	 * @return the null
 	 */

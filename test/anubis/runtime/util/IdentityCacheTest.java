@@ -10,18 +10,22 @@ import anubis.runtime.AString;
 import anubis.runtime.ObjectFactory;
 import anubis.runtime.StandardObjectFactory;
 
-public class CacheTest {
+public class IdentityCacheTest {
 	
 	@Test
 	public void test() {
 		ObjectFactory factory = new StandardObjectFactory();
-		Cache<String, AString> cache = new Cache<String, AString>();
+		Cache<String, AString> cache = new IdentityCache<String, AString>();
 		
 		String key = new String("hello world");
-		cache.put(key, factory.getString(key));
-		assertEquals(1, cache.size());
-		assertNotNull(cache.get(key));
 		
+		// 出し入れ
+		cache.put(key, factory.getString(key));
+		assertNotNull(cache.get(key));
+		assertNull(cache.get(new String(key)));
+		assertEquals(1, cache.size());
+		
+		// クリア
 		Reference<String> ref = new WeakReference<String>(key);
 		key = null;
 		

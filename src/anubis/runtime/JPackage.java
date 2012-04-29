@@ -6,14 +6,27 @@ import anubis.AnubisObject;
  * @author SiroKuro
  */
 public class JPackage extends AObject {
+	private final String packName;
 	private final Package pack;
 	
 	public JPackage() {
+		this.packName = null;
 		this.pack = null;
 	}
 	
 	public JPackage(Package pack) {
+		this.packName = pack.getName();
 		this.pack = pack;
+	}
+	
+	public JPackage(String packName) {
+		this.packName = packName;
+		this.pack = Package.getPackage(packName);
+	}
+	
+	@Override
+	public String debugString() {
+		return super.debugString() + "(" + packName + ")";
 	}
 	
 	@Override
@@ -21,7 +34,7 @@ public class JPackage extends AObject {
 		synchronized (this) {
 			AnubisObject obj = super.getSlot(name);
 			if (obj == null && !name.contains(".")) {
-				String fullName = pack == null ? name : pack.getName() + "." + name;
+				String fullName = packName == null ? name : packName + "." + name;
 				// クラス作成
 				{
 					JClass c = newClass(fullName);
@@ -51,7 +64,7 @@ public class JPackage extends AObject {
 	
 	private static JClass newClass(String name) {
 		try {
-			return AObjects.getJClass(Class.forName(name));
+			return (JClass) AObjects.getObject(Class.forName(name)); // TODO キャストを整理
 		}
 		catch (ClassNotFoundException ignore) {
 			return null;
@@ -59,10 +72,6 @@ public class JPackage extends AObject {
 	}
 	
 	private static JPackage newPackage(String name) {
-		Package pack = Package.getPackage(name);
-		if (pack != null) {
-			return new JPackage(pack);
-		}
-		return null;
+		return new JPackage(name);
 	}
 }

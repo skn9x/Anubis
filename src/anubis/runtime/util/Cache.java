@@ -1,27 +1,13 @@
 package anubis.runtime.util;
 
-import java.lang.ref.Reference;
-import java.lang.ref.WeakReference;
-import java.util.Map;
-import java.util.WeakHashMap;
-
-public class Cache<K, V> {
-	private final Map<K, Reference<V>> cache = new WeakHashMap<K, Reference<V>>();
+public interface Cache<K, V> {
 	
-	public void clear() {
-		cache.clear();
-	}
+	public abstract void clear();
 	
-	public V get(K key) {
-		Reference<V> ref = cache.get(key);
-		return ref == null ? null : ref.get();
-	}
+	public abstract V get(K key);
 	
-	public void put(K key, V value) {
-		cache.put(key, new WeakReference<V>(value));
-	}
+	public abstract void put(K key, V value);
 	
-	public int size() {
-		return cache.size();
-	}
+	public abstract int size();
+	
 }

@@ -2,25 +2,24 @@ package anubis.runtime;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import javax.script.Bindings;
 import javax.script.ScriptContext;
 import anubis.AnubisObject;
 import anubis.SpecialSlot;
 import anubis.code.CodeBlock;
-import anubis.runtime.java.BindingsSlotTable;
 import anubis.runtime.java.JFieldSlotTable;
 import anubis.runtime.java.ScriptContextSlotTable;
 import anubis.runtime.util.Cache;
+import anubis.runtime.util.EqualsCache;
+import anubis.runtime.util.IdentityCache;
 
 /**
  * @author SiroKuro
  */
 public class StandardObjectFactory implements ObjectFactory {
-	private final Cache<Class<?>, JClass> cacheJClass = new Cache<Class<?>, JClass>();
-	private final Cache<Object, JObject> cacheJObject = new Cache<Object, JObject>();
-	private final Cache<Number, ANumber> cacheNumber = new Cache<Number, ANumber>();
-	private final Cache<Bindings, AObject> cacheBindings = new Cache<Bindings, AObject>();
-	private final Cache<ScriptContext, AObject> cacheScriptContext = new Cache<ScriptContext, AObject>();
+	private final Cache<Number, ANumber> numberCache = new EqualsCache<Number, ANumber>();
+	private final Cache<ScriptContext, AObject> cacheScriptContext = new IdentityCache<ScriptContext, AObject>();
+	private final Cache<Object, AnubisObject> immutableObjectCache = new EqualsCache<Object, AnubisObject>();
+	private final Cache<Object, AnubisObject> mutableObjectCache = new IdentityCache<Object, AnubisObject>();
 	
 	private final TraitsFactory traits = new StandardTraitsFactory();
 	private final ATrueObject TRUE = traits.attach(new ATrueObject());
@@ -49,16 +48,22 @@ public class StandardObjectFactory implements ObjectFactory {
 			return newJClass(cls);
 		}
 	};
-	private final Initializer<Bindings, AObject> INITIALIZER_BINDINGS = new Initializer<Bindings, AObject>() {
-		@Override
-		public AObject initialize(Bindings bindings) {
-			return traits.attach(new AObject(new BindingsSlotTable(bindings)));
-		}
-	};
 	private final Initializer<ScriptContext, AObject> INITIALIZER_SCRIPTCONTEXT = new Initializer<ScriptContext, AObject>() {
 		@Override
 		public AObject initialize(ScriptContext context) {
 			return traits.attach(new ANamedObject(ObjectType.LOBBY, new ScriptContextSlotTable(context)));
+		}
+	};
+	private final Initializer<Package, JPackage> INITIALIZER_JPACKAGE = new Initializer<Package, JPackage>() {
+		@Override
+		public JPackage initialize(Package pack) {
+			return traits.attach(new JPackage(pack));
+		}
+	};
+	private final Initializer<String, AString> INITIALIZER_ASTRING = new Initializer<String, AString>() {
+		@Override
+		public AString initialize(String value) {
+			return traits.attach(AString.valueOf(value));
 		}
 	};
 	
@@ -67,14 +72,10 @@ public class StandardObjectFactory implements ObjectFactory {
 		return FALSE;
 	}
 	
-	@Override
 	public JClass getJClass(Class<?> cls) {
-		return getObject(cacheJClass, cls, INITIALIZER_JCLASS);
-	}
-	
-	@Override
-	public JObject getJObject(Object object) {
-		return getObject(cacheJObject, object, INITIALIZER_JOBJECT);
+		if (cls == null)
+			return null;
+		return getObject(immutableObjectCache, cls, INITIALIZER_JCLASS);
 	}
 	
 	@Override
@@ -84,7 +85,7 @@ public class StandardObjectFactory implements ObjectFactory {
 	
 	@Override
 	public ANumber getNumber(Number value) {
-		return getObject(cacheNumber, Utils.asBigNumber(value), INITIALIZER_ANUMBER);
+		return getObject(numberCache, Utils.asBigNumber(value), INITIALIZER_ANUMBER);
 	}
 	
 	@Override
@@ -104,22 +105,22 @@ public class StandardObjectFactory implements ObjectFactory {
 		if (obj instanceof String) {
 			return getString((String) obj);
 		}
-		if (obj instanceof ScriptContext) {
-			return getObject(cacheScriptContext, (ScriptContext) obj, INITIALIZER_SCRIPTCONTEXT);
-		}
-		if (obj instanceof Bindings) { // TODO 後で Map と統合する
-			return getObject(cacheBindings, (Bindings) obj, INITIALIZER_BINDINGS);
-		}
 		if (obj instanceof Class<?>) {
 			return getJClass((Class<?>) obj);
 		}
+		if (obj instanceof Package) {
+			return getObject(immutableObjectCache, (Package) obj, INITIALIZER_JPACKAGE);
+		}
+		if (obj instanceof ScriptContext) {
+			return getObject(cacheScriptContext, (ScriptContext) obj, INITIALIZER_SCRIPTCONTEXT);
+		}
 		// TODO 他にも追加
-		return getJObject(obj);
+		return getObject(mutableObjectCache, obj, INITIALIZER_JOBJECT);
 	}
 	
 	@Override
 	public AString getString(String value) {
-		return traits.attach(AString.valueOf(value));
+		return getObject(immutableObjectCache, value, INITIALIZER_ASTRING);
 	}
 	
 	@Override
@@ -185,13 +186,15 @@ public class StandardObjectFactory implements ObjectFactory {
 		return traits.attach(new ASet());
 	}
 	
-	private static <T, R> R getObject(Cache<T, R> cache, T object, Initializer<T, R> init) {
+	private static <T, R> R getObject(Cache<? super T, ? super R> cache, T object, Initializer<T, R> init) {
 		if (object == null) {
 			return null;
 		}
 		else {
 			synchronized (cache) {
-				R result = cache.get(object);
+				// TODO あとで何とかしよう
+				@SuppressWarnings("unchecked")
+				R result = (R) cache.get(object);
 				if (result == null) {
 					result = init.initialize(object);
 					cache.put(object, result);

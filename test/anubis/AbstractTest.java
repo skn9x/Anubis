@@ -63,8 +63,8 @@ public class AbstractTest {
 	public void setUp() throws Exception {
 		this.factory = new StandardObjectFactory();
 		this.oldFactory = AObjects.setCurrent(factory);
-		this._this = AObjects.getTraitsFactory().attach(new AObject());
-		this.outer = AObjects.getTraitsFactory().attach(new AObject());
+		this._this = AObjects.attachTraits(new AObject());
+		this.outer = AObjects.attachTraits(new AObject());
 		this.local = AObjects.newContext(_this, outer);
 	}
 	

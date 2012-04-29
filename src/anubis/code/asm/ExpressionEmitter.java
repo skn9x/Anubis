@@ -64,7 +64,7 @@ public class ExpressionEmitter {
 				expr.getLeft().visit(owner, builder);
 				expr.getRight().visit(owner, builder);
 				builder.emitInvoke(Operator.class, "opEquals", AnubisObject.class, AnubisObject.class);
-				builder.emitInvoke(AObjects.class, "getBool", Boolean.TYPE);
+				builder.emitInvoke(Operator.class, "getBool", Boolean.TYPE);
 				break;
 			}
 			case IFNULL: {
@@ -88,7 +88,7 @@ public class ExpressionEmitter {
 				expr.getLeft().visit(owner, builder);
 				expr.getRight().visit(owner, builder);
 				builder.emitInvoke(Operator.class, "opNotEquals", AnubisObject.class, AnubisObject.class);
-				builder.emitInvoke(AObjects.class, "getBool", Boolean.TYPE);
+				builder.emitInvoke(Operator.class, "getBool", Boolean.TYPE);
 				break;
 			}
 			case OR: {
@@ -111,7 +111,7 @@ public class ExpressionEmitter {
 				expr.getLeft().visit(owner, builder);
 				expr.getRight().visit(owner, builder);
 				builder.emitInvoke(Operator.class, "opXor", AnubisObject.class, AnubisObject.class);
-				builder.emitInvoke(AObjects.class, "getBool", Boolean.TYPE);
+				builder.emitInvoke(Operator.class, "getBool", Boolean.TYPE);
 				break;
 			}
 			default:
@@ -333,25 +333,25 @@ public class ExpressionEmitter {
 			case NOT: {
 				expr.getExpr().visit(owner, builder);
 				builder.emitInvoke(Operator.class, "opNot", AnubisObject.class);
-				builder.emitInvoke(AObjects.class, "getBool", Boolean.TYPE);
+				builder.emitInvoke(Operator.class, "getBool", Boolean.TYPE);
 				break;
 			}
 			case ISNULL: {
 				expr.getExpr().visit(owner, builder);
 				builder.emitInvoke(Operator.class, "isNull", AnubisObject.class);
-				builder.emitInvoke(AObjects.class, "getBool", Boolean.TYPE);
+				builder.emitInvoke(Operator.class, "getBool", Boolean.TYPE);
 				break;
 			}
 			case ISTRUE: {
 				expr.getExpr().visit(owner, builder);
 				builder.emitInvoke(Operator.class, "isTrue", AnubisObject.class);
-				builder.emitInvoke(AObjects.class, "getBool", Boolean.TYPE);
+				builder.emitInvoke(Operator.class, "getBool", Boolean.TYPE);
 				break;
 			}
 			case ISFALSE: {
 				expr.getExpr().visit(owner, builder);
 				builder.emitInvoke(Operator.class, "isFalse", AnubisObject.class);
-				builder.emitInvoke(AObjects.class, "getBool", Boolean.TYPE);
+				builder.emitInvoke(Operator.class, "getBool", Boolean.TYPE);
 				break;
 			}
 			default: {
