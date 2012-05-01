@@ -5,28 +5,32 @@ import java.util.Iterator;
 import java.util.Set;
 import anubis.AnubisObject;
 
-public class SetAdapter extends AbstractSet<AnubisObject> {
-	private final Set<Object> internal;
+public class SetAdapter<T> extends AbstractSet<AnubisObject> implements Adapter {
+	private final Set<T> internal;
+	private final Class<T> cls;
 	
-	public SetAdapter(Set<Object> internal) {
+	public SetAdapter(Set<T> internal, Class<T> cls) {
 		this.internal = internal;
+		this.cls = cls;
 	}
 	
 	@Override
-	public boolean add(AnubisObject arg0) {
-		// TODO Auto-generated method stub
-		return super.add(arg0);
+	public boolean add(AnubisObject value) {
+		return internal.add(cls.cast(JCaster.cast(cls, value)));
+	}
+	
+	@Override
+	public Object getOrigin() {
+		return internal;
 	}
 	
 	@Override
 	public Iterator<AnubisObject> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new IteratorAdapter(internal.iterator());
 	}
 	
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return internal.size();
 	}
 }

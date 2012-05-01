@@ -15,10 +15,14 @@ import anubis.runtime.builtin.ALobbyExit;
 
 public class Repl implements ALobbyExit.Callback {
 	private final ScriptEngineFactory factory;
+	private final boolean nologo, noprompt;
+	private final ALobbyExit exit = new ALobbyExit(this);
 	private boolean running = true;
 	
-	public Repl(ScriptEngineFactory factory) {
+	public Repl(ScriptEngineFactory factory, boolean nologo, boolean noprompt) {
 		this.factory = factory;
+		this.nologo = nologo;
+		this.noprompt = noprompt;
 	}
 	
 	@Override
@@ -27,50 +31,23 @@ public class Repl implements ALobbyExit.Callback {
 		running = false;
 	}
 	
-	public void repl(boolean nologo, boolean noprompt) {
-		AnubisEngine engine = (AnubisEngine) factory.getScriptEngine();
-		engine.put(ScriptEngine.FILENAME, "stdin");
-		if (!nologo) {
-			System.out.printf("%s(%s) on java(%s), %s", factory.getEngineName(), factory.getEngineVersion(),
-					System.getProperty("java.version", "unknown version"),
-					System.getProperty("os.name", "[unknown os]"));
-			System.out.println();
-			System.out.println("if you want to exit, please type 'exit' or CTRL+Z.");
-			System.out.println();
-		}
+	public void repl() {
+		AnubisEngine engine = initEngine();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		try {
-			TraitsFactory tf = engine.getObjectFactory().getTraitsFactory();
-			ALobbyExit exit = tf.attach(new ALobbyExit(this));
-			engine.put("exit", engine.getObjectFactory().getTraitsFactory().attach(exit));
-			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-			MAINLOOP: while (running) {
-				StringBuilder code = new StringBuilder();
-				if (!noprompt) {
-					System.out.print("an> ");
-				}
-				while (running) {
-					String line = reader.readLine();
-					if (line == null)
-						break MAINLOOP;
-					if (line.length() == 0)
-						break;
-					code.append(line + "\n");
-					if (!noprompt) {
-						System.out.print("  > ");
-					}
-				}
+			printLogo();
+			while (running) {
 				try {
-					AnubisObject obj = engine.evalForRepl(code.toString());
+					String code = readLine(reader);
+					if (code == null) {
+						break;
+					}
+					AnubisObject obj = engine.evalForRepl(code);
 					if (obj == exit) {
 						System.out.println("bye!");
-						running = false;
+						break;
 					}
-					if (running) {
-						if (obj != null) {
-							System.out.println("--> " + Operator.toString(obj));
-						}
-						System.out.println();
-					}
+					printResult(obj);
 				}
 				catch (ScriptException ex) {
 					Throwable cause = ex.getCause();
@@ -85,8 +62,60 @@ public class Repl implements ALobbyExit.Callback {
 				}
 			}
 		}
-		catch (IOException ex) {
-			;
+		finally {
+			running = false;
 		}
+	}
+	
+	private AnubisEngine initEngine() {
+		AnubisEngine engine = (AnubisEngine) factory.getScriptEngine();
+		TraitsFactory tf = engine.getObjectFactory().getTraitsFactory();
+		engine.put("exit", tf.attach(exit));
+		engine.put(ScriptEngine.FILENAME, "stdin");
+		return engine;
+	}
+	
+	private void printLogo() {
+		if (running && !nologo) {
+			System.out.printf("%s(%s) on java(%s), %s", factory.getEngineName(), factory.getEngineVersion(),
+					System.getProperty("java.version", "unknown version"),
+					System.getProperty("os.name", "[unknown os]"));
+			System.out.println();
+			System.out.println("if you want to exit, please type 'exit' or CTRL+Z.");
+			System.out.println();
+		}
+	}
+	
+	private void printPrompt(boolean cont) {
+		if (running && !noprompt) {
+			if (!cont)
+				System.out.print("an> ");
+			else
+				System.out.print("  > ");
+		}
+	}
+	
+	private void printResult(AnubisObject obj) {
+		if (running) {
+			if (obj != null) {
+				System.out.println("--> " + Operator.toString(obj));
+			}
+			System.out.println();
+		}
+	}
+	
+	private String readLine(BufferedReader reader) throws IOException {
+		StringBuilder code = new StringBuilder();
+		printPrompt(false);
+		while (running) {
+			String line = reader.readLine();
+			if (line == null) // EOF
+				return null;
+			if (line.length() == 0)
+				break;
+			code.append(line + "\n");
+			printPrompt(true);
+		}
+		return code.toString();
 	}
 }

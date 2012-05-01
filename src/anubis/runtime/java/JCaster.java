@@ -147,13 +147,18 @@ public class JCaster {
 		return obj;
 	}
 	
-	public static Object cast(Class<?> cls, AnubisObject arg) { // プリミティブ型を考慮するので return-type は Object にする
-		Object value = DEEPCAST.start(arg, cls);
-		if (value == NULL)
-			return null;
-		if (value != null)
-			return toWrappedClass(cls).cast(value);
-		throw new ClassCastException(); // TODO オリジナル例外
+	public static Object cast(Class<?> cls, AnubisObject obj) { // プリミティブ型を考慮するので return-type は Object にする
+		if (cls == null) {
+			return cast(obj);
+		}
+		else {
+			Object value = DEEPCAST.start(obj, cls);
+			if (value == NULL)
+				return null;
+			if (value != null)
+				return toWrappedClass(cls).cast(value);
+			throw new ClassCastException(); // TODO オリジナル例外
+		}
 	}
 	
 	public static Object[] cast(Class<?>[] cls, AnubisObject[] args) {

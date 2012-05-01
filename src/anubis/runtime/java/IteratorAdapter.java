@@ -4,12 +4,17 @@ import java.util.Iterator;
 import anubis.AnubisObject;
 import anubis.runtime.AObjects;
 
-public class IteratorAdapter implements Iterator<AnubisObject> {
+public class IteratorAdapter implements Iterator<AnubisObject>, Adapter {
 	private final Iterator<?> iter;
 	
 	public IteratorAdapter(Iterator<?> iter) {
 		assert iter != null;
 		this.iter = iter;
+	}
+	
+	@Override
+	public Object getOrigin() {
+		return iter;
 	}
 	
 	@Override

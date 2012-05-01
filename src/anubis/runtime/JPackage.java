@@ -1,11 +1,12 @@
 package anubis.runtime;
 
+import anubis.ACastable;
 import anubis.AnubisObject;
 
 /**
  * @author SiroKuro
  */
-public class JPackage extends AObject {
+public class JPackage extends AObject implements ACastable {
 	private final String packName;
 	private final Package pack;
 	
@@ -22,6 +23,14 @@ public class JPackage extends AObject {
 	public JPackage(String packName) {
 		this.packName = packName;
 		this.pack = Package.getPackage(packName);
+	}
+	
+	@Override
+	public Object asJava() {
+		if (pack != null)
+			return pack;
+		else
+			return this;
 	}
 	
 	@Override

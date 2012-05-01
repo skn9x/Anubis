@@ -19,4 +19,5 @@ public interface ObjectType {
 	public static final String SET = "set";
 	public static final String CONTEXT = "context";
 	public static final String LOBBY = "lobby";
+	public static final String NOP = "nop";
 }

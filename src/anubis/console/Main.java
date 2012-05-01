@@ -30,8 +30,8 @@ public class Main {
 				// TODO interpreter
 			}
 			else {
-				Repl main = new Repl(factory);
-				main.repl(cmdopt.hasOption("nologo"), cmdopt.hasOption("noprompt"));
+				Repl main = new Repl(factory, cmdopt.hasOption("nologo"), cmdopt.hasOption("noprompt"));
+				main.repl();
 			}
 		}
 		catch (ParseException e) {

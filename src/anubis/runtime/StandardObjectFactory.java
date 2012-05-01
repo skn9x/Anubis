@@ -144,17 +144,19 @@ public class StandardObjectFactory implements ObjectFactory {
 	}
 	
 	public JClass newJClass(Class<?> cls) {
-		JClass result = new JClass(cls);
-		result.setSlot(SpecialSlot.SUPER, getJClass(cls.getSuperclass()));
+		JClass result = JClass.valueOf(cls);
+		if (cls.getSuperclass() != null)
+			result.setSlot(SpecialSlot.SUPER, getJClass(cls.getSuperclass()));
+		else
+			getTraitsFactory().attach(result);
 		return result;
 	}
 	
 	@Override
 	public JObject newJObject(Object object) {
-		Class<?> cls = object.getClass();
-		JClass jcls = getJClass(cls);
-		JObject result = new JObject(object, new JFieldSlotTable(object, jcls.getFields()));
-		result.setSlot(SpecialSlot.SUPER, getJClass(cls));
+		JClass jcls = getJClass(object.getClass());
+		JObject result = new JObject(object, new JFieldSlotTable(object, jcls.getInstanceFields()));
+		result.setSlot(SpecialSlot.SUPER, jcls);
 		return result;
 	}
 	

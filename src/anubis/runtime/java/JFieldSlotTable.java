@@ -15,12 +15,21 @@ public class JFieldSlotTable extends AbstractSlotTable {
 	private final Object object;
 	private final Map<String, Field> fields;
 	
+	/**
+	 * インタフェイス用コンストラクタ
+	 * @param fields
+	 */
 	public JFieldSlotTable(Map<String, Field> fields) {
 		assert fields != null;
 		this.object = null;
 		this.fields = fields;
 	}
 	
+	/**
+	 * オブジェクト用コンストラクタ
+	 * @param object
+	 * @param fields
+	 */
 	public JFieldSlotTable(Object object, Map<String, Field> fields) {
 		assert object != null;
 		assert fields != null;

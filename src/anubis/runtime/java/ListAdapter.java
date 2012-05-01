@@ -3,41 +3,44 @@ package anubis.runtime.java;
 import java.util.AbstractList;
 import java.util.List;
 import anubis.AnubisObject;
+import anubis.runtime.AObjects;
 
-public class ListAdapter extends AbstractList<AnubisObject> {
-	private final List<Object> internal;
+public class ListAdapter<T> extends AbstractList<AnubisObject> implements Adapter {
+	private final List<T> internal;
+	private final Class<T> cls;
 	
-	public ListAdapter(List<Object> internal) {
+	public ListAdapter(List<T> internal, Class<T> cls) {
 		this.internal = internal;
+		this.cls = cls;
 	}
 	
 	@Override
 	public void add(int index, AnubisObject element) {
-		// TODO Auto-generated method stub
-		super.add(index, element);
+		internal.add(index, cls.cast(JCaster.cast(cls, element)));
 	}
 	
 	@Override
-	public AnubisObject get(int arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public AnubisObject get(int index) {
+		return AObjects.getObject(internal.get(index));
+	}
+	
+	@Override
+	public Object getOrigin() {
+		return internal;
 	}
 	
 	@Override
 	public AnubisObject remove(int index) {
-		// TODO Auto-generated method stub
-		return super.remove(index);
+		return AObjects.getObject(internal.remove(index));
 	}
 	
 	@Override
 	public AnubisObject set(int index, AnubisObject element) {
-		// TODO Auto-generated method stub
-		return super.set(index, element);
+		return AObjects.getObject(internal.set(index, cls.cast(JCaster.cast(cls, element))));
 	}
 	
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return internal.size();
 	}
 }

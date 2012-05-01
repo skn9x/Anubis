@@ -161,6 +161,8 @@ public class StandardTraitsFactory implements TraitsFactory {
 				}
 				attach(new ALobbyExit(trait, "exit"));
 				attach(new ALobbyUse(trait, "use"));
+				ANop nop = attach(new ANop());
+				trait.setSlot("nop", nop);
 			}
 		});
 		return result;

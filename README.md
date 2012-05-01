@@ -15,7 +15,7 @@ anubis はプロトタイプベースのオブジェクト指向言語です。
 空行の入力で評価が開始され、実行結果が表示されます。
 
     anubis(1.0) on java(1.6.0_23), Windows 7
-    if you want to exit, please type 'exit()' or CTRL+Z.
+    if you want to exit, please type 'exit' or CTRL+Z.
     
     an> "Hello world".dumpString()
       > 
