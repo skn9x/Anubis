@@ -8,17 +8,22 @@ import anubis.parser.ParserHelper;
  * @author SiroKuro
  */
 public abstract class ABuiltinFunction extends AFunction {
-	protected final String name;
+	protected final String funcname;
 	
 	protected ABuiltinFunction() {
-		this.name = String.format("function(%s)", getClass().getSimpleName());
+		this.funcname = getClass().getSimpleName();
 	}
 	
 	protected ABuiltinFunction(AnubisObject owner, String name) {
 		assert owner != null;
 		assert name != null;
 		register(owner, name);
-		this.name = String.format("function(%s/%s)", Operator.toString(owner), ParserHelper.quoteIdentifier(name));
+		this.funcname = Operator.toString(owner) + "/" + ParserHelper.quoteIdentifier(name);
+	}
+	
+	@Override
+	public String debugString() {
+		return super.debugString() + "(" + funcname + ")";
 	}
 	
 	public ABuiltinFunction register(AnubisObject owner, String name) {
@@ -28,7 +33,7 @@ public abstract class ABuiltinFunction extends AFunction {
 	
 	@Override
 	public String toString() {
-		return name;
+		return getType() + "(" + funcname + ")";
 	}
 	
 	public abstract static class _0 extends ABuiltinFunction {

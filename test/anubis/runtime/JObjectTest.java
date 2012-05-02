@@ -6,12 +6,35 @@ import org.junit.Test;
 import anubis.AbstractTest;
 import anubis.AnubisObject;
 import anubis.SpecialSlot;
+import anubis.except.SlotReadonlyException;
 import anubis.runtime.java.JCaster;
 
 /**
  * @author SiroKuro
  */
 public class JObjectTest extends AbstractTest {
+	@Test
+	public void testFieldAccess01() throws Exception {
+		local.setSlot("cls", AObjects.getObject(Sample.class));
+		
+		exec("obj = cls.new(1, 2)");
+		assertAEquals(1, exec("obj.x"));
+		assertAEquals(2, exec("obj.y"));
+		
+		exec("obj.x = 3");
+		exec("obj.y = 4");
+		assertAEquals(3, exec("obj.getX()"));
+		assertAEquals(4, exec("obj.getY()"));
+	}
+	
+	@Test(expected = SlotReadonlyException.class)
+	public void testFieldAccess02() throws Exception {
+		local.setSlot("cls", AObjects.getObject(Sample.class));
+		
+		exec("obj = cls.new()");
+		exec("obj.Z = 999");
+	}
+	
 	@Test
 	public void testNewInstance01() throws Exception {
 		JObject obj = AObjects.newJObject("abc");
@@ -29,24 +52,18 @@ public class JObjectTest extends AbstractTest {
 		assertEquals(String.class, JCaster.cast(result).getClass());
 	}
 	
-	@Test
-	public void testNewInstance03() throws Exception {
-		local.setSlot("cls", AObjects.getObject(Sample.class));
-		
-		exec("obj = cls.new(1, 2)");
-		assertAEquals(1, exec("obj.x"));
-		assertAEquals(2, exec("obj.y"));
-		
-		exec("obj.x = 3");
-		exec("obj.y = 4");
-		assertAEquals(3, exec("obj.getX()"));
-		assertAEquals(4, exec("obj.getY()"));
-	}
-	
 	private static class Sample {
 		private int x;
 		public int y;
+		public final int Z = 123;
 		
+		@SuppressWarnings("unused")
+		public Sample() {
+			this.x = 0;
+			this.y = 0;
+		}
+		
+		@SuppressWarnings("unused")
 		public Sample(int x, int y) {
 			this.x = x;
 			this.y = y;
@@ -60,6 +77,11 @@ public class JObjectTest extends AbstractTest {
 		@SuppressWarnings("unused")
 		public int getY() {
 			return y;
+		}
+		
+		@SuppressWarnings("unused")
+		public int getZ() {
+			return Z;
 		}
 		
 		@SuppressWarnings("unused")

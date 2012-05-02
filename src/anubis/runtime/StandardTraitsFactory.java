@@ -30,6 +30,7 @@ import anubis.runtime.builtin.ARootEquals;
 import anubis.runtime.builtin.ARootNewSlot;
 import anubis.runtime.builtin.ARootNotEquals;
 import anubis.runtime.builtin.ARootSetSlot;
+import anubis.runtime.builtin.ARootSetSpecialSlot;
 import anubis.runtime.builtin.ARootToString;
 import anubis.runtime.builtin.AStringAdd;
 
@@ -89,6 +90,8 @@ public class StandardTraitsFactory implements TraitsFactory {
 		attach(new ARootNotEquals(root, "!="));
 		attach(new ARootNewSlot(root, "newSlot"));
 		attach(new ARootSetSlot(root, "setSlot"));
+		attach(new ARootSetSpecialSlot(root, "setSuper", SpecialSlot.SUPER));
+		attach(new ARootSetSpecialSlot(root, "setOuter", SpecialSlot.OUTER));
 		attach(new ARootToString(root, "toString"));
 		attach(new ARootDebugString(root, "debugString"));
 		attach(new ARootDumpString(root, "dumpString"));

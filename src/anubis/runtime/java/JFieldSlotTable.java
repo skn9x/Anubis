@@ -1,6 +1,7 @@
 package anubis.runtime.java;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.TreeMap;
 import anubis.AnubisObject;
@@ -71,7 +72,7 @@ public class JFieldSlotTable extends AbstractSlotTable {
 	public void put(String name, AnubisObject value, boolean setReadonly) {
 		assertNotReadonly(name, setReadonly);
 		Field ff = fields.get(name);
-		if (ff != null) {
+		if (ff != null && Modifier.isFinal(ff.getModifiers()) == false) {
 			try {
 				ff.set(object, JCaster.cast(ff.getType(), value));
 			}

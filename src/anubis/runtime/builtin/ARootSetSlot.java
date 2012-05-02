@@ -22,7 +22,7 @@ public class ARootSetSlot extends _3 {
 		if (ref != null) {
 			if (op != null) {
 				AnubisObject left = ref.get();
-				value = Operator.findFunction(left, op).call(left, value);
+				value = Operator.opCall(left, op, left, value);
 			}
 			ref.set(value);
 		}

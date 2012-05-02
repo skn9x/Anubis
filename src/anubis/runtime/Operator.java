@@ -97,7 +97,7 @@ public class Operator {
 	}
 	
 	public static AnubisObject opClose(AnubisObject obj) {
-		return findFunction(obj, "close").call(obj);
+		return opCall(obj, "close", obj);
 	}
 	
 	public static boolean opEquals(AnubisObject x, AnubisObject y) {

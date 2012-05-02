@@ -8,7 +8,12 @@ import anubis.except.AnubisException;
 import anubis.except.ExceptionProvider;
 
 public class FunctionAccessor {
+	private final String name;
 	private final Set<Invocation> invoke = Collections.synchronizedSet(new TreeSet<Invocation>());
+	
+	public FunctionAccessor(Class<?> declaredClass, String memberName) {
+		name = declaredClass.getSimpleName() + "/" + memberName;
+	}
 	
 	public void add(Invocation i) {
 		invoke.add(i);
@@ -30,6 +35,10 @@ public class FunctionAccessor {
 		else {
 			throw ExceptionProvider.newJOverloadMismatch();
 		}
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	public void remove(Invocation i) {

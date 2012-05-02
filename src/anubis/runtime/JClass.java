@@ -82,7 +82,7 @@ public class JClass extends AObject {
 			return null;
 		}
 		else {
-			FunctionAccessor _new = new FunctionAccessor();
+			FunctionAccessor _new = new FunctionAccessor(cls, "<init>");
 			for (Constructor<?> cc: cls.getDeclaredConstructors()) {
 				if (!Modifier.isPrivate(cc.getModifiers())) {
 					cc.setAccessible(true);
@@ -100,7 +100,7 @@ public class JClass extends AObject {
 				mm.setAccessible(true);
 				FunctionAccessor acc = accessors.get(mm.getName());
 				if (acc == null) {
-					acc = new FunctionAccessor();
+					acc = new FunctionAccessor(cls, mm.getName());
 					methods.put(mm.getName(), acc);
 				}
 				acc.add(new MethodInvocation(mm));

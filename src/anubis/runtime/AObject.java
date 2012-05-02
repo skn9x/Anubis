@@ -20,7 +20,7 @@ public class AObject extends AbstractAObject implements ADumpable {
 	
 	@Override
 	public String debugString() {
-		return getType() + "@" + Integer.toHexString(System.identityHashCode(this));
+		return getType() + "_" + Utils.getIdString(this);
 	}
 	
 	@Override
@@ -52,6 +52,6 @@ public class AObject extends AbstractAObject implements ADumpable {
 	
 	@Override
 	public String toString() {
-		return debugString();
+		return getType() + "_" + Utils.getIdString(this);
 	}
 }

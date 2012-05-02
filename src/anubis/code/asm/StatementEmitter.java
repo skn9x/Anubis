@@ -227,10 +227,10 @@ public class StatementEmitter {
 				public void emitTry(CodeBuilder builder) {
 					Label _END = builder.newLabel();
 					// body
-					block.startStrongBlock(stmt.getLabel(), _END, _END);
-					try {
-						for (CaseElement elm: stmt.getCases()) {
-							Label _ELSE = builder.newLabel();
+					for (CaseElement elm: stmt.getCases()) {
+						Label _ELSE = builder.newLabel();
+						block.startWeakBlock(stmt.getLabel(), _END, _ELSE);
+						try {
 							// condition
 							builder.pushLocalVar(var);
 							elm.getValue().visit(owner, builder);
@@ -241,7 +241,13 @@ public class StatementEmitter {
 							builder.emitGoto(_END);
 							builder.emitLabel(_ELSE);
 						}
-						// else
+						finally {
+							block.endBlock();
+						}
+					}
+					// else
+					block.startWeakBlock(stmt.getLabel(), _END, _END);
+					try {
 						stmt.getElse().visit(owner, builder);
 					}
 					finally {

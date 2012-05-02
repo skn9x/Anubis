@@ -8,10 +8,12 @@ import anubis.runtime.java.FunctionAccessor;
  */
 public class JFunction extends AFunction {
 	private final FunctionAccessor func;
+	private final String funcname;
 	
 	public JFunction(FunctionAccessor func) {
 		assert func != null;
 		this.func = func;
+		this.funcname = func.getName();
 	}
 	
 	@Override
@@ -20,8 +22,18 @@ public class JFunction extends AFunction {
 	}
 	
 	@Override
+	public String debugString() {
+		return super.debugString() + "(" + funcname + ")";
+	}
+	
+	@Override
 	public String getType() {
 		return ObjectType.JFUNCTION;
+	}
+	
+	@Override
+	public String toString() {
+		return getType() + "(" + funcname + ")";
 	}
 	
 	public static JFunction valueOf(FunctionAccessor func) {

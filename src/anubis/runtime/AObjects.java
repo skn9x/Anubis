@@ -105,16 +105,17 @@ public class AObjects {
 	
 	/**
 	 * Context オブジェクトを作成します。
-	 * @param outer 外側のコンテキストオブジェクト
+	 * @param outer 新しいコンテキストでの outer オブジェクト (null可)
 	 * @return Context オブジェクト
 	 */
 	public static AnubisObject newContext(AnubisObject outer) {
-		return getCurrent().newContext(outer.getSlot(SpecialSlot.THIS), outer);
+		return getCurrent().newContext(outer == null ? null : outer.getSlot(SpecialSlot.THIS), outer);
 	}
 	
 	/**
 	 * Context オブジェクトを作成します。
-	 * @param outer 外側のコンテキストオブジェクト
+	 * @param _this 新しいコンテキストでの this オブジェクト (null可)
+	 * @param outer 新しいコンテキストでの outer オブジェクト (null可)
 	 * @return Context オブジェクト
 	 */
 	public static AnubisObject newContext(AnubisObject _this, AnubisObject outer) {
@@ -124,7 +125,7 @@ public class AObjects {
 	/**
 	 * Function オブジェクトを作成します。
 	 * @param body ユーザーコード
-	 * @param outer 外側のコンテキストオブジェクト
+	 * @param outer 外側のコンテキストオブジェクト (null可)
 	 * @param args 引数
 	 * @return Function オブジェクト
 	 */

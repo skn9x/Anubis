@@ -133,14 +133,29 @@ public class StandardObjectFactory implements ObjectFactory {
 		return TRUE;
 	}
 	
+	/**
+	 * Context オブジェクトを作成します。
+	 * @param _this 新しいコンテキストでの this オブジェクト (null可)
+	 * @param outer 新しいコンテキストでの outer オブジェクト (null可)
+	 * @return Context オブジェクト
+	 */
 	@Override
 	public AnubisObject newContext(AnubisObject _this, AnubisObject outer) {
 		return new AContext(_this, outer);
 	}
 	
+	/**
+	 * Function オブジェクトを作成します。
+	 * @param body ユーザーコード
+	 * @param outer 外側のコンテキストオブジェクト (null可)
+	 * @param args 引数
+	 * @return Function オブジェクト
+	 */
 	@Override
 	public AFunction newFunction(CodeBlock body, AnubisObject outer, String... args) {
-		return traits.attach(new AUserFunction(body, outer, args));
+		AFunction result = traits.attach(new AUserFunction(body, args));
+		result.setSlot(SpecialSlot.OUTER, outer);
+		return result;
 	}
 	
 	public JClass newJClass(Class<?> cls) {

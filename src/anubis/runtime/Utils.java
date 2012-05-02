@@ -53,4 +53,8 @@ public class Utils {
 	public static <T extends AnubisObject> T cast(AnubisObject obj, Class<T> cls) { // TODO null を返したときの対処を入れる
 		return cls.cast(CAST.start(obj, cls));
 	}
+	
+	public static String getIdString(Object obj) {
+		return Integer.toHexString(System.identityHashCode(obj));
+	}
 }
