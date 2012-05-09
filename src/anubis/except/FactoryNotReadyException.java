@@ -8,8 +8,13 @@ public class FactoryNotReadyException extends AnubisException {
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = 2136242029822541228L;
+	
+	/**
+	 * 
+	 */
 	public FactoryNotReadyException() {
-		// TODO Auto-generated constructor stub
+		;
 	}
 	
 	/**
@@ -17,7 +22,6 @@ public class FactoryNotReadyException extends AnubisException {
 	 */
 	public FactoryNotReadyException(String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 	
 	/**
@@ -26,7 +30,6 @@ public class FactoryNotReadyException extends AnubisException {
 	 */
 	public FactoryNotReadyException(String message, Throwable cause) {
 		super(message, cause);
-		// TODO Auto-generated constructor stub
 	}
 	
 	/**
@@ -34,7 +37,6 @@ public class FactoryNotReadyException extends AnubisException {
 	 */
 	public FactoryNotReadyException(Throwable cause) {
 		super(cause);
-		// TODO Auto-generated constructor stub
 	}
 	
 }

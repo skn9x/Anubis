@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.regex.Pattern;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,8 +65,8 @@ public class ParserTest {
 		assertThat(parse("1 + 2"), instanceOf(CallExpression.class));
 		assertThat(parse("1 - 2"), instanceOf(CallExpression.class));
 		assertThat(parse("1 ?? 2"), instanceOf(BinaryExpression.class));
-		assertThat(parse("123 =~ 456"), instanceOf(CallExpression.class));
-		assertThat(parse("123 =^ 456 -> 789"), instanceOf(CallExpression.class));
+		assertThat(parse("123 ~= 456"), instanceOf(CallExpression.class));
+		assertThat(parse("123 ^= 456 -> 789"), instanceOf(CallExpression.class));
 		assertThat(parse("1 == 2"), instanceOf(BinaryExpression.class));
 		assertThat(parse("1 <> 2"), instanceOf(BinaryExpression.class));
 		assertThat(parse("1 != 2"), instanceOf(BinaryExpression.class));
@@ -114,6 +115,7 @@ public class ParserTest {
 		assertEquals(AObjects.getNumber(123.456), getPrimitive(parse("123.456")));
 		assertEquals(AObjects.getString("abc"), getPrimitive(parse("\"abc\"")));
 		assertEquals(AObjects.getString("abc"), getPrimitive(parse("\'abc\'")));
+		assertEquals(AObjects.getObject(Pattern.compile("abc")), getPrimitive(parse("$\"abc\"")));
 	}
 	
 	@Test

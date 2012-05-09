@@ -1,5 +1,6 @@
 package anubis.runtime;
 
+import java.util.regex.Pattern;
 import anubis.AnubisObject;
 import anubis.SpecialSlot;
 import anubis.code.CodeBlock;
@@ -76,6 +77,15 @@ public class AObjects {
 			result[i] = factory.getObject(objs[i]);
 		}
 		return result;
+	}
+	
+	/**
+	 * 正規表現オブジェクトに対応する ARegex オブジェクトを返します。
+	 * @param pattern 正規表現オブジェクト
+	 * @return ARegex オブジェクト
+	 */
+	public static ARegex getRegex(Pattern pattern) {
+		return getCurrent().getRegex(pattern);
 	}
 	
 	/**

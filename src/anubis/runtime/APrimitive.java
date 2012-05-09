@@ -11,6 +11,12 @@ public abstract class APrimitive extends AObject implements ACastable {
 		return super.debugString() + "(" + debugValue() + ")";
 	}
 	
+	@Override
+	public abstract boolean equals(Object obj);
+	
+	@Override
+	public abstract int hashCode();
+	
 	protected Object debugValue() {
 		return asJava();
 	}

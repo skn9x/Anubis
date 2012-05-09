@@ -5,25 +5,24 @@ package anubis.except;
  * @author SiroKuro
  */
 public class AnubisException extends RuntimeException {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4260630747050644374L;
 	
 	public AnubisException() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	public AnubisException(String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public AnubisException(String message, Throwable cause) {
 		super(message, cause);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public AnubisException(Throwable cause) {
 		super(cause);
-		// TODO Auto-generated constructor stub
 	}
-	
 }

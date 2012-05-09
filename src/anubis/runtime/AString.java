@@ -8,7 +8,7 @@ import anubis.parser.ParserHelper;
 public class AString extends APrimitive {
 	private final String value;
 	
-	public AString(String value) {
+	protected AString(String value) {
 		if (value == null)
 			value = "";
 		this.value = value;

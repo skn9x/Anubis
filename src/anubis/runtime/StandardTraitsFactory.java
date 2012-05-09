@@ -108,6 +108,9 @@ public class StandardTraitsFactory implements TraitsFactory {
 		traits.put(ObjectType.REGEX, attachRoot(new ANamedObject("RegexTraits")));
 		traits.put(ObjectType.STRING, attachRoot(new ANamedObject("StringTraits")));
 		traits.put(ObjectType.LOBBY, attachRoot(new ANamedObject("LobbyTraits")));
+		traits.put(ObjectType.LIST, attachRoot(new ANamedObject("ListTraits")));
+		traits.put(ObjectType.MAP, attachRoot(new ANamedObject("MapTraits")));
+		traits.put(ObjectType.SET, attachRoot(new ANamedObject("SetTraits")));
 		return traits;
 	}
 	

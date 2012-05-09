@@ -27,6 +27,11 @@ public class ASet extends AObject implements AIterable {
 	}
 	
 	@Override
+	public String getType() {
+		return ObjectType.SET;
+	}
+	
+	@Override
 	public Iterator<AnubisObject> iterator() {
 		return set.iterator();
 	}
@@ -34,4 +39,5 @@ public class ASet extends AObject implements AIterable {
 	public int size() {
 		return set.size();
 	}
+	
 }

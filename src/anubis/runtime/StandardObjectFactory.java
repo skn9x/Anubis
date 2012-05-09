@@ -2,6 +2,7 @@ package anubis.runtime;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.regex.Pattern;
 import javax.script.ScriptContext;
 import anubis.AnubisObject;
 import anubis.SpecialSlot;
@@ -45,7 +46,12 @@ public class StandardObjectFactory implements ObjectFactory {
 	private final Initializer<Class<?>, JClass> INITIALIZER_JCLASS = new Initializer<Class<?>, JClass>() {
 		@Override
 		public JClass initialize(Class<?> cls) {
-			return newJClass(cls);
+			JClass result = JClass.valueOf(cls);
+			if (cls.getSuperclass() != null)
+				result.setSlot(SpecialSlot.SUPER, getJClass(cls.getSuperclass()));
+			else
+				getTraitsFactory().attach(result);
+			return result;
 		}
 	};
 	private final Initializer<ScriptContext, AObject> INITIALIZER_SCRIPTCONTEXT = new Initializer<ScriptContext, AObject>() {
@@ -66,16 +72,16 @@ public class StandardObjectFactory implements ObjectFactory {
 			return traits.attach(AString.valueOf(value));
 		}
 	};
+	private final Initializer<Pattern, ARegex> INITIALIZER_REGEX = new Initializer<Pattern, ARegex>() {
+		@Override
+		public ARegex initialize(Pattern value) {
+			return traits.attach(ARegex.valueOf(value));
+		}
+	};
 	
 	@Override
 	public APrimitive getFalse() {
 		return FALSE;
-	}
-	
-	public JClass getJClass(Class<?> cls) {
-		if (cls == null)
-			return null;
-		return getObject(immutableObjectCache, cls, INITIALIZER_JCLASS);
 	}
 	
 	@Override
@@ -105,6 +111,9 @@ public class StandardObjectFactory implements ObjectFactory {
 		if (obj instanceof String) {
 			return getString((String) obj);
 		}
+		if (obj instanceof Pattern) {
+			return getRegex((Pattern) obj);
+		}
 		if (obj instanceof Class<?>) {
 			return getJClass((Class<?>) obj);
 		}
@@ -116,6 +125,11 @@ public class StandardObjectFactory implements ObjectFactory {
 		}
 		// TODO 他にも追加
 		return getObject(mutableObjectCache, obj, INITIALIZER_JOBJECT);
+	}
+	
+	@Override
+	public ARegex getRegex(Pattern pattern) {
+		return getObject(immutableObjectCache, pattern, INITIALIZER_REGEX);
 	}
 	
 	@Override
@@ -158,15 +172,6 @@ public class StandardObjectFactory implements ObjectFactory {
 		return result;
 	}
 	
-	public JClass newJClass(Class<?> cls) {
-		JClass result = JClass.valueOf(cls);
-		if (cls.getSuperclass() != null)
-			result.setSlot(SpecialSlot.SUPER, getJClass(cls.getSuperclass()));
-		else
-			getTraitsFactory().attach(result);
-		return result;
-	}
-	
 	@Override
 	public JObject newJObject(Object object) {
 		JClass jcls = getJClass(object.getClass());
@@ -201,6 +206,12 @@ public class StandardObjectFactory implements ObjectFactory {
 	@Override
 	public ASet newSet() {
 		return traits.attach(new ASet());
+	}
+	
+	private JClass getJClass(Class<?> cls) {
+		if (cls == null)
+			return null;
+		return getObject(immutableObjectCache, cls, INITIALIZER_JCLASS);
 	}
 	
 	private static <T, R> R getObject(Cache<? super T, ? super R> cache, T object, Initializer<T, R> init) {

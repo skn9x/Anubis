@@ -14,7 +14,6 @@ import anubis.runtime.Operator;
 public class ExceptionProvider {
 	private static final String pattern_newFactoryNotReady_0;
 	private static final String pattern_newJOverloadMismatch_0;
-	private static final String pattern_newNotCallable_0;
 	private static final String pattern_newNotCallable_1;
 	private static final String pattern_newSlotNotFound_2;
 	private static final String pattern_newSlotReadonly_1;
@@ -22,6 +21,8 @@ public class ExceptionProvider {
 	private static final String pattern_newVoidOperation_0;
 	private static final String pattern_newParseExceptionByInvalidChars_3;
 	private static final String pattern_newParseExceptionByStringNotTerminated_3;
+	private static final String pattern_newParseException_0;
+	private static final String pattern_newParseException_1;
 	
 	static {
 		String baseName = ExceptionProvider.class.getPackage().getName() + "." + "messages";
@@ -29,7 +30,6 @@ public class ExceptionProvider {
 		
 		pattern_newFactoryNotReady_0 = bundle.getString("message.FactoryNotReady.0");
 		pattern_newJOverloadMismatch_0 = bundle.getString("message.JOverloadMismatch.0");
-		pattern_newNotCallable_0 = bundle.getString("message.NotCallable.0");
 		pattern_newNotCallable_1 = bundle.getString("message.NotCallable.1");
 		pattern_newSlotNotFound_2 = bundle.getString("message.SlotNotFound.2");
 		pattern_newSlotReadonly_1 = bundle.getString("message.SlotReadonly.1");
@@ -37,6 +37,8 @@ public class ExceptionProvider {
 		pattern_newVoidOperation_0 = bundle.getString("message.VoidOperation.0");
 		pattern_newParseExceptionByInvalidChars_3 = bundle.getString("message.ParseExceptionByInvalidChars.3");
 		pattern_newParseExceptionByStringNotTerminated_3 = bundle.getString("message.ParseExceptionByStringNotTerminated.3");
+		pattern_newParseException_0 = bundle.getString("message.ParseException.0");
+		pattern_newParseException_1 = bundle.getString("message.ParseException.1");
 	}
 	
 	private ExceptionProvider() {
@@ -85,8 +87,17 @@ public class ExceptionProvider {
 	 * @param cause 原因となった例外オブジェクト
 	 * @return 例外オブジェクト
 	 */
+	public static AnubisParserException newParseException(String text, Throwable cause) {
+		return new AnubisParserException(format(pattern_newParseException_1, text), cause);
+	}
+	
+	/**
+	 * スクリプトのパースに失敗したことを示す例外を作成します。
+	 * @param cause 原因となった例外オブジェクト
+	 * @return 例外オブジェクト
+	 */
 	public static AnubisParserException newParseException(Throwable cause) {
-		return new AnubisParserException(cause);
+		return new AnubisParserException(format(pattern_newParseException_0), cause);
 	}
 	
 	/**

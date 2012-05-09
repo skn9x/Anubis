@@ -8,33 +8,35 @@ public class VoidOperationException extends AnubisRuntimeException {
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = 8815077953145049795L;
+	
+	/**
+	 * 
+	 */
 	public VoidOperationException() {
-		// TODO Auto-generated constructor stub
+		;
 	}
 	
 	/**
-	 * @param arg0
+	 * @param message
 	 */
-	public VoidOperationException(String arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
+	public VoidOperationException(String message) {
+		super(message);
 	}
 	
 	/**
-	 * @param arg0
+	 * @param message
+	 * @param cause
 	 */
-	public VoidOperationException(Throwable arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
+	public VoidOperationException(String message, Throwable cause) {
+		super(message, cause);
 	}
 	
 	/**
-	 * @param arg0
-	 * @param arg1
+	 * @param cause
 	 */
-	public VoidOperationException(String arg0, Throwable arg1) {
-		super(arg0, arg1);
-		// TODO Auto-generated constructor stub
+	public VoidOperationException(Throwable cause) {
+		super(cause);
 	}
 	
 }

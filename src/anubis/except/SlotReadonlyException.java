@@ -5,24 +5,25 @@ package anubis.except;
  */
 public class SlotReadonlyException extends AnubisRuntimeException {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5748286537107496644L;
+	
 	public SlotReadonlyException() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
-	public SlotReadonlyException(String arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
+	public SlotReadonlyException(String message) {
+		super(message);
 	}
 	
-	public SlotReadonlyException(String arg0, Throwable arg1) {
-		super(arg0, arg1);
-		// TODO Auto-generated constructor stub
+	public SlotReadonlyException(String message, Throwable cause) {
+		super(message, cause);
 	}
 	
-	public SlotReadonlyException(Throwable arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
+	public SlotReadonlyException(Throwable cause) {
+		super(cause);
 	}
 	
 }

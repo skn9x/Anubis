@@ -8,33 +8,35 @@ public class NotCallableException extends AnubisRuntimeException {
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = -3630857915063248586L;
+	
+	/**
+	 * 
+	 */
 	public NotCallableException() {
-		// TODO Auto-generated constructor stub
+		;
 	}
 	
 	/**
-	 * @param arg0
+	 * @param message
 	 */
-	public NotCallableException(String arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
+	public NotCallableException(String message) {
+		super(message);
 	}
 	
 	/**
-	 * @param arg0
-	 * @param arg1
+	 * @param message
+	 * @param cause
 	 */
-	public NotCallableException(String arg0, Throwable arg1) {
-		super(arg0, arg1);
-		// TODO Auto-generated constructor stub
+	public NotCallableException(String message, Throwable cause) {
+		super(message, cause);
 	}
 	
 	/**
-	 * @param arg0
+	 * @param cause
 	 */
-	public NotCallableException(Throwable arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
+	public NotCallableException(Throwable cause) {
+		super(cause);
 	}
 	
 }

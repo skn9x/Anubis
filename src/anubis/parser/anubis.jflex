@@ -131,6 +131,7 @@ WSP			= [\ \t]
 	"true"		{ return tk(Parser.TRUE); }
 	"false"		{ return tk(Parser.FALSE); }
 	"@"			{ return tk(Parser.ATMARK); }
+	"$"			{ return tk(Parser.DOLLAR); }
 	":="		{ return tk(Parser.NEWSLOT); }
 	"="			{ return tk(Parser.ASSIGN); }
 	"+="		{ return tk(Parser.ASSIGN_ADD); }
@@ -156,8 +157,8 @@ WSP			= [\ \t]
 	"%"			{ return tk(Parser.MOD); }
 	"\\"		{ return tk(Parser.TRUEDIV); }
 	"."			{ return tk(Parser.DOT); }
-	"=~"		{ return tk(Parser.RFIND); }
-	"=^"		{ return tk(Parser.RREPL); }
+	"~="		{ return tk(Parser.RFIND); }
+	"^="		{ return tk(Parser.RREPL); }
 	"->"		{ return tk(Parser.RIGHT_ARROW); }
 	"=>"		{ return tk(Parser.RIGHT_DARROW); }
 	"("			{ return tk(Parser.LP); }
@@ -182,7 +183,7 @@ WSP			= [\ \t]
 	"#"			{ yybegin(LINE_COMMENT); }
 	"//"		{ yybegin(LINE_COMMENT); }
 	"\""		{ btk(Parser.STRING); yybegin(LINE_STRING); }
-	"\"\"\""	{ btk(Parser.STRING); yybegin(BLOCK_STRING); }
+	">\|\|"		{ btk(Parser.STRING); yybegin(BLOCK_STRING); }
 	"'"			{ btk(Parser.STRING); yybegin(SIMPLE_STRING); }
 	"`"			{ btk(Parser.IDENTIFIER); yybegin(LINE_SYMBOL); }
 	
@@ -215,7 +216,7 @@ WSP			= [\ \t]
 	"\\\\"		{ value.append('\\'); }
 }
 <BLOCK_STRING>{
-	"\"\"\""		{ yybegin(YYINITIAL); return value.getToken(); }
+	"\|\|<"			{ yybegin(YYINITIAL); return value.getToken(); }
 	"^{WSP}.*$"		{ value.append(1 <= yytext().length() ? yytext().substring(1) : yytext()); }
 	{EOL}			{ value.append( lineSeparator ); }
 	<<EOF>>			{ errorStringNotTerminated("string"); }

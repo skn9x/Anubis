@@ -10,7 +10,7 @@ import anubis.AnubisObject;
 public class ADecimal extends ANumber {
 	public final BigDecimal value;
 	
-	public ADecimal(BigDecimal value) {
+	protected ADecimal(BigDecimal value) {
 		assert value != null;
 		this.value = value;
 	}

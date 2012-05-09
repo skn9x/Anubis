@@ -8,33 +8,35 @@ public class SlotNotFoundException extends AnubisRuntimeException {
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = 1872262137885585713L;
+	
+	/**
+	 * 
+	 */
 	public SlotNotFoundException() {
-		// TODO Auto-generated constructor stub
+		;
 	}
 	
 	/**
-	 * @param arg0
+	 * @param message
 	 */
-	public SlotNotFoundException(String arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
+	public SlotNotFoundException(String message) {
+		super(message);
 	}
 	
 	/**
-	 * @param arg0
+	 * @param message
+	 * @param cause
 	 */
-	public SlotNotFoundException(Throwable arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
+	public SlotNotFoundException(String message, Throwable cause) {
+		super(message, cause);
 	}
 	
 	/**
-	 * @param arg0
-	 * @param arg1
+	 * @param cause
 	 */
-	public SlotNotFoundException(String arg0, Throwable arg1) {
-		super(arg0, arg1);
-		// TODO Auto-generated constructor stub
+	public SlotNotFoundException(Throwable cause) {
+		super(cause);
 	}
 	
 }

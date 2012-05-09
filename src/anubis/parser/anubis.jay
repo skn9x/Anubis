@@ -41,7 +41,7 @@ public class Parser {
 %right<Token>		RIGHT_DARROW, RIGHT_ARROW
 %left <Token>		LP, RP, LB, RB, LBT, RBT, MAP_LBT, SET_LBT
 // 記号
-%token<Token>		COMMA, SEMICOLON, DOT2, COLON2
+%token<Token>		COMMA, SEMICOLON, DOT2, COLON2, DOLLAR
 // 変数
 %token<Token>		THIS, SUPER, OUTER, LOCAL
 // リテラル
@@ -208,9 +208,9 @@ expr:
 	| expr IFNULL expr
 		{ $$ = new BinaryExpression(BinaryOperator.IFNULL, $1, $3).setPos($2.getPos()); }
 	| expr RFIND expr
-		{ $$ = newCall($1, "=~", $3).setPos($2.getPos()); }
+		{ $$ = newCall($1, "~=", $3).setPos($2.getPos()); }
 	| expr RREPL expr RIGHT_ARROW expr
-		{ $$ = newCall($1, "=^", $3, $5).setPos($2.getPos()); }
+		{ $$ = newCall($1, "^=", $3, $5).setPos($2.getPos()); }
 	| expr EQ expr
 		{ $$ = new BinaryExpression(BinaryOperator.EQUALS, $1, $3).setPos($2.getPos()); }
 	| expr NEQ expr
@@ -389,6 +389,8 @@ primitive:
 		{ $$ = AObjects.getNumber(ParserHelper.parseNumber($1.getText())); }
 	| STRING
 		{ $$ = AObjects.getString($1.getText()); }
+	| DOLLAR STRING
+		{ $$ = AObjects.getRegex(ParserHelper.parseRegex($2.getText())); }
 	;
 
 // 識別子の定義

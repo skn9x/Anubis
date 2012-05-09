@@ -26,11 +26,11 @@ public abstract class AbstractAObject implements AnubisObject {
 		}
 	};
 	
-	public AbstractAObject() {
+	protected AbstractAObject() {
 		this(new SimpleSlotTable());
 	}
 	
-	public AbstractAObject(SlotTable slots) {
+	protected AbstractAObject(SlotTable slots) {
 		this.slots = slots;
 	}
 	

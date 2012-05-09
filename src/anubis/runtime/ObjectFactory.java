@@ -1,5 +1,6 @@
 package anubis.runtime;
 
+import java.util.regex.Pattern;
 import anubis.AnubisObject;
 import anubis.code.CodeBlock;
 
@@ -32,6 +33,8 @@ public interface ObjectFactory {
 	 * @return AnubisObject インスタンス
 	 */
 	public abstract AnubisObject getObject(Object obj);
+	
+	public abstract ARegex getRegex(Pattern pattern);
 	
 	/**
 	 * String に対応する AString オブジェクトを返します。

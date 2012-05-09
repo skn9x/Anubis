@@ -20,11 +20,6 @@ public class AContext extends AObject {
 		setSlot(SpecialSlot.OUTER, outer);
 	}
 	
-	public AContext(SlotTable slots, AnubisObject _this, AnubisObject outer) {
-		super(slots);
-		this._this = _this;
-	}
-	
 	@Override
 	public AnubisObject getSlot(SpecialSlot type) {
 		switch (type) {

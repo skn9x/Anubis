@@ -9,33 +9,34 @@ public class AnubisRuntimeException extends AnubisException {
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = 5808317853561210737L;
+	
+	/**
+	 * 
+	 */
 	public AnubisRuntimeException() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	/**
-	 * @param arg0
+	 * @param message
 	 */
-	public AnubisRuntimeException(String arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
+	public AnubisRuntimeException(String message) {
+		super(message);
 	}
 	
 	/**
-	 * @param arg0
-	 * @param arg1
+	 * @param message
+	 * @param cause
 	 */
-	public AnubisRuntimeException(String arg0, Throwable arg1) {
-		super(arg0, arg1);
-		// TODO Auto-generated constructor stub
+	public AnubisRuntimeException(String message, Throwable cause) {
+		super(message, cause);
 	}
 	
 	/**
-	 * @param arg0
+	 * @param cause
 	 */
-	public AnubisRuntimeException(Throwable arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
+	public AnubisRuntimeException(Throwable cause) {
+		super(cause);
 	}
 	
 }

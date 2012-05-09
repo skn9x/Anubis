@@ -34,6 +34,11 @@ public class AMap extends AObject implements AIndexable, AIterable {
 	}
 	
 	@Override
+	public String getType() {
+		return ObjectType.MAP;
+	}
+	
+	@Override
 	public Iterator<AnubisObject> iterator() {
 		return map.keySet().iterator();
 	}

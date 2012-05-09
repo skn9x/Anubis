@@ -8,33 +8,34 @@ public class AnubisParserException extends AnubisRuntimeException {
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = -6476766469011922021L;
+	
+	/**
+	 * 
+	 */
 	public AnubisParserException() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	/**
-	 * @param arg0
+	 * @param message
 	 */
-	public AnubisParserException(String arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
+	public AnubisParserException(String message) {
+		super(message);
 	}
 	
 	/**
-	 * @param arg0
-	 * @param arg1
+	 * @param message
+	 * @param cause
 	 */
-	public AnubisParserException(String arg0, Throwable arg1) {
-		super(arg0, arg1);
-		// TODO Auto-generated constructor stub
+	public AnubisParserException(String message, Throwable cause) {
+		super(message, cause);
 	}
 	
 	/**
-	 * @param arg0
+	 * @param cause
 	 */
-	public AnubisParserException(Throwable arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
+	public AnubisParserException(Throwable cause) {
+		super(cause);
 	}
 	
 }

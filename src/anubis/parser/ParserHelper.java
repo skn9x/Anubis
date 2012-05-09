@@ -5,6 +5,8 @@ import java.math.BigInteger;
 import java.math.MathContext;
 import java.util.Arrays;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+import anubis.except.ExceptionProvider;
 
 public class ParserHelper {
 	private static final String[] keywords = { // TODO 随時見直し
@@ -137,6 +139,16 @@ public class ParserHelper {
 				BigInteger result = new BigInteger(token, 10);
 				return negate ? result.negate() : result;
 			}
+		}
+	}
+	
+	public static Pattern parseRegex(String pattern) {
+		try {
+			Pattern result = Pattern.compile(pattern);
+			return result;
+		}
+		catch (PatternSyntaxException ex) {
+			throw ExceptionProvider.newParseException("invalid pattern " + quoteString(pattern), ex);
 		}
 	}
 	

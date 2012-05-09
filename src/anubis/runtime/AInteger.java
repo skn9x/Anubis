@@ -9,7 +9,7 @@ import java.math.BigInteger;
 public class AInteger extends ANumber {
 	private final BigInteger value;
 	
-	public AInteger(BigInteger value) {
+	protected AInteger(BigInteger value) {
 		assert value != null;
 		this.value = value;
 	}
@@ -29,6 +29,11 @@ public class AInteger extends ANumber {
 	}
 	
 	@Override
+	public <T> T operate(UnaryOperator<T> op) {
+		return op.operate(value);
+	}
+	
+	@Override
 	protected <T> T operate(BinaryOperator<T> op, BigDecimal x) {
 		return op.operate(x, new BigDecimal(value));
 	}
@@ -36,11 +41,6 @@ public class AInteger extends ANumber {
 	@Override
 	protected <T> T operate(BinaryOperator<T> op, BigInteger x) {
 		return op.operate(x, value);
-	}
-	
-	@Override
-	public <T> T operate(UnaryOperator<T> op) {
-		return op.operate(value);
 	}
 	
 	public static AInteger valueOf(BigInteger value) {

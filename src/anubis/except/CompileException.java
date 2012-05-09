@@ -2,23 +2,23 @@ package anubis.except;
 
 public class CompileException extends AnubisException {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -257761622724727404L;
+	
 	public CompileException() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public CompileException(String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public CompileException(String message, Throwable cause) {
 		super(message, cause);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public CompileException(Throwable cause) {
 		super(cause);
-		// TODO Auto-generated constructor stub
 	}
-	
 }
