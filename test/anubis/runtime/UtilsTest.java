@@ -8,6 +8,6 @@ public class UtilsTest {
 	@Test
 	public void testCast() {
 		ANumber number = new AInteger(BigInteger.ONE);
-		assertNull(Utils.cast(number, AString.class));
+		assertNull(Utils.as(AString.class, number));
 	}
 }

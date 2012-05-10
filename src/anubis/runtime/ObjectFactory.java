@@ -12,13 +12,13 @@ public interface ObjectFactory {
 	 * false オブジェクトを返します
 	 * @return the false
 	 */
-	public abstract APrimitive getFalse();
+	public abstract AFalseObject getFalse();
 	
 	/**
 	 * null オブジェクトを返します。
 	 * @return the null
 	 */
-	public abstract APrimitive getNull();
+	public abstract ANullObject getNull();
 	
 	/**
 	 * Number に対応する ANumber オブジェクトを返します。
@@ -53,7 +53,7 @@ public interface ObjectFactory {
 	 * true オブジェクトを返します。
 	 * @return the true
 	 */
-	public abstract APrimitive getTrue();
+	public abstract ATrueObject getTrue();
 	
 	/**
 	 * Context オブジェクトを作成します。

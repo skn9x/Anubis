@@ -2,13 +2,20 @@ package anubis.runtime;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 import javax.script.ScriptContext;
 import anubis.AnubisObject;
 import anubis.SpecialSlot;
 import anubis.code.CodeBlock;
+import anubis.runtime.java.ArrayAdapter;
 import anubis.runtime.java.JFieldSlotTable;
+import anubis.runtime.java.ListAdapter;
+import anubis.runtime.java.MapAdapter;
 import anubis.runtime.java.ScriptContextSlotTable;
+import anubis.runtime.java.SetAdapter;
 import anubis.runtime.util.Cache;
 import anubis.runtime.util.EqualsCache;
 import anubis.runtime.util.IdentityCache;
@@ -80,12 +87,12 @@ public class StandardObjectFactory implements ObjectFactory {
 	};
 	
 	@Override
-	public APrimitive getFalse() {
+	public AFalseObject getFalse() {
 		return FALSE;
 	}
 	
 	@Override
-	public APrimitive getNull() {
+	public ANullObject getNull() {
 		return NULL;
 	}
 	
@@ -94,6 +101,7 @@ public class StandardObjectFactory implements ObjectFactory {
 		return getObject(numberCache, Utils.asBigNumber(value), INITIALIZER_ANUMBER);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public AnubisObject getObject(Object obj) {
 		if (obj == null) {
@@ -123,7 +131,19 @@ public class StandardObjectFactory implements ObjectFactory {
 		if (obj instanceof ScriptContext) {
 			return getObject(cacheScriptContext, (ScriptContext) obj, INITIALIZER_SCRIPTCONTEXT);
 		}
-		// TODO 他にも追加
+		if (obj.getClass().isArray()) {
+			return traits.attach(new AList(new ArrayAdapter(obj))); // TODO asJava が origin を返せるように
+		}
+		if (obj instanceof List<?>) {
+			return traits.attach(new AList(new ListAdapter<Object>((List<Object>) obj, Object.class))); // TODO asJava が origin を返せるように
+		}
+		if (obj instanceof Map<?, ?>) {
+			return traits.attach(new AMap(new MapAdapter<Object, Object>((Map<Object, Object>) obj, Object.class, // TODO asJava が origin を返せるように
+					Object.class)));
+		}
+		if (obj instanceof Set<?>) {
+			return traits.attach(new ASet(new SetAdapter<Object>((Set<Object>) obj, Object.class))); // TODO asJava が origin を返せるように
+		}
 		return getObject(mutableObjectCache, obj, INITIALIZER_JOBJECT);
 	}
 	
@@ -143,7 +163,7 @@ public class StandardObjectFactory implements ObjectFactory {
 	}
 	
 	@Override
-	public APrimitive getTrue() {
+	public ATrueObject getTrue() {
 		return TRUE;
 	}
 	
@@ -199,8 +219,8 @@ public class StandardObjectFactory implements ObjectFactory {
 	
 	@Override
 	public ARange newRange(AnubisObject start, AnubisObject end, AnubisObject step) {
-		return traits.attach(new ARange(Utils.cast(start, ANumber.class), Utils.cast(end, ANumber.class), Utils.cast(
-				step, ANumber.class)));
+		return traits.attach(new ARange(Utils.as(ANumber.class, start), Utils.as(ANumber.class, end), Utils.as(
+				ANumber.class, step)));
 	}
 	
 	@Override

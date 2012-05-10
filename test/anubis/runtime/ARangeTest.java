@@ -1,6 +1,5 @@
 package anubis.runtime;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -17,30 +16,30 @@ public class ARangeTest extends AbstractTest {
 		{
 			ARange range = new ARange(AObjects.getNumber(1), AObjects.getNumber(2), null);
 			assertNull(range.getItem(AObjects.getObject(-1)));
-			assertEquals(AObjects.getNumber(1), range.getItem(AObjects.getObject(0)));
-			assertEquals(AObjects.getNumber(1.5), range.getItem(AObjects.getObject(0.5)));
-			assertEquals(AObjects.getNumber(2), range.getItem(AObjects.getObject(1)));
+			assertAEquals(1, range.getItem(AObjects.getObject(0)));
+			assertAEquals(1.5, range.getItem(AObjects.getObject(0.5)));
+			assertAEquals(2, range.getItem(AObjects.getObject(1)));
 			assertNull(range.getItem(AObjects.getObject(2)));
 		}
 		// 無限リスト
 		{
 			ARange range = new ARange(AObjects.getNumber(3), null, AObjects.getNumber(2));
 			assertNull(range.getItem(AObjects.getObject(-1)));
-			assertEquals(AObjects.getNumber(3), range.getItem(AObjects.getObject(0)));
-			assertEquals(AObjects.getNumber(4), range.getItem(AObjects.getObject(0.5)));
-			assertEquals(AObjects.getNumber(5), range.getItem(AObjects.getObject(1)));
-			assertEquals(AObjects.getNumber(6), range.getItem(AObjects.getObject(1.5)));
-			assertEquals(AObjects.getNumber(7), range.getItem(AObjects.getObject(2)));
+			assertAEquals(3, range.getItem(AObjects.getObject(0)));
+			assertAEquals(4, range.getItem(AObjects.getObject(0.5)));
+			assertAEquals(5, range.getItem(AObjects.getObject(1)));
+			assertAEquals(6, range.getItem(AObjects.getObject(1.5)));
+			assertAEquals(7, range.getItem(AObjects.getObject(2)));
 		}
 		// 降順リスト
 		{
 			ARange range = new ARange(AObjects.getNumber(3), AObjects.getNumber(1), AObjects.getNumber(-1));
 			assertNull(range.getItem(AObjects.getObject(-1)));
-			assertEquals(AObjects.getNumber(3), range.getItem(AObjects.getObject(0)));
-			assertEquals(AObjects.getNumber(2.5), range.getItem(AObjects.getObject(0.5)));
-			assertEquals(AObjects.getNumber(2), range.getItem(AObjects.getObject(1)));
-			assertEquals(AObjects.getNumber(1.5), range.getItem(AObjects.getObject(1.5)));
-			assertEquals(AObjects.getNumber(1), range.getItem(AObjects.getObject(2)));
+			assertAEquals(3, range.getItem(AObjects.getObject(0)));
+			assertAEquals(2.5, range.getItem(AObjects.getObject(0.5)));
+			assertAEquals(2, range.getItem(AObjects.getObject(1)));
+			assertAEquals(1.5, range.getItem(AObjects.getObject(1.5)));
+			assertAEquals(1, range.getItem(AObjects.getObject(2)));
 			assertNull(range.getItem(AObjects.getObject(2.5)));
 		}
 	}
@@ -60,15 +59,37 @@ public class ARangeTest extends AbstractTest {
 			Iterator<AnubisObject> iter = range.iterator();
 			
 			assertTrue(iter.hasNext());
-			assertEquals(AObjects.getNumber(1), iter.next());
+			assertAEquals(1, iter.next());
 			
 			assertTrue(iter.hasNext());
-			assertEquals(AObjects.getNumber(3), iter.next());
+			assertAEquals(3, iter.next());
 			
 			assertTrue(iter.hasNext());
-			assertEquals(AObjects.getNumber(5), iter.next());
+			assertAEquals(5, iter.next());
 			
 			assertFalse(iter.hasNext());
+		}
+	}
+	
+	@Test
+	public void testSlice() {
+		// 1, 2, 3, 4, 5
+		ARange range = new ARange(AObjects.getNumber(1), AObjects.getNumber(5), AObjects.getNumber(1));
+		{
+			// 2, 3, 4
+			ARange subRange = (ARange) range.getItem(AObjects.getNumber(1), AObjects.getNumber(3));
+			assertAEquals(2, subRange.getItem(AObjects.getNumber(0)));
+			assertAEquals(3, subRange.getItem(AObjects.getNumber(1)));
+			assertAEquals(4, subRange.getItem(AObjects.getNumber(2)));
+			assertNull(subRange.getItem(AObjects.getNumber(3)));
+		}
+		{
+			// 4, 3, 2
+			ARange subRange = (ARange) range.getItem(AObjects.getNumber(3), AObjects.getNumber(1));
+			assertAEquals(4, subRange.getItem(AObjects.getNumber(0)));
+			assertAEquals(3, subRange.getItem(AObjects.getNumber(1)));
+			assertAEquals(2, subRange.getItem(AObjects.getNumber(2)));
+			assertNull(subRange.getItem(AObjects.getNumber(3)));
 		}
 	}
 }

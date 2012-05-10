@@ -278,7 +278,7 @@ public class ExpressionEmitter {
 			builder.emitInvoke(AObjects.class, "getNull");
 			return;
 		}
-		if (value instanceof ATrueObject) { // TODO Factory メソッドを APrimitive から各種オブジェクトに変更したい
+		if (value instanceof ATrueObject) {
 			builder.emitInvoke(AObjects.class, "getTrue");
 			return;
 		}

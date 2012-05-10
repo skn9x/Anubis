@@ -263,8 +263,8 @@ public class CodeBuilder {
 	
 	public void mark(String filename, int line) {
 		org.objectweb.asm.Label L01 = new org.objectweb.asm.Label();
+		mv.visitLabel(L01); // visitLineNumber の前に visitLabel すること
 		mv.visitLineNumber(line, L01);
-		mv.visitLabel(L01);
 	}
 	
 	public Label newLabel() {

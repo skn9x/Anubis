@@ -16,7 +16,7 @@ public class AStringAdd extends _1 {
 	
 	@Override
 	protected AnubisObject exec(AnubisObject this1, AnubisObject x) {
-		AString text = Utils.cast(this1, AString.class);
+		AString text = Utils.as(AString.class, this1);
 		if (text == null) {
 			throw ExceptionProvider.newVoidOperation(); // TODO IllegalArgumentException
 		}

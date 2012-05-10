@@ -15,7 +15,7 @@ public class ALobbyUse extends _1 {
 	
 	@Override
 	protected AnubisObject exec(AnubisObject this1, AnubisObject x) {
-		AString name = Utils.cast(x, AString.class);
+		AString name = Utils.as(AString.class, x);
 		return AObjects.attachTraits(new JPackage(name.getValue()));
 	}
 }

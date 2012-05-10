@@ -13,7 +13,7 @@ public class AFunctionPartial extends ABuiltinFunction {
 	
 	@Override
 	public AnubisObject call(AnubisObject _this, AnubisObject... args) {
-		ACallable func = Utils.cast(_this, ACallable.class);
+		ACallable func = Utils.as(ACallable.class, _this);
 		return AFunction.partial(func, args);
 	}
 	

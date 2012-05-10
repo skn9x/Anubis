@@ -6,7 +6,7 @@ import anubis.test.SuiteCodes;
 
 @RunWith(AnubisTestRunner.class)
 @SuiteCodes({
-	"tarai.an", "fib.an"
+	"tarai.an", "fib.an", "stringbuilder.an"
 })
 public class SampleTest {
 }

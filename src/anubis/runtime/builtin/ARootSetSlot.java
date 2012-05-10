@@ -15,8 +15,8 @@ public class ARootSetSlot extends _3 {
 	
 	@Override
 	protected AnubisObject exec(AnubisObject _this, AnubisObject name, AnubisObject value, AnubisObject opname) {
-		String op = opname == null ? null : Utils.cast(opname, AString.class).getValue();
-		String slotName = Utils.cast(name, AString.class).getValue();
+		String op = opname == null ? null : Utils.as(AString.class, opname).getValue();
+		String slotName = Utils.as(AString.class, name).getValue();
 		
 		SlotRef ref = _this.findSlotRef(slotName);
 		if (ref != null) {

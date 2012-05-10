@@ -23,6 +23,7 @@ public class ExceptionProvider {
 	private static final String pattern_newParseExceptionByStringNotTerminated_3;
 	private static final String pattern_newParseException_0;
 	private static final String pattern_newParseException_1;
+	private static final String pattern_newIllegalValue_2;
 	
 	static {
 		String baseName = ExceptionProvider.class.getPackage().getName() + "." + "messages";
@@ -39,6 +40,7 @@ public class ExceptionProvider {
 		pattern_newParseExceptionByStringNotTerminated_3 = bundle.getString("message.ParseExceptionByStringNotTerminated.3");
 		pattern_newParseException_0 = bundle.getString("message.ParseException.0");
 		pattern_newParseException_1 = bundle.getString("message.ParseException.1");
+		pattern_newIllegalValue_2 = bundle.getString("message.IllegalValue.2");
 	}
 	
 	private ExceptionProvider() {
@@ -55,6 +57,10 @@ public class ExceptionProvider {
 	 */
 	public static FactoryNotReadyException newFactoryNotReady() {
 		return new FactoryNotReadyException(format(pattern_newFactoryNotReady_0));
+	}
+	
+	public static IllegalValueException newIllegalValue(Object expected, AnubisObject value) {
+		return new IllegalValueException(format(pattern_newIllegalValue_2, expected, value));
 	}
 	
 	/**
@@ -96,7 +102,7 @@ public class ExceptionProvider {
 	 * @param cause 原因となった例外オブジェクト
 	 * @return 例外オブジェクト
 	 */
-	public static AnubisParserException newParseException(Throwable cause) {
+	public static AnubisParserException newParseException(Throwable cause) { // TODO この時でも行番号など出せるようにしたい
 		return new AnubisParserException(format(pattern_newParseException_0), cause);
 	}
 	

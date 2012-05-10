@@ -10,7 +10,6 @@ import anubis.code.CodeBlock;
 import anubis.code.Option;
 import anubis.code.asm.AsmCodeBlockFactory;
 import anubis.parser.Parser;
-import anubis.runtime.AObject;
 import anubis.runtime.AObjects;
 import anubis.runtime.ObjectFactory;
 import anubis.runtime.StandardObjectFactory;
@@ -63,8 +62,8 @@ public class AbstractTest {
 	public void setUp() throws Exception {
 		this.factory = new StandardObjectFactory();
 		this.oldFactory = AObjects.setCurrent(factory);
-		this._this = AObjects.attachTraits(new AObject());
-		this.outer = AObjects.attachTraits(new AObject());
+		this._this = AObjects.newObject(null);
+		this.outer = AObjects.newObject(null);
 		this.local = AObjects.newContext(_this, outer);
 	}
 	

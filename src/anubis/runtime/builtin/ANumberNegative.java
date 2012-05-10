@@ -5,6 +5,11 @@ import java.math.BigInteger;
 import anubis.AnubisObject;
 
 public class ANumberNegative extends AbstractNumberFunction1 {
+	public static final ANumberNegative INSTANCE = new ANumberNegative();
+	
+	public ANumberNegative() {
+		super();
+	}
 	
 	public ANumberNegative(AnubisObject owner, String name) {
 		super(owner, name);

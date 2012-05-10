@@ -23,6 +23,10 @@ public class NumberOperator {
 		return ANumberMultiply.INSTANCE.call(x, y);
 	}
 	
+	public static AnubisObject negative(AnubisObject x) {
+		return ANumberNegative.INSTANCE.call(x);
+	}
+	
 	public static AnubisObject subtract(AnubisObject x, AnubisObject y) {
 		return ANumberSubtract.INSTANCE.call(x, y);
 	}

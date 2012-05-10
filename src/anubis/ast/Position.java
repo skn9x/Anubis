@@ -26,4 +26,9 @@ public class Position {
 	public int getLine() {
 		return line;
 	}
+	
+	@Override
+	public String toString() {
+		return filename + ", " + line + ", " + column;
+	}
 }

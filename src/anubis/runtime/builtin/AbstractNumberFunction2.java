@@ -19,8 +19,8 @@ public abstract class AbstractNumberFunction2 extends ABuiltinFunction._1 implem
 	
 	@Override
 	protected AnubisObject exec(AnubisObject this1, AnubisObject x) {
-		ANumber nx = Utils.cast(this1, ANumber.class);
-		ANumber ny = Utils.cast(x, ANumber.class);
+		ANumber nx = Utils.as(ANumber.class, this1);
+		ANumber ny = Utils.as(ANumber.class, x);
 		if (nx == null || ny == null)
 			throw ExceptionProvider.newVoidOperation(); // TODO IllegalArgumentException
 		return AObjects.getNumber(nx.operate(this, ny));

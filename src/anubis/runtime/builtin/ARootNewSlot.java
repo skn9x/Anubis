@@ -13,7 +13,7 @@ public class ARootNewSlot extends _3 {
 	
 	@Override
 	protected AnubisObject exec(AnubisObject _this, AnubisObject name, AnubisObject value, AnubisObject readonly) {
-		AString text = Utils.cast(name, AString.class);
+		AString text = Utils.as(AString.class, name);
 		_this.setSlot(text.getValue(), value, Operator.isTrue(readonly));
 		return value;
 	}

@@ -63,7 +63,7 @@ public class JClass extends AObject {
 			accessors.put("new", _new);
 		}
 		// メソッド作成
-		accessors.putAll(newMethodAccessors(cls, accessors));
+		accessors.putAll(newMethodAccessors(cls));
 		
 		// traits へ変換
 		SlotTable result = new SimpleSlotTable();
@@ -93,12 +93,12 @@ public class JClass extends AObject {
 		}
 	}
 	
-	private static Map<String, FunctionAccessor> newMethodAccessors(Class<?> cls, Map<String, FunctionAccessor> accessors) {
+	private static Map<String, FunctionAccessor> newMethodAccessors(Class<?> cls) {
 		Map<String, FunctionAccessor> methods = new HashMap<String, FunctionAccessor>();
 		for (Method mm: cls.getDeclaredMethods()) {
 			if (!Modifier.isPrivate(mm.getModifiers()) && !Modifier.isAbstract(mm.getModifiers())) {
 				mm.setAccessible(true);
-				FunctionAccessor acc = accessors.get(mm.getName());
+				FunctionAccessor acc = methods.get(mm.getName());
 				if (acc == null) {
 					acc = new FunctionAccessor(cls, mm.getName());
 					methods.put(mm.getName(), acc);

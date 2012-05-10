@@ -20,6 +20,10 @@ public class Utils {
 		}
 	};
 	
+	public static <T extends AnubisObject> T as(Class<T> cls, AnubisObject obj) { // TODO null を返したときの対処を入れる
+		return cls.cast(CAST.start(obj, cls));
+	}
+	
 	public static Number asBigNumber(Number num) {
 		if (num == null)
 			return null;
@@ -35,7 +39,7 @@ public class Utils {
 	}
 	
 	public static int asIntArgs(AnubisObject obj) {
-		ANumber num = Utils.cast(obj, ANumber.class);
+		ANumber num = Utils.as(ANumber.class, obj);
 		if (num == null)
 			throw ExceptionProvider.newVoidOperation(); // TODO IllegalArgumentException
 		// TODO オーバーフローチェックをいれる
@@ -43,15 +47,11 @@ public class Utils {
 	}
 	
 	public static int asIntArgs(AnubisObject obj, int _default) {
-		ANumber num = Utils.cast(obj, ANumber.class);
+		ANumber num = Utils.as(ANumber.class, obj);
 		if (num == null)
 			return _default;
 		// TODO オーバーフローチェックをいれる
 		return num.getNumber().intValue();
-	}
-	
-	public static <T extends AnubisObject> T cast(AnubisObject obj, Class<T> cls) { // TODO null を返したときの対処を入れる
-		return cls.cast(CAST.start(obj, cls));
 	}
 	
 	public static String getIdString(Object obj) {

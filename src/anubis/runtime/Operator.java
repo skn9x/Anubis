@@ -8,7 +8,6 @@ import anubis.AIndexable;
 import anubis.AIterable;
 import anubis.ASliceable;
 import anubis.AnubisObject;
-import anubis.except.AnubisException;
 import anubis.except.AnubisUserException;
 import anubis.except.ExceptionProvider;
 import anubis.runtime.java.IteratorAdapter;
@@ -34,15 +33,17 @@ public class Operator {
 	public static ACallable findFunction(AnubisObject obj, String name) {
 		AnubisObject val = findSlot(obj, name);
 		if (val != null) {
-			if (val instanceof ACallable)
-				return (ACallable) val;
+			ACallable result = Utils.as(ACallable.class, val);
+			if (result != null)
+				return result;
 			else
 				throw ExceptionProvider.newNotCallable(val);
 		}
 		val = findSlot(obj, SLOT_FORWARD);
 		if (val != null) {
-			if (val instanceof ACallable)
-				return AFunction.partial((ACallable) val, new AnubisObject[]{
+			ACallable result = Utils.as(ACallable.class, val);
+			if (result != null)
+				return AFunction.partial(result, new AnubisObject[]{
 					AObjects.getString(name)
 				});
 			else
@@ -70,13 +71,15 @@ public class Operator {
 	}
 	
 	public static Iterator<AnubisObject> getIterator(AnubisObject obj) {
-		if (obj instanceof AIterable) {
-			return ((AIterable) obj).getAIterator();
+		AIterable aiter = Utils.as(AIterable.class, obj);
+		if (aiter != null) {
+			return aiter.getAIterator();
 		}
-		if (obj instanceof Iterable) {
-			return new IteratorAdapter(((Iterable<?>) obj).iterator());
+		Iterable<?> iter = (Iterable<?>) JCaster.as(Iterable.class, obj);
+		if (iter != null) {
+			return new IteratorAdapter(iter.iterator());
 		}
-		throw new IllegalArgumentException(); // TODO
+		throw ExceptionProvider.newIllegalValue("iterable", obj);
 	}
 	
 	public static boolean isFalse(AnubisObject value) {
@@ -108,13 +111,11 @@ public class Operator {
 	}
 	
 	public static AnubisObject opIndex(AnubisObject x, AnubisObject index) {
-		if (x instanceof AIndexable) {
-			AIndexable indexable = (AIndexable) x;
+		AIndexable indexable = Utils.as(AIndexable.class, x);
+		if (indexable != null) {
 			return indexable.getItem(index);
 		}
-		else {
-			throw new AnubisException("not indexable"); // TODO
-		}
+		throw ExceptionProvider.newIllegalValue("indexable", x);
 	}
 	
 	public static boolean opNot(AnubisObject value) {
@@ -129,13 +130,11 @@ public class Operator {
 	}
 	
 	public static AnubisObject opSlice(AnubisObject x, AnubisObject start, AnubisObject end) {
-		if (x instanceof ASliceable) {
-			ASliceable sliceable = (ASliceable) x;
+		ASliceable sliceable = Utils.as(ASliceable.class, x);
+		if (sliceable != null) {
 			return sliceable.getItem(start, end);
 		}
-		else {
-			throw new AnubisException("not sliceable"); // TODO
-		}
+		throw ExceptionProvider.newIllegalValue("sliceable", x);
 	}
 	
 	public static boolean opXor(AnubisObject x, AnubisObject y) {
@@ -173,9 +172,10 @@ public class Operator {
 	public static Throwable wrapException(AnubisObject value) {
 		if (value instanceof Throwable)
 			return (Throwable) value;
-		Throwable th = (Throwable) JCaster.as(Throwable.class, value); // TODO ここだけ JCaster 使うのはなんか嫌
-		if (th != null)
+		Throwable th = (Throwable) JCaster.as(Throwable.class, value);
+		if (th != null) {
 			return th;
+		}
 		return ExceptionProvider.newUserException(value);
 	}
 }

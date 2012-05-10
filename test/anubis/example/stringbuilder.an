@@ -1,0 +1,14 @@
+java = use("java");
+sb = java.lang.StringBuilder.new("abcdef");
+
+assert sb.length() == 6;
+assert "abcdef" == sb.toString();
+
+sb.append("123456");
+assert "abcdef123456" == sb.toString();
+
+sb.insert(3, "ABC");
+assert "abcABCdef123456" == sb.toString();
+
+sb.setLength(12);
+assert "abcABCdef123" == sb.toString();

@@ -9,10 +9,10 @@ import anubis.AnubisObject;
 import anubis.runtime.builtin.NumberOperator;
 
 public class ARange extends AObject implements ASliceable, AIterable {
-	private final ANumber start, end, step;
+	private final AnubisObject start, end, step;
 	private final boolean decent;
 	
-	public ARange(ANumber start, ANumber end, ANumber step) {
+	public ARange(AnubisObject start, AnubisObject end, AnubisObject step) {
 		assert start != null;
 		this.start = start;
 		this.end = end;
@@ -68,8 +68,19 @@ public class ARange extends AObject implements ASliceable, AIterable {
 	
 	@Override
 	public AnubisObject getItem(AnubisObject start, AnubisObject end) {
-		// TODO Auto-generated method stub
-		return null;
+		AnubisObject newStart = getItem(start);
+		if (newStart == null) {
+			newStart = start;
+		}
+		AnubisObject newEnd = getItem(end);
+		if (newEnd == null) {
+			newEnd = end;
+		}
+		AnubisObject newStep = step;
+		if (NumberOperator.lessThan(end, start) != null) {
+			newStep = NumberOperator.negative(step);
+		}
+		return AObjects.newRange(newStart, newEnd, newStep);
 	}
 	
 	@Override

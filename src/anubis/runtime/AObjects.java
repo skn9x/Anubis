@@ -40,7 +40,7 @@ public class AObjects {
 	 * false オブジェクトを返します。
 	 * @return false オブジェクト
 	 */
-	public static APrimitive getFalse() {
+	public static AFalseObject getFalse() {
 		return getCurrent().getFalse();
 	}
 	
@@ -48,7 +48,7 @@ public class AObjects {
 	 * null オブジェクトを返します。
 	 * @return the null
 	 */
-	public static APrimitive getNull() {
+	public static ANullObject getNull() {
 		return getCurrent().getNull();
 	}
 	
@@ -109,7 +109,7 @@ public class AObjects {
 	 * true オブジェクトを返します。
 	 * @return the true
 	 */
-	public static APrimitive getTrue() {
+	public static ATrueObject getTrue() {
 		return getCurrent().getTrue();
 	}
 	

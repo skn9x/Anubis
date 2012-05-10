@@ -39,6 +39,16 @@ public class ListAdapterTest extends AbstractTest {
 		assertAEquals(2, list.get(1));
 	}
 	
+	@Test
+	public void testInScript() throws Exception {
+		List<Integer> origin = new ArrayList<Integer>();
+		origin.add(1234);
+		origin.add(5678);
+		local.setSlot("obj", AObjects.getObject(origin));
+		assertAEquals(1234, exec("obj[0]"));
+		assertAEquals(5678, exec("obj[1]"));
+	}
+	
 	/**
 	 * adapter から remove した要素を origin から確認
 	 */

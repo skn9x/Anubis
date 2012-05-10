@@ -46,7 +46,7 @@ public class JPackage extends AObject implements ACastable {
 				String fullName = packName == null ? name : packName + "." + name;
 				// クラス作成
 				{
-					JClass c = newClass(fullName);
+					AnubisObject c = newClass(fullName);
 					if (c != null) {
 						setSlot(name, c);
 						return c;
@@ -71,9 +71,9 @@ public class JPackage extends AObject implements ACastable {
 		return ObjectType.JPACKAGE;
 	}
 	
-	private static JClass newClass(String name) {
+	private static AnubisObject newClass(String name) {
 		try {
-			return (JClass) AObjects.getObject(Class.forName(name)); // TODO キャストを整理
+			return AObjects.getObject(Class.forName(name));
 		}
 		catch (ClassNotFoundException ignore) {
 			return null;
