@@ -6,7 +6,7 @@ import org.junit.Test;
 import anubis.AbstractTest;
 import anubis.AnubisObject;
 import anubis.SpecialSlot;
-import anubis.except.SlotReadonlyException;
+import anubis.except.ObjectFreezeException;
 import anubis.runtime.java.JCaster;
 
 /**
@@ -27,7 +27,7 @@ public class JObjectTest extends AbstractTest {
 		assertAEquals(4, exec("obj.getY()"));
 	}
 	
-	@Test(expected = SlotReadonlyException.class)
+	@Test(expected = ObjectFreezeException.class)
 	public void testFieldAccess02() throws Exception {
 		local.setSlot("cls", AObjects.getObject(Sample.class));
 		

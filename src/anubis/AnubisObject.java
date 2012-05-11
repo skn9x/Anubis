@@ -55,12 +55,4 @@ public interface AnubisObject {
 	 * @param value オブジェクト
 	 */
 	public void setSlot(String name, AnubisObject value);
-	
-	/**
-	 * このオブジェクトにスロットを設定します。オブジェクトが null の場合はスロットが削除されます。
-	 * @param name スロット名
-	 * @param value オブジェクト
-	 * @param readonly このスロットを読み取り専用にするならば true
-	 */
-	public void setSlot(String name, AnubisObject value, boolean readonly);
 }

@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import org.junit.Test;
 import anubis.AnubisObject;
-import anubis.except.SlotReadonlyException;
 
 /**
  * @author SiroKuro
@@ -204,24 +203,5 @@ public class AObjectTest {
 		obj.setSlot(OUTER, null);
 		assertNull(obj.getSlot(SUPER));
 		assertNull(obj.getSlot(OUTER));
-	}
-	
-	/**
-	 * 読み取り専用スロットの確認
-	 */
-	@Test
-	public void testSetSlotReadonly() {
-		obj.setSlot("a", obj2, true);
-		assertSame(obj2, obj.getSlot("a"));
-	}
-	
-	/**
-	 * 読み取り専用スロットに再設定した時の確認
-	 */
-	@Test(expected = SlotReadonlyException.class)
-	public void testSetSlotReadonly02() {
-		obj.setSlot("a", obj2, true);
-		assertSame(obj2, obj.getSlot("a"));
-		obj.setSlot("a", obj3);
 	}
 }

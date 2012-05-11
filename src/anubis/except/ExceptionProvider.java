@@ -16,8 +16,9 @@ public class ExceptionProvider {
 	private static final String pattern_newJOverloadMismatch_0;
 	private static final String pattern_newNotCallable_1;
 	private static final String pattern_newSlotNotFound_2;
-	private static final String pattern_newSlotReadonly_1;
-	private static final String pattern_newSlotReadonly_2;
+	private static final String pattern_newObjectFreeze_0;
+	private static final String pattern_newObjectFreeze_1;
+	private static final String pattern_newObjectFreeze_2;
 	private static final String pattern_newVoidOperation_0;
 	private static final String pattern_newParseExceptionByInvalidChars_3;
 	private static final String pattern_newParseExceptionByStringNotTerminated_3;
@@ -33,8 +34,9 @@ public class ExceptionProvider {
 		pattern_newJOverloadMismatch_0 = bundle.getString("message.JOverloadMismatch.0");
 		pattern_newNotCallable_1 = bundle.getString("message.NotCallable.1");
 		pattern_newSlotNotFound_2 = bundle.getString("message.SlotNotFound.2");
-		pattern_newSlotReadonly_1 = bundle.getString("message.SlotReadonly.1");
-		pattern_newSlotReadonly_2 = bundle.getString("message.SlotReadonly.2");
+		pattern_newObjectFreeze_0 = bundle.getString("message.ObjectFreeze.0");
+		pattern_newObjectFreeze_1 = bundle.getString("message.ObjectFreeze.1");
+		pattern_newObjectFreeze_2 = bundle.getString("message.ObjectFreeze.2");
 		pattern_newVoidOperation_0 = bundle.getString("message.VoidOperation.0");
 		pattern_newParseExceptionByInvalidChars_3 = bundle.getString("message.ParseExceptionByInvalidChars.3");
 		pattern_newParseExceptionByStringNotTerminated_3 = bundle.getString("message.ParseExceptionByStringNotTerminated.3");
@@ -89,6 +91,46 @@ public class ExceptionProvider {
 	}
 	
 	/**
+	 * オブジェクトが凍結されているためスロットが変更できなかったことを示す例外を作成します。
+	 * @return 例外オブジェクト
+	 */
+	public static ObjectFreezeException newObjectFreeze() {
+		return new ObjectFreezeException(format(pattern_newObjectFreeze_0));
+	}
+	
+	/**
+	 * スロットが読み取り専用のため変更できなかったことを示す例外を作成します。
+	 * @param obj スロット検索先オブジェクト
+	 * @param name スロット名
+	 * @return 例外オブジェクト
+	 */
+	public static ObjectFreezeException newObjectFreeze(AnubisObject obj, String name) {
+		return new ObjectFreezeException(format(pattern_newObjectFreeze_2, Operator.toDebugString(obj), name));
+	}
+	
+	/**
+	 * オブジェクトが凍結されているためスロットが変更できなかったことを示す例外を作成します。
+	 * @param name スロット名
+	 * @return 例外オブジェクト
+	 */
+	public static ObjectFreezeException newObjectFreeze(String name) {
+		return new ObjectFreezeException(format(pattern_newObjectFreeze_1, name));
+	}
+	
+	/**
+	 * オブジェクトが凍結されているためスロットが変更できなかったことを示す例外を作成します。
+	 * @param cause 原因となった例外オブジェクト
+	 * @param obj スロット検索先オブジェクト
+	 * @param name スロット名
+	 * @return 例外オブジェクト
+	 */
+	public static ObjectFreezeException newObjectFreeze(Throwable cause, AnubisObject obj, String name) {
+		ObjectFreezeException result = newObjectFreeze(obj, name);
+		result.initCause(cause);
+		return result;
+	}
+	
+	/**
 	 * スクリプトのパースに失敗したことを示す例外を作成します。
 	 * @param cause 原因となった例外オブジェクト
 	 * @return 例外オブジェクト
@@ -132,38 +174,6 @@ public class ExceptionProvider {
 	 */
 	public static SlotNotFoundException newSlotNotFound(AnubisObject obj, String name) {
 		return new SlotNotFoundException(format(pattern_newSlotNotFound_2, Operator.toDebugString(obj), name));
-	}
-	
-	/**
-	 * スロットが読み取り専用のため変更できなかったことを示す例外を作成します。
-	 * @param obj スロット検索先オブジェクト
-	 * @param name スロット名
-	 * @return 例外オブジェクト
-	 */
-	public static SlotReadonlyException newSlotReadonly(AnubisObject obj, String name) {
-		return new SlotReadonlyException(format(pattern_newSlotReadonly_2, Operator.toDebugString(obj), name));
-	}
-	
-	/**
-	 * スロットが読み取り専用のため変更できなかったことを示す例外を作成します。
-	 * @param name スロット名
-	 * @return 例外オブジェクト
-	 */
-	public static SlotReadonlyException newSlotReadonly(String name) {
-		return new SlotReadonlyException(format(pattern_newSlotReadonly_1, name));
-	}
-	
-	/**
-	 * スロットが読み取り専用のため変更できなかったことを示す例外を作成します。
-	 * @param cause 原因となった例外オブジェクト
-	 * @param obj スロット検索先オブジェクト
-	 * @param name スロット名
-	 * @return 例外オブジェクト
-	 */
-	public static SlotReadonlyException newSlotReadonly(Throwable cause, AnubisObject obj, String name) {
-		SlotReadonlyException result = newSlotReadonly(obj, name);
-		result.initCause(cause);
-		return result;
 	}
 	
 	public static AnubisUserException newUserException(AnubisObject value) {

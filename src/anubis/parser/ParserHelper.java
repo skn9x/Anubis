@@ -14,7 +14,6 @@ public class ParserHelper {
 		"record",
 		"function",
 		"end",
-		"def",
 		"if",
 		"then",
 		"else",

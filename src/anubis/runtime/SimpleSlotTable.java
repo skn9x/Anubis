@@ -11,6 +11,7 @@ import anubis.AnubisObject;
 public class SimpleSlotTable extends AbstractSlotTable {
 	private volatile Map<String, AnubisObject> internal = null;
 	
+	@Override
 	public AnubisObject get(String name) {
 		if (internal != null) {
 			return internal.get(name);
@@ -18,19 +19,20 @@ public class SimpleSlotTable extends AbstractSlotTable {
 		return null;
 	}
 	
-	public synchronized void put(String name, AnubisObject value, boolean setReadonly) {
-		assertNotReadonly(name, setReadonly);
+	@Override
+	public Map<String, AnubisObject> getSnap() {
+		if (internal == null)
+			return Collections.emptyMap();
+		return Collections.unmodifiableMap(new HashMap<String, AnubisObject>(internal));
+	}
+	
+	@Override
+	public synchronized void put(String name, AnubisObject value) {
+		assertNotFreeze();
 		if (value == null)
 			prepareInternal().remove(name);
 		else
 			prepareInternal().put(name, value);
-	}
-	
-	@Override
-	protected Map<String, AnubisObject> getSlotSnaps() {
-		if (internal == null)
-			return Collections.emptyMap();
-		return Collections.unmodifiableMap(new HashMap<String, AnubisObject>(internal));
 	}
 	
 	private Map<String, AnubisObject> prepareInternal() {

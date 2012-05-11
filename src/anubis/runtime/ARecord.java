@@ -20,19 +20,12 @@ public class ARecord extends AObject {
 		public void set(AnubisObject value) {
 			; // nop
 		}
-		
-		@Override
-		public void set(AnubisObject value, boolean readonly) {
-			; // nop
-		}
 	}
 	
 	public abstract class Field {
 		public abstract AnubisObject get();
 		
 		public abstract void set(AnubisObject value);
-		
-		public abstract void set(AnubisObject value, boolean readonly);
 	}
 	
 	public class NestedField extends Field {
@@ -48,13 +41,6 @@ public class ARecord extends AObject {
 			// TODO Auto-generated method stub
 			
 		}
-		
-		@Override
-		public void set(AnubisObject value, boolean readonly) {
-			// TODO Auto-generated method stub
-			
-		}
-		
 	}
 	
 	public class VariableField extends Field {
@@ -73,11 +59,6 @@ public class ARecord extends AObject {
 		@Override
 		public void set(AnubisObject value) {
 			ARecord.this.setSlot(name, value);
-		}
-		
-		@Override
-		public void set(AnubisObject value, boolean readonly) {
-			ARecord.this.setSlot(name, value, readonly);
 		}
 	}
 }

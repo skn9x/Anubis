@@ -31,18 +31,7 @@ public class ScriptContextSlotTable extends AbstractSlotTable {
 	}
 	
 	@Override
-	public void put(String name, AnubisObject value, boolean setReadonly) {
-		synchronized (context) {
-			assertNotReadonly(name, setReadonly);
-			if (value == null)
-				context.removeAttribute(name, ScriptContext.ENGINE_SCOPE);
-			else
-				context.setAttribute(name, JCaster.cast(value), ScriptContext.ENGINE_SCOPE);
-		}
-	}
-	
-	@Override
-	protected Map<String, AnubisObject> getSlotSnaps() {
+	public Map<String, AnubisObject> getSnap() {
 		synchronized (context) {
 			Map<String, AnubisObject> result = new TreeMap<String, AnubisObject>();
 			List<Integer> scopes = new ArrayList<Integer>(context.getScopes());
@@ -54,6 +43,17 @@ public class ScriptContextSlotTable extends AbstractSlotTable {
 				}
 			}
 			return Collections.unmodifiableMap(result);
+		}
+	}
+	
+	@Override
+	public void put(String name, AnubisObject value) {
+		synchronized (context) {
+			assertNotFreeze();
+			if (value == null)
+				context.removeAttribute(name, ScriptContext.ENGINE_SCOPE);
+			else
+				context.setAttribute(name, JCaster.cast(value), ScriptContext.ENGINE_SCOPE);
 		}
 	}
 }

@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -11,7 +12,6 @@ import anubis.AnubisObject;
 import anubis.SpecialSlot;
 import anubis.except.ExceptionProvider;
 import anubis.parser.ParserHelper;
-import anubis.runtime.SlotTable.SnapShot;
 
 /**
  * @author SiroKuro
@@ -60,9 +60,9 @@ public class Utils {
 		return num.getNumber().intValue();
 	}
 	
-	public static String formatDumpString(AObject object, SnapShot snapShot) {
+	public static String formatDumpString(AObject object, Map<String, AnubisObject> snaps) {
 		int max_length = 5;
-		for (String key: snapShot.getSlots().keySet()) {
+		for (String key: snaps.keySet()) {
 			key = ParserHelper.quoteIdentifier(key);
 			if (max_length < key.length()) {
 				max_length = key.length();
@@ -73,7 +73,7 @@ public class Utils {
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);
 		{
-			pw.println(object.debugString());
+			pw.println(object.debugString() + " {");
 			// 特殊スロットのダンプ
 			AnubisObject _this = object.getSlot(SpecialSlot.THIS);
 			AnubisObject _super = object.getSlot(SpecialSlot.SUPER);
@@ -85,15 +85,9 @@ public class Utils {
 			if (_outer != null)
 				pw.println(padding(max_length, "    outer") + " = " + Operator.toDebugString(_outer));
 			// 一般スロットのダンプ
-			for (Entry<String, AnubisObject> elm: snapShot.getSlots().entrySet()) {
-				if (snapShot.getReadonlySlots().contains(elm.getKey())) {
-					pw.println(padding(max_length, "R   " + ParserHelper.quoteIdentifier(elm.getKey())) + " = "
-							+ Operator.toDebugString(elm.getValue()));
-				}
-				else {
-					pw.println(padding(max_length, "    " + ParserHelper.quoteIdentifier(elm.getKey())) + " = "
-							+ Operator.toDebugString(elm.getValue()));
-				}
+			for (Entry<String, AnubisObject> elm: snaps.entrySet()) {
+				pw.println(padding(max_length, "    " + ParserHelper.quoteIdentifier(elm.getKey())) + " = "
+						+ Operator.toDebugString(elm.getValue()));
 			}
 			pw.println("}");
 		}

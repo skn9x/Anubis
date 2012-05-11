@@ -27,7 +27,7 @@ public abstract class ABuiltinFunction extends AFunction {
 	}
 	
 	public ABuiltinFunction register(AnubisObject owner, String name) {
-		owner.setSlot(name, this, true);
+		owner.setSlot(name, this);
 		return this;
 	}
 	

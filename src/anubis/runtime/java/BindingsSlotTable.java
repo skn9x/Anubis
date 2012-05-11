@@ -31,24 +31,24 @@ public class BindingsSlotTable extends AbstractSlotTable {
 	}
 	
 	@Override
-	public void put(String name, AnubisObject value, boolean setReadonly) {
-		synchronized (bindings) {
-			assertNotReadonly(name, setReadonly);
-			if (value == null)
-				bindings.remove(name);
-			else
-				bindings.put(name, JCaster.cast(value));
-		}
-	}
-	
-	@Override
-	protected Map<String, AnubisObject> getSlotSnaps() {
+	public Map<String, AnubisObject> getSnap() {
 		synchronized (bindings) {
 			Map<String, AnubisObject> result = new TreeMap<String, AnubisObject>();
 			for (Entry<String, Object> elm: bindings.entrySet()) {
 				result.put(elm.getKey(), AObjects.getObject(elm.getValue()));
 			}
 			return Collections.unmodifiableMap(result);
+		}
+	}
+	
+	@Override
+	public void put(String name, AnubisObject value) {
+		synchronized (bindings) {
+			assertNotFreeze();
+			if (value == null)
+				bindings.remove(name);
+			else
+				bindings.put(name, JCaster.cast(value));
 		}
 	}
 }

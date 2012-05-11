@@ -96,7 +96,6 @@ WSP			= [\ \t]
 	"record"	{ return tk(Parser.RECORD); }
 	"function"	{ return tk(Parser.FUNCTION); }
 	"end"		{ return tk(Parser.END); }
-	"def"		{ return tk(Parser.DEF); }
 	"if"		{ return tk(Parser.IF); }
 	"then"		{ return tk(Parser.THEN); }
 	"else"		{ return tk(Parser.ELSE); }

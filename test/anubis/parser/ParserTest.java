@@ -130,7 +130,6 @@ public class ParserTest {
 		parse("continue;");
 		parse("continue LABEL;");
 		parse("throw null;");
-		parse("def x = 123;");
 		parse("assert x == 0;");
 		parse("x = 1 + 2 + 3 @if x == 1;");
 		parse("return 123 @if x == 1;");

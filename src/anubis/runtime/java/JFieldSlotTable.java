@@ -56,24 +56,7 @@ public class JFieldSlotTable extends AbstractSlotTable {
 	}
 	
 	@Override
-	public void put(String name, AnubisObject value, boolean setReadonly) {
-		assertNotReadonly(name, setReadonly);
-		Field ff = fields.get(name);
-		if (ff != null && Modifier.isFinal(ff.getModifiers()) == false) {
-			try {
-				ff.set(object, JCaster.cast(ff.getType(), value));
-			}
-			catch (IllegalAccessException ex) {
-				throw ExceptionProvider.wrapRuntimeException(ex);
-			}
-		}
-		else {
-			throw ExceptionProvider.newSlotReadonly(name);
-		}
-	}
-	
-	@Override
-	protected Map<String, AnubisObject> getSlotSnaps() {
+	public Map<String, AnubisObject> getSnap() {
 		Map<String, AnubisObject> result = new TreeMap<String, AnubisObject>();
 		for (Field ff: fields.values()) {
 			try {
@@ -84,5 +67,22 @@ public class JFieldSlotTable extends AbstractSlotTable {
 			}
 		}
 		return Collections.unmodifiableMap(result);
+	}
+	
+	@Override
+	public void put(String name, AnubisObject value) {
+		assertNotFreeze();
+		Field ff = fields.get(name);
+		if (ff != null && Modifier.isFinal(ff.getModifiers()) == false) {
+			try {
+				ff.set(object, JCaster.cast(ff.getType(), value));
+			}
+			catch (IllegalAccessException ex) {
+				throw ExceptionProvider.wrapRuntimeException(ex);
+			}
+		}
+		else {
+			throw ExceptionProvider.newObjectFreeze(name);
+		}
 	}
 }

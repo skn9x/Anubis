@@ -119,11 +119,6 @@ public class ANop implements AnubisObject, AIndexable, ACallable, ACastable, ADu
 	}
 	
 	@Override
-	public void setSlot(String name, AnubisObject value, boolean readonly) {
-		;
-	}
-	
-	@Override
 	public String toString() {
 		return debugString();
 	}

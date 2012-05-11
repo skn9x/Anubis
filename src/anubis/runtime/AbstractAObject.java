@@ -4,7 +4,7 @@ import anubis.AnubisObject;
 import anubis.SlotRef;
 import anubis.SpecialSlot;
 import anubis.except.ExceptionProvider;
-import anubis.except.SlotReadonlyException;
+import anubis.except.ObjectFreezeException;
 
 public abstract class AbstractAObject implements AnubisObject {
 	protected final SlotTable slots;
@@ -78,7 +78,7 @@ public abstract class AbstractAObject implements AnubisObject {
 				this._outer = value;
 				break;
 			case THIS:
-				throw ExceptionProvider.newSlotReadonly(this, "this");
+				throw ExceptionProvider.newObjectFreeze(this, "this");
 			default:
 				throw ExceptionProvider.newSlotNotFound(this, type.toString());
 		}
@@ -87,21 +87,10 @@ public abstract class AbstractAObject implements AnubisObject {
 	@Override
 	public void setSlot(String name, AnubisObject value) {
 		try {
-			slots.put(name, value, false);
+			slots.put(name, value);
 		}
-		catch (SlotReadonlyException ex) {
-			throw ExceptionProvider.newSlotReadonly(ex, this, name);
-		}
-	}
-	
-	@Override
-	public void setSlot(String name, AnubisObject value, boolean readonly) {
-		try {
-			slots.put(name, value, readonly);
-		}
-		catch (SlotReadonlyException ex) {
-			throw ExceptionProvider.newSlotReadonly(ex, this, name);
+		catch (ObjectFreezeException ex) {
+			throw ExceptionProvider.newObjectFreeze(ex, this, name);
 		}
 	}
-	
 }

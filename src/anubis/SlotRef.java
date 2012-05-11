@@ -51,12 +51,4 @@ public class SlotRef {
 	public void set(AnubisObject value) {
 		obj.setSlot(name, value);
 	}
-	
-	/**
-	 * スロットに値を設定します。
-	 * @param value スロットに設定する値。
-	 */
-	public void set(AnubisObject value, boolean readonly) {
-		obj.setSlot(name, value, readonly);
-	}
 }

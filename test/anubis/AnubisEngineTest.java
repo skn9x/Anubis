@@ -28,8 +28,6 @@ public class AnubisEngineTest {
 		assertEquals("abc", engine.eval("x"));
 		assertEquals("abcdef", engine.eval("x += 'def'"));
 		assertEquals("abcdef", engine.eval("x"));
-		assertEquals("ABC", engine.eval("def text = 'ABC'; return text;"));
-		assertEquals("ABC", engine.eval("text"));
 	}
 	
 	/**

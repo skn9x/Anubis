@@ -68,7 +68,7 @@ public class JClass extends AObject {
 		// traits へ変換
 		SlotTable result = new SimpleSlotTable();
 		for (Entry<String, FunctionAccessor> ent: accessors.entrySet()) {
-			result.put(ent.getKey(), AObjects.attachTraits(JFunction.valueOf(ent.getValue())), true);
+			result.put(ent.getKey(), AObjects.attachTraits(JFunction.valueOf(ent.getValue())));
 		}
 		return result;
 	}

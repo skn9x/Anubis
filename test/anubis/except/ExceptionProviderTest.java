@@ -109,32 +109,32 @@ public class ExceptionProviderTest {
 	}
 	
 	/**
-	 * {@link anubis.except.ExceptionProvider#newSlotReadonly(java.lang.String)} のためのテスト・メソッド。
+	 * {@link anubis.except.ExceptionProvider#newObjectFreeze(java.lang.String)} のためのテスト・メソッド。
 	 */
 	@Test
 	public void testNewSlotReadonly1() {
-		SlotReadonlyException result = ExceptionProvider.newSlotReadonly("abc");
+		ObjectFreezeException result = ExceptionProvider.newObjectFreeze("abc");
 		assertNotNull(result);
 		System.out.println(result.getMessage());
 	}
 	
 	/**
-	 * {@link anubis.except.ExceptionProvider#newSlotReadonly(anubis.AnubisObject, java.lang.String)} のためのテスト・メソッド。
+	 * {@link anubis.except.ExceptionProvider#newObjectFreeze(anubis.AnubisObject, java.lang.String)} のためのテスト・メソッド。
 	 */
 	@Test
 	public void testNewSlotReadonly2() {
-		SlotReadonlyException result = ExceptionProvider.newSlotReadonly(object, "abc");
+		ObjectFreezeException result = ExceptionProvider.newObjectFreeze(object, "abc");
 		assertNotNull(result);
 		System.out.println(result.getMessage());
 	}
 	
 	/**
-	 * {@link anubis.except.ExceptionProvider#newSlotReadonly(java.lang.Throwable, anubis.AnubisObject, java.lang.String)} のためのテスト・メソッド。
+	 * {@link anubis.except.ExceptionProvider#newObjectFreeze(java.lang.Throwable, anubis.AnubisObject, java.lang.String)} のためのテスト・メソッド。
 	 */
 	@Test
 	public void testNewSlotReadonly3() {
 		Exception cause = new Exception("sample exception");
-		SlotReadonlyException result = ExceptionProvider.newSlotReadonly(cause, object, "abc");
+		ObjectFreezeException result = ExceptionProvider.newObjectFreeze(cause, object, "abc");
 		assertNotNull(result);
 		assertEquals(cause, result.getCause());
 		System.out.println(result.getMessage());

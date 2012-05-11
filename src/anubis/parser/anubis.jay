@@ -19,7 +19,7 @@ public class Parser {
 // 構造キーワード
 %token<Token>		OBJECT, RECORD, FUNCTION
 // 制御構造キーワード
-%token<Token>		DEF, IF, THEN, ELSE, FOR, WHILE, DO, TRY, CATCH, FINALLY, SWITCH, CASE, ASSERT, USING, LOCK, END
+%token<Token>		IF, THEN, ELSE, FOR, WHILE, DO, TRY, CATCH, FINALLY, SWITCH, CASE, ASSERT, USING, LOCK, END
 // 制御構文キーワード
 %token<Token>		BREAK, CONTINUE, THROW, RETURN, ATMARK
 // 演算子
@@ -93,8 +93,6 @@ stmt:
 		{ $$ = new ForStatement($4, $6, $1, EmptyStatement.INSTANCE).setPos($3.getPos()); }
 	| cmdStmt ATMARK WHILE expr SEMICOLON
 		{ $$ = new WhileStatement($4, $1, EmptyStatement.INSTANCE).setPos($3.getPos()); }
-	| DEF leftvalue ASSIGN expr SEMICOLON
-		{ $$ = new ExpressionStatement(newNewSlotCall($2, $4, true)).setPos($1.getPos()); }
 	| labelOpt IF expr THEN stmtList elseStmtOpt END
 		{ $$ = new IfStatement($1, $3, $5, $6).setPos($2.getPos()); }
 	| labelOpt FOR id COLON expr DO stmtListOpt elseStmtOpt END
