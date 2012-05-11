@@ -103,11 +103,11 @@ public class Operator {
 		return opCall(obj, "close", obj);
 	}
 	
-	public static boolean opEquals(AnubisObject x, AnubisObject y) {
+	public static AnubisObject opEquals(AnubisObject x, AnubisObject y) {
 		if (x == null) {
-			return y == null;
+			return getBool(y == null);
 		}
-		return x.equals(y);
+		return opCall(x, "==", x, y);
 	}
 	
 	public static AnubisObject opIndex(AnubisObject x, AnubisObject index) {
@@ -118,15 +118,15 @@ public class Operator {
 		throw ExceptionProvider.newIllegalValue("indexable", x);
 	}
 	
-	public static boolean opNot(AnubisObject value) {
-		return value == null || value instanceof AFalse;
+	public static AnubisObject opNot(AnubisObject value) {
+		return getBool(value == null || value instanceof AFalse);
 	}
 	
-	public static boolean opNotEquals(AnubisObject x, AnubisObject y) {
+	public static AnubisObject opNotEquals(AnubisObject x, AnubisObject y) {
 		if (x == null) {
-			return y != null;
+			return getBool(y != null);
 		}
-		return !x.equals(y);
+		return opCall(x, "!=", x, y);
 	}
 	
 	public static AnubisObject opSlice(AnubisObject x, AnubisObject start, AnubisObject end) {
@@ -137,8 +137,8 @@ public class Operator {
 		throw ExceptionProvider.newIllegalValue("sliceable", x);
 	}
 	
-	public static boolean opXor(AnubisObject x, AnubisObject y) {
-		return isTrue(x) ^ isTrue(y);
+	public static AnubisObject opXor(AnubisObject x, AnubisObject y) {
+		return getBool(isTrue(x) ^ isTrue(y));
 	}
 	
 	public static String toDebugString(AnubisObject obj) {

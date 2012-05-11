@@ -2,6 +2,7 @@ package anubis.runtime.java;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 import anubis.AnubisObject;
@@ -55,20 +56,6 @@ public class JFieldSlotTable extends AbstractSlotTable {
 	}
 	
 	@Override
-	public Map<String, AnubisObject> getSnap() {
-		Map<String, AnubisObject> result = new TreeMap<String, AnubisObject>();
-		for (Field ff: fields.values()) {
-			try {
-				result.put(ff.getName(), AObjects.getObject(ff.get(object)));
-			}
-			catch (IllegalAccessException ex) {
-				throw ExceptionProvider.wrapRuntimeException(ex);
-			}
-		}
-		return result;
-	}
-	
-	@Override
 	public void put(String name, AnubisObject value, boolean setReadonly) {
 		assertNotReadonly(name, setReadonly);
 		Field ff = fields.get(name);
@@ -83,5 +70,19 @@ public class JFieldSlotTable extends AbstractSlotTable {
 		else {
 			throw ExceptionProvider.newSlotReadonly(name);
 		}
+	}
+	
+	@Override
+	protected Map<String, AnubisObject> getSlotSnaps() {
+		Map<String, AnubisObject> result = new TreeMap<String, AnubisObject>();
+		for (Field ff: fields.values()) {
+			try {
+				result.put(ff.getName(), AObjects.getObject(ff.get(object)));
+			}
+			catch (IllegalAccessException ex) {
+				throw ExceptionProvider.wrapRuntimeException(ex);
+			}
+		}
+		return Collections.unmodifiableMap(result);
 	}
 }

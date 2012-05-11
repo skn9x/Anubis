@@ -7,4 +7,5 @@ do {
 		end
 	};
 	console.puts("{0} = {1}", "tarai(9, 4, 1)", tarai(9, 4, 1));
+	// console.puts("{0} = {1}", "tarai(13, 6, 0)", tarai(13, 6, 0));
 };

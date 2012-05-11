@@ -3,8 +3,6 @@ package anubis.runtime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.TreeMap;
 import anubis.AnubisObject;
 
 /**
@@ -20,25 +18,19 @@ public class SimpleSlotTable extends AbstractSlotTable {
 		return null;
 	}
 	
-	public synchronized Map<String, AnubisObject> getSnap() {
-		if (internal == null) {
-			return Collections.emptyMap();
-		}
-		else {
-			Map<String, AnubisObject> result = new TreeMap<String, AnubisObject>();
-			for (Entry<String, AnubisObject> elm: internal.entrySet()) {
-				result.put(elm.getKey(), elm.getValue());
-			}
-			return result;
-		}
-	}
-	
 	public synchronized void put(String name, AnubisObject value, boolean setReadonly) {
 		assertNotReadonly(name, setReadonly);
 		if (value == null)
 			prepareInternal().remove(name);
 		else
 			prepareInternal().put(name, value);
+	}
+	
+	@Override
+	protected Map<String, AnubisObject> getSlotSnaps() {
+		if (internal == null)
+			return Collections.emptyMap();
+		return Collections.unmodifiableMap(new HashMap<String, AnubisObject>(internal));
 	}
 	
 	private Map<String, AnubisObject> prepareInternal() {

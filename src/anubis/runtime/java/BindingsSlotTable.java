@@ -1,5 +1,6 @@
 package anubis.runtime.java;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -30,17 +31,6 @@ public class BindingsSlotTable extends AbstractSlotTable {
 	}
 	
 	@Override
-	public Map<String, AnubisObject> getSnap() {
-		synchronized (bindings) {
-			Map<String, AnubisObject> result = new TreeMap<String, AnubisObject>();
-			for (Entry<String, Object> elm: bindings.entrySet()) {
-				result.put(elm.getKey(), AObjects.getObject(elm.getValue()));
-			}
-			return result;
-		}
-	}
-	
-	@Override
 	public void put(String name, AnubisObject value, boolean setReadonly) {
 		synchronized (bindings) {
 			assertNotReadonly(name, setReadonly);
@@ -48,6 +38,17 @@ public class BindingsSlotTable extends AbstractSlotTable {
 				bindings.remove(name);
 			else
 				bindings.put(name, JCaster.cast(value));
+		}
+	}
+	
+	@Override
+	protected Map<String, AnubisObject> getSlotSnaps() {
+		synchronized (bindings) {
+			Map<String, AnubisObject> result = new TreeMap<String, AnubisObject>();
+			for (Entry<String, Object> elm: bindings.entrySet()) {
+				result.put(elm.getKey(), AObjects.getObject(elm.getValue()));
+			}
+			return Collections.unmodifiableMap(result);
 		}
 	}
 }

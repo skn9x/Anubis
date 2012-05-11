@@ -235,7 +235,8 @@ public class StatementEmitter {
 							builder.pushLocalVar(var);
 							elm.getValue().visit(owner, builder);
 							builder.emitInvoke(Operator.class, "opEquals", AnubisObject.class, AnubisObject.class);
-							builder.emitIfFalse(_ELSE);
+							builder.emitInvoke(Operator.class, "isFalse", AnubisObject.class);
+							builder.emitIfTrue(_ELSE);
 							// then
 							elm.getThen().visit(owner, builder);
 							builder.emitGoto(_END);
