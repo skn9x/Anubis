@@ -6,6 +6,7 @@ import anubis.SpecialSlot;
 /**
  * @author SiroKuro
  */
+@TypeName(ObjectType.CONTEXT)
 public class AContext extends AObject {
 	private final AnubisObject _this;
 	
@@ -30,10 +31,5 @@ public class AContext extends AObject {
 			default:
 				return super.getSlot(type);
 		}
-	}
-	
-	@Override
-	public String getType() {
-		return ObjectType.CONTEXT;
 	}
 }

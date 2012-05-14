@@ -1,8 +1,11 @@
 package anubis.console;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
@@ -40,20 +43,36 @@ public class Main {
 		}
 	}
 	
-	@SuppressWarnings("static-access")
-	private static Options newOptions() { // TODO i18n
+	private static Option newOption(String longName, String shortName, String args, ResourceBundle bundle) {
+		if (longName != null) {
+			OptionBuilder.withLongOpt(longName);
+			OptionBuilder.withDescription(bundle.getString(longName));
+		}
+		if (args != null) {
+			OptionBuilder.hasArg();
+			OptionBuilder.withArgName(args);
+		}
+		if (shortName != null) {
+			return OptionBuilder.create(shortName);
+		}
+		else {
+			return OptionBuilder.create();
+		}
+	}
+	
+	private static Options newOptions() {
+		String baseName = Main.class.getPackage().getName() + "." + "options";
+		ResourceBundle bundle = ResourceBundle.getBundle(baseName, Locale.getDefault());
+		
 		Options result = new Options();
-		result.addOption(OptionBuilder.withLongOpt("help").withDescription("コマンドラインオプションを表示する").create("h"));
-		result.addOption(OptionBuilder.withLongOpt("compile").withDescription("コンパイルする").create("c"));
-		result.addOption(OptionBuilder.withLongOpt("directory").hasArg().withArgName("directory").withDescription(
-				"生成されたクラスファイルの出力先を指定する").create("d"));
-		result.addOption(OptionBuilder.withLongOpt("file").hasArg().withArgName("sourcefile").withDescription(
-				"ソースファイルを指定する").create("f"));
-		result.addOption(OptionBuilder.withLongOpt("line").hasArg().withArgName("code").withDescription(
-				"引数に指定のコードを実行する").create("l"));
-		result.addOption(OptionBuilder.withDescription("対話モード時にロゴを表示しない").create("nologo"));
-		result.addOption(OptionBuilder.withDescription("対話モード時にプロンプトを表示しない").create("noprompt"));
-		result.addOption(OptionBuilder.withDescription("assert を有効にする").create("ea"));
+		result.addOption(newOption("help", "h", null, bundle));
+		result.addOption(newOption("compile", "c", null, bundle));
+		result.addOption(newOption("dir", "d", "directory", bundle));
+		result.addOption(newOption("file", "f", "sourcefile", bundle));
+		result.addOption(newOption("line", "l", "code", bundle));
+		result.addOption(newOption("nologo", null, null, bundle));
+		result.addOption(newOption("noprompt", null, null, bundle));
+		result.addOption(newOption("noassert", "na", null, bundle));
 		return result;
 	}
 	

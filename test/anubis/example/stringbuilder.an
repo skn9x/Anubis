@@ -1,4 +1,3 @@
-java = use("java");
 sb = java.lang.StringBuilder.new("abcdef");
 
 assert sb.length() == 6;

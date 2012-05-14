@@ -7,18 +7,18 @@ public class CompileException extends AnubisException {
 	 */
 	private static final long serialVersionUID = -257761622724727404L;
 	
-	public CompileException() {
+	protected CompileException() {
 	}
 	
-	public CompileException(String message) {
+	protected CompileException(String message) {
 		super(message);
 	}
 	
-	public CompileException(String message, Throwable cause) {
+	protected CompileException(String message, Throwable cause) {
 		super(message, cause);
 	}
 	
-	public CompileException(Throwable cause) {
+	protected CompileException(Throwable cause) {
 		super(cause);
 	}
 }

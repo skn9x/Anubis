@@ -3,8 +3,9 @@ package anubis.code.asm;
 import static org.junit.Assert.assertNull;
 import org.junit.Test;
 import anubis.AbstractTest;
-import anubis.except.AnubisUserException;
+import anubis.except.UserException;
 import anubis.except.AssertionException;
+import anubis.except.CompileException;
 
 public class StatementEmitterTest extends AbstractTest {
 	@Test(expected = AssertionException.class)
@@ -38,8 +39,7 @@ public class StatementEmitterTest extends AbstractTest {
 		exec("try break; finally end");
 	}
 	
-	@Test(expected = RuntimeException.class)
-	// TODO 専用の例外へ
+	@Test(expected = CompileException.class)
 	public void testEmitBreakStatementNG() throws Exception {
 		exec("try finally break; end");
 	}
@@ -54,8 +54,7 @@ public class StatementEmitterTest extends AbstractTest {
 		exec("try continue; finally end");
 	}
 	
-	@Test(expected = RuntimeException.class)
-	// TODO 専用の例外へ
+	@Test(expected = CompileException.class)
 	public void testEmitContinueStatementNG() throws Exception {
 		exec("try finally continue; end");
 	}
@@ -88,6 +87,11 @@ public class StatementEmitterTest extends AbstractTest {
 	}
 	
 	@Test
+	public void testEmitLockStatement2() throws Exception {
+		exec("lock void do x = 123; end");
+	}
+	
+	@Test
 	public void testEmitReturnStatement() throws Exception {
 		assertAEquals(true, exec("return true;"));
 		assertNull(exec("return;"));
@@ -103,7 +107,7 @@ public class StatementEmitterTest extends AbstractTest {
 				exec("switch 0 case 1 then x = 0; case 2 then x = 10; case 3 then x = 100; else x = 1000; end return x;"));
 	}
 	
-	@Test(expected = AnubisUserException.class)
+	@Test(expected = UserException.class)
 	public void testEmitThrowStatement() throws Exception {
 		exec("throw;");
 	}
@@ -113,7 +117,7 @@ public class StatementEmitterTest extends AbstractTest {
 		assertAEquals(3, exec("try throw 3; catch ex do return ex; end"));
 	}
 	
-	@Test(expected = AnubisUserException.class)
+	@Test(expected = UserException.class)
 	public void testEmitTryFinallyStatement異常系() throws Exception {
 		assertNull(exec("try throw; assert false; finally x = 1; end return x;"));
 	}
@@ -126,6 +130,11 @@ public class StatementEmitterTest extends AbstractTest {
 	@Test
 	public void testEmitUsingStatement() throws Exception {
 		exec("obj = object{ close := { => }; }; using obj do x = 123; end");
+	}
+	
+	@Test
+	public void testEmitUsingStatement2() throws Exception {
+		exec("using void do x = 123; end");
 	}
 	
 	@Test(timeout = 1000)

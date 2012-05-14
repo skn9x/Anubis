@@ -1,7 +1,7 @@
 package anubis.runtime.builtin;
 
 import anubis.AnubisObject;
-import anubis.except.AnubisExitError;
+import anubis.except.ExitError;
 import anubis.runtime.ABuiltinFunction._1;
 
 public class ALobbyExit extends _1 {
@@ -23,7 +23,7 @@ public class ALobbyExit extends _1 {
 	
 	@Override
 	protected AnubisObject exec(AnubisObject this1, AnubisObject x) {
-		AnubisExitError exit = new AnubisExitError(x);
+		ExitError exit = new ExitError(x);
 		if (callback != null) {
 			callback.onExit(exit);
 		}
@@ -31,6 +31,6 @@ public class ALobbyExit extends _1 {
 	}
 	
 	public interface Callback {
-		public void onExit(AnubisExitError exit);
+		public void onExit(ExitError exit);
 	}
 }

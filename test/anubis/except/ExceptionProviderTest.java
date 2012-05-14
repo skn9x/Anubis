@@ -73,7 +73,7 @@ public class ExceptionProviderTest {
 	 */
 	@Test
 	public void testNewParseException() {
-		AnubisParserException result = ExceptionProvider.newParseException(new Exception("parse test"));
+		ParseException result = ExceptionProvider.newParseException(new Exception("parse test"));
 		assertNotNull(result);
 		System.out.println(result.getMessage());
 	}
@@ -83,7 +83,7 @@ public class ExceptionProviderTest {
 	 */
 	@Test
 	public void testNewParseExceptionByInvalidChars() {
-		AnubisParserException result = ExceptionProvider.newParseExceptionByInvalidChars("a", "64", 1, 2);
+		ParseException result = ExceptionProvider.newParseExceptionByInvalidChars("a", "64", 1, 2);
 		assertNotNull(result);
 		System.out.println(result.getMessage());
 	}
@@ -93,7 +93,7 @@ public class ExceptionProviderTest {
 	 */
 	@Test
 	public void testNewParseExceptionByStringNotTerminated() {
-		AnubisParserException result = ExceptionProvider.newParseExceptionByStringNotTerminated("string", 1, 2);
+		ParseException result = ExceptionProvider.newParseExceptionByStringNotTerminated("string", 1, 2);
 		assertNotNull(result);
 		System.out.println(result.getMessage());
 	}

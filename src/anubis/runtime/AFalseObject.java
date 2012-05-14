@@ -2,6 +2,7 @@ package anubis.runtime;
 
 import anubis.AFalse;
 
+@TypeName(ObjectType.BOOL)
 public class AFalseObject extends APrimitive implements AFalse {
 	@Override
 	public Object asJava() {
@@ -11,11 +12,6 @@ public class AFalseObject extends APrimitive implements AFalse {
 	@Override
 	public boolean equals(Object obj) {
 		return obj != null && obj.getClass() == getClass();
-	}
-	
-	@Override
-	public String getType() {
-		return ObjectType.BOOL;
 	}
 	
 	@Override

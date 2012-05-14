@@ -5,6 +5,7 @@ import anubis.parser.ParserHelper;
 /**
  * @author SiroKuro
  */
+@TypeName(ObjectType.STRING)
 public class AString extends APrimitive {
 	private final String value;
 	
@@ -35,11 +36,6 @@ public class AString extends APrimitive {
 		else if (!value.equals(other.value))
 			return false;
 		return true;
-	}
-	
-	@Override
-	public String getType() {
-		return ObjectType.STRING;
 	}
 	
 	/**

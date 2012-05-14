@@ -3,19 +3,19 @@ package anubis.except;
 public class IllegalValueException extends AnubisRuntimeException {
 	private static final long serialVersionUID = -1005662225273456728L;
 	
-	public IllegalValueException() {
+	protected IllegalValueException() {
 		;
 	}
 	
-	public IllegalValueException(String message) {
+	protected IllegalValueException(String message) {
 		super(message);
 	}
 	
-	public IllegalValueException(String message, Throwable cause) {
+	protected IllegalValueException(String message, Throwable cause) {
 		super(message, cause);
 	}
 	
-	public IllegalValueException(Throwable cause) {
+	protected IllegalValueException(Throwable cause) {
 		super(cause);
 	}
 	

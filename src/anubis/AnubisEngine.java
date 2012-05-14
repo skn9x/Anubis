@@ -14,6 +14,7 @@ import javax.script.ScriptContext;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptException;
 import javax.script.SimpleBindings;
+import anubis.code.CodeBlock;
 import anubis.runtime.ObjectFactory;
 import anubis.runtime.StandardObjectFactory;
 
@@ -38,12 +39,12 @@ public class AnubisEngine extends AbstractScriptEngine implements Invocable, Com
 	
 	@Override
 	public CompiledScript compile(Reader reader) throws ScriptException {
-		return core.internalCompile(reader, getContext());
+		return core.newScript(reader, getContext());
 	}
 	
 	@Override
 	public CompiledScript compile(String code) throws ScriptException {
-		return core.internalCompile(new StringReader(code), getContext());
+		return core.newScript(new StringReader(code), getContext());
 	}
 	
 	@Override
@@ -53,7 +54,7 @@ public class AnubisEngine extends AbstractScriptEngine implements Invocable, Com
 	
 	@Override
 	public Object eval(Reader code, ScriptContext context) throws ScriptException {
-		EngineCore.AnubisCompiledScript script = core.internalCompile(code, context);
+		EngineCore.AnubisCompiledScript script = core.newScript(code, context);
 		return script.eval(context);
 	}
 	
@@ -62,9 +63,12 @@ public class AnubisEngine extends AbstractScriptEngine implements Invocable, Com
 		return eval(new StringReader(code), context);
 	}
 	
-	public AnubisObject evalForRepl(String code) throws ScriptException {
-		EngineCore.AnubisCompiledScript script = core.internalCompile(new StringReader(code), getContext());
-		return script.exec(getContext());
+	public AnubisObject exec(CodeBlock block) throws ScriptException {
+		return core.newScript(block).exec(getContext());
+	}
+	
+	public AnubisObject exec(String code) throws ScriptException {
+		return core.newScript(new StringReader(code), getContext()).exec(getContext());
 	}
 	
 	@Override

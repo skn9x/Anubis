@@ -17,7 +17,7 @@ public class Option {
 		return disableAssertion;
 	}
 	
-	public void setDisableAssertion(boolean disableAssertion) {
+	public void isNoAssert(boolean disableAssertion) {
 		this.disableAssertion = disableAssertion;
 	}
 	

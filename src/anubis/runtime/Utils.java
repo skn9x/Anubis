@@ -17,7 +17,7 @@ import anubis.parser.ParserHelper;
  * @author SiroKuro
  */
 public class Utils {
-	private static final ProtoVisitor<Class<? extends AnubisObject>, AnubisObject> CAST = new ProtoVisitor<Class<? extends AnubisObject>, AnubisObject>() {
+	private static final ProtoVisitor<Class<? extends AnubisObject>, AnubisObject> AS = new ProtoVisitor<Class<? extends AnubisObject>, AnubisObject>() {
 		@Override
 		protected AnubisObject visit(AnubisObject obj, Class<? extends AnubisObject> cls) {
 			if (cls.isInstance(obj))
@@ -26,8 +26,8 @@ public class Utils {
 		}
 	};
 	
-	public static <T extends AnubisObject> T as(Class<T> cls, AnubisObject obj) { // TODO null を返したときの対処を入れる
-		return cls.cast(CAST.start(obj, cls));
+	public static <T extends AnubisObject> T as(Class<T> cls, AnubisObject obj) {
+		return cls.cast(AS.start(obj, cls));
 	}
 	
 	public static Number asBigNumber(Number num) {
@@ -46,8 +46,9 @@ public class Utils {
 	
 	public static int asIntArgs(AnubisObject obj) {
 		ANumber num = Utils.as(ANumber.class, obj);
-		if (num == null)
-			throw ExceptionProvider.newVoidOperation(); // TODO IllegalArgumentException
+		if (num == null) {
+			throw ExceptionProvider.newIllegalValue(ObjectType.get(ANumber.class), obj);
+		}
 		// TODO オーバーフローチェックをいれる
 		return num.getNumber().intValue();
 	}
@@ -58,6 +59,14 @@ public class Utils {
 			return _default;
 		// TODO オーバーフローチェックをいれる
 		return num.getNumber().intValue();
+	}
+	
+	public static <T extends AnubisObject> T cast(Class<T> cls, AnubisObject obj) {
+		T result = as(cls, obj);
+		if (result == null) {
+			throw ExceptionProvider.newIllegalValue(ObjectType.get(cls), obj);
+		}
+		return result;
 	}
 	
 	public static String formatDumpString(AObject object, Map<String, AnubisObject> snaps) {

@@ -10,19 +10,19 @@ public class AnubisException extends RuntimeException {
 	 */
 	private static final long serialVersionUID = 4260630747050644374L;
 	
-	public AnubisException() {
+	protected AnubisException() {
 		super();
 	}
 	
-	public AnubisException(String message) {
+	protected AnubisException(String message) {
 		super(message);
 	}
 	
-	public AnubisException(String message, Throwable cause) {
+	protected AnubisException(String message, Throwable cause) {
 		super(message, cause);
 	}
 	
-	public AnubisException(Throwable cause) {
+	protected AnubisException(Throwable cause) {
 		super(cause);
 	}
 }

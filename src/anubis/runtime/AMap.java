@@ -7,6 +7,7 @@ import anubis.AIndexable;
 import anubis.AIterable;
 import anubis.AnubisObject;
 
+@TypeName(ObjectType.MAP)
 public class AMap extends AObject implements AIndexable, AIterable {
 	private final Map<AnubisObject, AnubisObject> map;
 	
@@ -31,11 +32,6 @@ public class AMap extends AObject implements AIndexable, AIterable {
 	@Override
 	public AnubisObject getItem(AnubisObject index) {
 		return map.get(index);
-	}
-	
-	@Override
-	public String getType() {
-		return ObjectType.MAP;
 	}
 	
 	@Override

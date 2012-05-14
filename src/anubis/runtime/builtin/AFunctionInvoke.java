@@ -13,7 +13,7 @@ public class AFunctionInvoke extends ABuiltinFunction {
 	
 	@Override
 	public AnubisObject call(AnubisObject this1, AnubisObject... args) {
-		ACallable func = Utils.as(ACallable.class, this1);
+		ACallable func = Utils.cast(ACallable.class, this1);
 		return func.call(null, args);
 	}
 }

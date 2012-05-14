@@ -14,13 +14,13 @@ public class AnubisRuntimeException extends AnubisException {
 	/**
 	 * 
 	 */
-	public AnubisRuntimeException() {
+	protected AnubisRuntimeException() {
 	}
 	
 	/**
 	 * @param message
 	 */
-	public AnubisRuntimeException(String message) {
+	protected AnubisRuntimeException(String message) {
 		super(message);
 	}
 	
@@ -28,14 +28,14 @@ public class AnubisRuntimeException extends AnubisException {
 	 * @param message
 	 * @param cause
 	 */
-	public AnubisRuntimeException(String message, Throwable cause) {
+	protected AnubisRuntimeException(String message, Throwable cause) {
 		super(message, cause);
 	}
 	
 	/**
 	 * @param cause
 	 */
-	public AnubisRuntimeException(Throwable cause) {
+	protected AnubisRuntimeException(Throwable cause) {
 		super(cause);
 	}
 	

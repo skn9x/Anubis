@@ -7,6 +7,7 @@ import anubis.AIterable;
 import anubis.ASliceable;
 import anubis.AnubisObject;
 
+@TypeName(ObjectType.LIST)
 public class AList extends AObject implements ASliceable, AIterable {
 	private final List<AnubisObject> list;
 	
@@ -49,11 +50,6 @@ public class AList extends AObject implements ASliceable, AIterable {
 			e = size - 1;
 		}
 		return new AList(list.subList(s, e + 1));
-	}
-	
-	@Override
-	public String getType() {
-		return ObjectType.LIST;
 	}
 	
 	@Override

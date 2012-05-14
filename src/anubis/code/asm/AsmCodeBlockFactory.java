@@ -10,7 +10,7 @@ import anubis.ast.CompilationUnit;
 import anubis.code.CodeBlock;
 import anubis.code.CodeBlockFactory;
 import anubis.code.Option;
-import anubis.except.CompileException;
+import anubis.except.ExceptionProvider;
 
 public class AsmCodeBlockFactory extends CodeBlockFactory {
 	private final Map<String, CustomCodeClassLoader> loaders = new HashMap<String, CustomCodeClassLoader>();
@@ -21,10 +21,10 @@ public class AsmCodeBlockFactory extends CodeBlockFactory {
 			return (CodeBlock) newCodeBlockClass(node, option).getField("INSTANCE").get(null);
 		}
 		catch (NoSuchFieldException ex) {
-			throw new CompileException(ex);
+			throw ExceptionProvider.newInternalCompileExeption(ex);
 		}
 		catch (IllegalAccessException ex) {
-			throw new CompileException(ex);
+			throw ExceptionProvider.newInternalCompileExeption(ex);
 		}
 	}
 	
@@ -37,7 +37,7 @@ public class AsmCodeBlockFactory extends CodeBlockFactory {
 			return loader.findClass(className);
 		}
 		catch (ClassNotFoundException ex) {
-			throw new CompileException(ex);
+			throw ExceptionProvider.newInternalCompileExeption(ex);
 		}
 	}
 	

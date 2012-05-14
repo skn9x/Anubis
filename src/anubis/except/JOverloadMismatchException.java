@@ -13,14 +13,14 @@ public class JOverloadMismatchException extends AnubisRuntimeException {
 	/**
 	 * 
 	 */
-	public JOverloadMismatchException() {
+	protected JOverloadMismatchException() {
 		;
 	}
 	
 	/**
 	 * @param message
 	 */
-	public JOverloadMismatchException(String message) {
+	protected JOverloadMismatchException(String message) {
 		super(message);
 	}
 	
@@ -28,14 +28,14 @@ public class JOverloadMismatchException extends AnubisRuntimeException {
 	 * @param message
 	 * @param cause
 	 */
-	public JOverloadMismatchException(String message, Throwable cause) {
+	protected JOverloadMismatchException(String message, Throwable cause) {
 		super(message, cause);
 	}
 	
 	/**
 	 * @param cause
 	 */
-	public JOverloadMismatchException(Throwable cause) {
+	protected JOverloadMismatchException(Throwable cause) {
 		super(cause);
 	}
 	

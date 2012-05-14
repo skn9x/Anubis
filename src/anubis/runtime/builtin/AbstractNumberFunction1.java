@@ -1,7 +1,6 @@
 package anubis.runtime.builtin;
 
 import anubis.AnubisObject;
-import anubis.except.ExceptionProvider;
 import anubis.runtime.ABuiltinFunction;
 import anubis.runtime.ANumber;
 import anubis.runtime.AObjects;
@@ -18,9 +17,7 @@ public abstract class AbstractNumberFunction1 extends ABuiltinFunction._0 implem
 	
 	@Override
 	protected AnubisObject exec(AnubisObject this1) {
-		ANumber num = Utils.as(ANumber.class, this1);
-		if (num == null)
-			throw ExceptionProvider.newVoidOperation(); // TODO IllegalArgumentException
+		ANumber num = Utils.cast(ANumber.class, this1);
 		return AObjects.getNumber(num.operate(this));
 	}
 }

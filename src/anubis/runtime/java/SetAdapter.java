@@ -3,7 +3,9 @@ package anubis.runtime.java;
 import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.Set;
+import anubis.ACastable;
 import anubis.AnubisObject;
+import anubis.runtime.ASet;
 
 public class SetAdapter<T> extends AbstractSet<AnubisObject> implements Adapter {
 	private final Set<T> internal;
@@ -32,5 +34,20 @@ public class SetAdapter<T> extends AbstractSet<AnubisObject> implements Adapter 
 	@Override
 	public int size() {
 		return internal.size();
+	}
+	
+	public ASet toASet() {
+		return new ASetAdapter();
+	}
+	
+	private class ASetAdapter extends ASet implements ACastable {
+		public ASetAdapter() {
+			super(SetAdapter.this);
+		}
+		
+		@Override
+		public Object asJava() {
+			return internal;
+		}
 	}
 }

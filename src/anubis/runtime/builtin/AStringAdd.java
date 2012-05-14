@@ -1,7 +1,6 @@
 package anubis.runtime.builtin;
 
 import anubis.AnubisObject;
-import anubis.except.ExceptionProvider;
 import anubis.runtime.ABuiltinFunction._1;
 import anubis.runtime.AObjects;
 import anubis.runtime.AString;
@@ -16,10 +15,7 @@ public class AStringAdd extends _1 {
 	
 	@Override
 	protected AnubisObject exec(AnubisObject this1, AnubisObject x) {
-		AString text = Utils.as(AString.class, this1);
-		if (text == null) {
-			throw ExceptionProvider.newVoidOperation(); // TODO IllegalArgumentException
-		}
+		AString text = Utils.cast(AString.class, this1);
 		Object obj = JCaster.cast(x);
 		if (obj == null) {
 			obj = "";

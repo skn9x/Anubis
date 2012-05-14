@@ -21,6 +21,8 @@ import anubis.ast.TryCatchStatement;
 import anubis.ast.TryFinallyStatement;
 import anubis.ast.UsingStatement;
 import anubis.ast.WhileStatement;
+import anubis.code.asm.BlockEmitter.IllegalGotoException;
+import anubis.except.ExceptionProvider;
 import anubis.runtime.Operator;
 
 public class StatementEmitter {
@@ -71,11 +73,21 @@ public class StatementEmitter {
 	}
 	
 	public void emit(CodeBuilder builder, BreakStatement stmt) {
-		block.emitBreak(builder, stmt.getLabel());
+		try {
+			block.emitBreak(builder, stmt.getLabel());
+		}
+		catch (IllegalGotoException ex) {
+			throw ExceptionProvider.newCompileException("illegal break statement.", stmt.getPos(), ex);
+		}
 	}
 	
 	public void emit(CodeBuilder builder, ContinueStatement stmt) {
-		block.emitContinue(builder, stmt.getLabel());
+		try {
+			block.emitContinue(builder, stmt.getLabel());
+		}
+		catch (IllegalGotoException ex) {
+			throw ExceptionProvider.newCompileException("illegal break statement.", stmt.getPos(), ex);
+		}
 	}
 	
 	public void emit(CodeBuilder builder, EmptyStatement stmt) {
@@ -179,16 +191,37 @@ public class StatementEmitter {
 		try {
 			// expr
 			stmt.getExpression().visit(owner, builder);
-			// TODO null チェック
 			builder.emitDup();
 			builder.emitStoreLocalVar(var);
+			
+			// void の時には迂回
+			Label _ELSE = builder.newLabel();
+			Label _END = builder.newLabel();
+			builder.emitDup();
+			builder.emitIfNull(_ELSE);
 			builder.emitMonitorEnter();
+			builder.emitGoto(_END);
+			
+			builder.emitLabel(_ELSE);
+			builder.emitPop();
+			builder.emitLabel(_END);
+			
 			// body
 			new TryFinallyEmitter(block, stmt.getLabel()) {
 				@Override
 				public void emitFinally(CodeBuilder builder) {
+					Label _ELSE = builder.newLabel();
+					Label _END = builder.newLabel();
 					builder.pushLocalVar(var);
+					
+					builder.emitDup();
+					builder.emitIfNull(_ELSE);
 					builder.emitMonitorExit();
+					builder.emitGoto(_END);
+					
+					builder.emitLabel(_ELSE);
+					builder.emitPop();
+					builder.emitLabel(_END);
 				}
 				
 				@Override
@@ -336,14 +369,20 @@ public class StatementEmitter {
 		try {
 			// expr
 			stmt.getExpression().visit(owner, builder);
-			// TODO null チェック
 			builder.emitStoreLocalVar(var);
+			
 			// body
 			new TryFinallyEmitter(block, stmt.getLabel()) {
 				@Override
 				public void emitFinally(CodeBuilder builder) {
 					builder.pushLocalVar(var);
+					
+					// void の時には迂回
+					Label _SKIP = builder.newLabel();
+					builder.emitDup();
+					builder.emitIfNull(_SKIP);
 					builder.emitInvoke(Operator.class, "opClose", AnubisObject.class);
+					builder.emitLabel(_SKIP);
 					builder.emitPop();
 				}
 				

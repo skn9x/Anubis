@@ -6,6 +6,7 @@ import java.math.BigInteger;
 /**
  * @author SiroKuro
  */
+@TypeName(ObjectType.NUMBER)
 public abstract class ANumber extends APrimitive {
 	@Override
 	public Object asJava() {
@@ -34,11 +35,6 @@ public abstract class ANumber extends APrimitive {
 	}
 	
 	public abstract Number getNumber();
-	
-	@Override
-	public String getType() {
-		return ObjectType.NUMBER;
-	}
 	
 	@Override
 	public int hashCode() {

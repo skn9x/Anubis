@@ -2,7 +2,9 @@ package anubis.runtime.java;
 
 import java.util.AbstractList;
 import java.util.List;
+import anubis.ACastable;
 import anubis.AnubisObject;
+import anubis.runtime.AList;
 import anubis.runtime.AObjects;
 
 public class ListAdapter<T> extends AbstractList<AnubisObject> implements Adapter {
@@ -42,5 +44,20 @@ public class ListAdapter<T> extends AbstractList<AnubisObject> implements Adapte
 	@Override
 	public int size() {
 		return internal.size();
+	}
+	
+	public AList toAList() {
+		return new AListAdapter();
+	}
+	
+	private class AListAdapter extends AList implements ACastable {
+		public AListAdapter() {
+			super(ListAdapter.this);
+		}
+		
+		@Override
+		public Object asJava() {
+			return internal;
+		}
 	}
 }

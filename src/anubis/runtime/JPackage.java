@@ -6,6 +6,7 @@ import anubis.AnubisObject;
 /**
  * @author SiroKuro
  */
+@TypeName(ObjectType.JPACKAGE)
 public class JPackage extends AObject implements ACastable {
 	private final String packName;
 	private final Package pack;
@@ -64,11 +65,6 @@ public class JPackage extends AObject implements ACastable {
 			}
 			return obj;
 		}
-	}
-	
-	@Override
-	public String getType() {
-		return ObjectType.JPACKAGE;
 	}
 	
 	private static AnubisObject newClass(String name) {

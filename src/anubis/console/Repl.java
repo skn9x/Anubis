@@ -8,7 +8,7 @@ import javax.script.ScriptEngineFactory;
 import javax.script.ScriptException;
 import anubis.AnubisEngine;
 import anubis.AnubisObject;
-import anubis.except.AnubisExitError;
+import anubis.except.ExitError;
 import anubis.runtime.Operator;
 import anubis.runtime.TraitsFactory;
 import anubis.runtime.builtin.ALobbyExit;
@@ -26,7 +26,7 @@ public class Repl implements ALobbyExit.Callback {
 	}
 	
 	@Override
-	public void onExit(AnubisExitError exit) {
+	public void onExit(ExitError exit) {
 		System.out.println("bye!");
 		running = false;
 	}
@@ -42,7 +42,7 @@ public class Repl implements ALobbyExit.Callback {
 					if (code == null) {
 						break;
 					}
-					AnubisObject obj = engine.evalForRepl(code);
+					AnubisObject obj = engine.exec(code);
 					if (obj == exit) {
 						System.out.println("bye!");
 						break;

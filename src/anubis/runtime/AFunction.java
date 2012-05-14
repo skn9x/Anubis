@@ -6,15 +6,11 @@ import anubis.AnubisObject;
 /**
  * @author SiroKuro
  */
+@TypeName(ObjectType.FUNCTION)
 public abstract class AFunction extends AObject implements ACallable {
 	
 	@Override
 	public abstract AnubisObject call(AnubisObject _this, AnubisObject... args);
-	
-	@Override
-	public String getType() {
-		return ObjectType.FUNCTION;
-	}
 	
 	/**
 	 * @param val

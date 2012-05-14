@@ -6,6 +6,7 @@ import anubis.SpecialSlot;
 import anubis.except.ExceptionProvider;
 import anubis.except.ObjectFreezeException;
 
+@TypeName(ObjectType.OBJECT)
 public abstract class AbstractAObject implements AnubisObject {
 	protected final SlotTable slots;
 	private AnubisObject _super = null;
@@ -65,7 +66,7 @@ public abstract class AbstractAObject implements AnubisObject {
 	
 	@Override
 	public String getType() {
-		return ObjectType.OBJECT;
+		return ObjectType.get(getClass());
 	}
 	
 	@Override

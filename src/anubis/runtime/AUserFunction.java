@@ -23,6 +23,7 @@ public class AUserFunction extends AFunction {
 				local.setSlot(args[i], param[i]);
 			}
 		}
+		// TODO param 自体のセット
 		return body.exec(local);
 	}
 }

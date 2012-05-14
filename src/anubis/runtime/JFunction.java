@@ -6,6 +6,7 @@ import anubis.runtime.java.FunctionAccessor;
 /**
  * @author SiroKuro
  */
+@TypeName(ObjectType.JFUNCTION)
 public class JFunction extends AFunction {
 	private final FunctionAccessor func;
 	private final String funcname;
@@ -24,11 +25,6 @@ public class JFunction extends AFunction {
 	@Override
 	public String debugString() {
 		return super.debugString() + "(" + funcname + ")";
-	}
-	
-	@Override
-	public String getType() {
-		return ObjectType.JFUNCTION;
 	}
 	
 	@Override

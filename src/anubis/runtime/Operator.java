@@ -6,10 +6,11 @@ import anubis.ADumpable;
 import anubis.AFalse;
 import anubis.AIndexable;
 import anubis.AIterable;
+import anubis.ANull;
 import anubis.ASliceable;
 import anubis.AnubisObject;
-import anubis.except.AnubisUserException;
 import anubis.except.ExceptionProvider;
+import anubis.except.UserException;
 import anubis.runtime.java.IteratorAdapter;
 import anubis.runtime.java.JCaster;
 
@@ -18,6 +19,12 @@ import anubis.runtime.java.JCaster;
  */
 public class Operator {
 	public static final String SLOT_FORWARD = "$forward";
+	
+	public static void assertNotVoid(AnubisObject obj) {
+		if (obj == null) {
+			throw ExceptionProvider.newVoidOperation();
+		}
+	}
 	
 	public static void fail() {
 		throw ExceptionProvider.newAssertionException();
@@ -87,7 +94,7 @@ public class Operator {
 	}
 	
 	public static boolean isNull(AnubisObject value) {
-		return JCaster.cast(value) == null; // TODO 乱暴かも再考
+		return value == null || value instanceof ANull;
 	}
 	
 	public static boolean isTrue(AnubisObject value) {
@@ -164,8 +171,8 @@ public class Operator {
 	public static AnubisObject unwrapException(Throwable ex) {
 		if (ex instanceof AnubisObject)
 			return (AnubisObject) ex;
-		if (ex instanceof AnubisUserException)
-			return ((AnubisUserException) ex).getValue();
+		if (ex instanceof UserException)
+			return ((UserException) ex).getValue();
 		return AObjects.getObject(ex);
 	}
 	

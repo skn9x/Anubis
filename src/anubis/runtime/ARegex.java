@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 /**
  * @author SiroKuro
  */
+@TypeName(ObjectType.REGEX)
 public class ARegex extends APrimitive {
 	private final Pattern pattern;
 	
@@ -35,11 +36,6 @@ public class ARegex extends APrimitive {
 		else if (pattern.flags() != other.pattern.flags())
 			return false;
 		return true;
-	}
-	
-	@Override
-	public String getType() {
-		return ObjectType.REGEX;
 	}
 	
 	@Override

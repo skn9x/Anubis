@@ -2,7 +2,7 @@ package anubis.except;
 
 import anubis.AnubisObject;
 
-public class AnubisExitError extends Error {
+public class ExitError extends Error {
 	/**
 	 * 
 	 */
@@ -10,11 +10,11 @@ public class AnubisExitError extends Error {
 	
 	private final AnubisObject value;
 	
-	public AnubisExitError() {
+	public ExitError() {
 		this.value = null;
 	}
 	
-	public AnubisExitError(AnubisObject value) {
+	public ExitError(AnubisObject value) {
 		this.value = value;
 	}
 	

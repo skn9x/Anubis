@@ -8,6 +8,7 @@ import anubis.ASliceable;
 import anubis.AnubisObject;
 import anubis.runtime.builtin.NumberOperator;
 
+@TypeName(ObjectType.LIST)
 public class ARange extends AObject implements ASliceable, AIterable {
 	private final AnubisObject start, end, step;
 	private final boolean decent;
@@ -81,11 +82,6 @@ public class ARange extends AObject implements ASliceable, AIterable {
 			newStep = NumberOperator.negative(step);
 		}
 		return AObjects.newRange(newStart, newEnd, newStep);
-	}
-	
-	@Override
-	public String getType() {
-		return ObjectType.LIST;
 	}
 	
 	@Override

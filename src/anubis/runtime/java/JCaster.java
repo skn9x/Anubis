@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import anubis.ACastable;
 import anubis.AFalse;
 import anubis.AnubisObject;
+import anubis.except.ExceptionProvider;
 import anubis.runtime.ADecimal;
 import anubis.runtime.AInteger;
 import anubis.runtime.ProtoVisitor;
@@ -157,7 +158,7 @@ public class JCaster {
 				return null;
 			if (value != null)
 				return toWrappedClass(cls).cast(value);
-			throw new ClassCastException(); // TODO オリジナル例外
+			throw ExceptionProvider.newClassCastException(cls, obj);
 		}
 	}
 	

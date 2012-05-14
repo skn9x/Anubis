@@ -1,9 +1,10 @@
 package anubis.runtime;
 
+
 /**
  * @author SiroKuro
  */
-public interface ObjectType {
+public class ObjectType {
 	public static final String OBJECT = "object";
 	public static final String FUNCTION = "function";
 	public static final String BOOL = "bool";
@@ -20,4 +21,15 @@ public interface ObjectType {
 	public static final String CONTEXT = "context";
 	public static final String LOBBY = "lobby";
 	public static final String NOP = "nop";
+	
+	public static String get(Class<?> cls) {
+		TypeName type = cls.getAnnotation(TypeName.class);
+		if (type != null) {
+			String result = type.value();
+			if (result != null) {
+				return result;
+			}
+		}
+		return cls.getSimpleName();
+	}
 }

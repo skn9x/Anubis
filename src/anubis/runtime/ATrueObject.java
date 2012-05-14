@@ -1,5 +1,6 @@
 package anubis.runtime;
 
+@TypeName(ObjectType.BOOL)
 public class ATrueObject extends APrimitive {
 	@Override
 	public Object asJava() {
@@ -9,11 +10,6 @@ public class ATrueObject extends APrimitive {
 	@Override
 	public boolean equals(Object obj) {
 		return obj != null && obj.getClass() == getClass();
-	}
-	
-	@Override
-	public String getType() {
-		return ObjectType.BOOL;
 	}
 	
 	@Override

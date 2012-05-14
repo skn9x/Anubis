@@ -5,6 +5,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import anubis.ACallable;
 import anubis.AnubisObject;
+import anubis.ast.Position;
+import anubis.code.asm.BlockEmitter.IllegalGotoException;
 import anubis.runtime.ObjectFactory;
 import anubis.runtime.Operator;
 
@@ -12,37 +14,39 @@ import anubis.runtime.Operator;
  * @author SiroKuro
  */
 public class ExceptionProvider {
-	private static final String pattern_newFactoryNotReady_0;
-	private static final String pattern_newJOverloadMismatch_0;
-	private static final String pattern_newNotCallable_1;
-	private static final String pattern_newSlotNotFound_2;
-	private static final String pattern_newObjectFreeze_0;
-	private static final String pattern_newObjectFreeze_1;
-	private static final String pattern_newObjectFreeze_2;
-	private static final String pattern_newVoidOperation_0;
-	private static final String pattern_newParseExceptionByInvalidChars_3;
-	private static final String pattern_newParseExceptionByStringNotTerminated_3;
-	private static final String pattern_newParseException_0;
-	private static final String pattern_newParseException_1;
-	private static final String pattern_newIllegalValue_2;
+	private static final String pat_FactoryNotReady_0;
+	private static final String pat_JOverloadMismatch_0;
+	private static final String pat_NotCallable_1;
+	private static final String pat_SlotNotFound_2;
+	private static final String pat_ObjectFreeze_0;
+	private static final String pat_ObjectFreeze_1;
+	private static final String pat_ObjectFreeze_2;
+	private static final String pat_VoidOperation_0;
+	private static final String pat_ParseExceptionByInvalidChars_3;
+	private static final String pat_ParseExceptionByStringNotTerminated_3;
+	private static final String pat_ParseException_0;
+	private static final String pat_ParseException_1;
+	private static final String pat_IllegalValue_2;
+	private static final String pat_ClassCast_2;
 	
 	static {
 		String baseName = ExceptionProvider.class.getPackage().getName() + "." + "messages";
 		ResourceBundle bundle = ResourceBundle.getBundle(baseName, Locale.getDefault());
 		
-		pattern_newFactoryNotReady_0 = bundle.getString("message.FactoryNotReady.0");
-		pattern_newJOverloadMismatch_0 = bundle.getString("message.JOverloadMismatch.0");
-		pattern_newNotCallable_1 = bundle.getString("message.NotCallable.1");
-		pattern_newSlotNotFound_2 = bundle.getString("message.SlotNotFound.2");
-		pattern_newObjectFreeze_0 = bundle.getString("message.ObjectFreeze.0");
-		pattern_newObjectFreeze_1 = bundle.getString("message.ObjectFreeze.1");
-		pattern_newObjectFreeze_2 = bundle.getString("message.ObjectFreeze.2");
-		pattern_newVoidOperation_0 = bundle.getString("message.VoidOperation.0");
-		pattern_newParseExceptionByInvalidChars_3 = bundle.getString("message.ParseExceptionByInvalidChars.3");
-		pattern_newParseExceptionByStringNotTerminated_3 = bundle.getString("message.ParseExceptionByStringNotTerminated.3");
-		pattern_newParseException_0 = bundle.getString("message.ParseException.0");
-		pattern_newParseException_1 = bundle.getString("message.ParseException.1");
-		pattern_newIllegalValue_2 = bundle.getString("message.IllegalValue.2");
+		pat_FactoryNotReady_0 = bundle.getString("message.FactoryNotReady.0");
+		pat_JOverloadMismatch_0 = bundle.getString("message.JOverloadMismatch.0");
+		pat_NotCallable_1 = bundle.getString("message.NotCallable.1");
+		pat_SlotNotFound_2 = bundle.getString("message.SlotNotFound.2");
+		pat_ObjectFreeze_0 = bundle.getString("message.ObjectFreeze.0");
+		pat_ObjectFreeze_1 = bundle.getString("message.ObjectFreeze.1");
+		pat_ObjectFreeze_2 = bundle.getString("message.ObjectFreeze.2");
+		pat_VoidOperation_0 = bundle.getString("message.VoidOperation.0");
+		pat_ParseExceptionByInvalidChars_3 = bundle.getString("message.ParseExceptionByInvalidChars.3");
+		pat_ParseExceptionByStringNotTerminated_3 = bundle.getString("message.ParseExceptionByStringNotTerminated.3");
+		pat_ParseException_0 = bundle.getString("message.ParseException.0");
+		pat_ParseException_1 = bundle.getString("message.ParseException.1");
+		pat_IllegalValue_2 = bundle.getString("message.IllegalValue.2");
+		pat_ClassCast_2 = bundle.getString("message.ClassCast.2");
 	}
 	
 	private ExceptionProvider() {
@@ -53,16 +57,32 @@ public class ExceptionProvider {
 		return new AssertionException();
 	}
 	
+	public static ClassCastException newClassCastException(Class<?> expected, AnubisObject value) {
+		return new ClassCastException(format(pat_ClassCast_2, expected, value));
+	}
+	
+	public static CompileException newCompileException(String message, Position pos, IllegalGotoException cause) {
+		CompileException result = new CompileException(message);
+		if (cause != null) {
+			result.initCause(cause);
+		}
+		return result;
+	}
+	
 	/**
 	 * {@link ObjectFactory} が準備できていないことを示す例外を作成します。
 	 * @return 例外オブジェクト
 	 */
 	public static FactoryNotReadyException newFactoryNotReady() {
-		return new FactoryNotReadyException(format(pattern_newFactoryNotReady_0));
+		return new FactoryNotReadyException(format(pat_FactoryNotReady_0));
 	}
 	
 	public static IllegalValueException newIllegalValue(Object expected, AnubisObject value) {
-		return new IllegalValueException(format(pattern_newIllegalValue_2, expected, value));
+		return new IllegalValueException(format(pat_IllegalValue_2, expected, value));
+	}
+	
+	public static CompileException newInternalCompileExeption(Throwable cause) {
+		return new CompileException("internal compile error", cause);
 	}
 	
 	/**
@@ -70,7 +90,7 @@ public class ExceptionProvider {
 	 * @return 例外オブジェクト
 	 */
 	public static JOverloadMismatchException newJOverloadMismatch() {
-		return new JOverloadMismatchException(format(pattern_newJOverloadMismatch_0));
+		return new JOverloadMismatchException(format(pat_JOverloadMismatch_0));
 	}
 	
 	/**
@@ -78,7 +98,7 @@ public class ExceptionProvider {
 	 * @return
 	 */
 	public static JOverloadMismatchException newJOverloadMismatch(ClassCastException ex) {
-		return new JOverloadMismatchException(format(pattern_newJOverloadMismatch_0), ex);
+		return new JOverloadMismatchException(format(pat_JOverloadMismatch_0), ex);
 	}
 	
 	/**
@@ -87,7 +107,7 @@ public class ExceptionProvider {
 	 * @return 例外オブジェクト
 	 */
 	public static NotCallableException newNotCallable(AnubisObject obj) {
-		return new NotCallableException(format(pattern_newNotCallable_1, Operator.toDebugString(obj)));
+		return new NotCallableException(format(pat_NotCallable_1, Operator.toDebugString(obj)));
 	}
 	
 	/**
@@ -95,7 +115,7 @@ public class ExceptionProvider {
 	 * @return 例外オブジェクト
 	 */
 	public static ObjectFreezeException newObjectFreeze() {
-		return new ObjectFreezeException(format(pattern_newObjectFreeze_0));
+		return new ObjectFreezeException(format(pat_ObjectFreeze_0));
 	}
 	
 	/**
@@ -105,7 +125,7 @@ public class ExceptionProvider {
 	 * @return 例外オブジェクト
 	 */
 	public static ObjectFreezeException newObjectFreeze(AnubisObject obj, String name) {
-		return new ObjectFreezeException(format(pattern_newObjectFreeze_2, Operator.toDebugString(obj), name));
+		return new ObjectFreezeException(format(pat_ObjectFreeze_2, Operator.toDebugString(obj), name));
 	}
 	
 	/**
@@ -114,7 +134,7 @@ public class ExceptionProvider {
 	 * @return 例外オブジェクト
 	 */
 	public static ObjectFreezeException newObjectFreeze(String name) {
-		return new ObjectFreezeException(format(pattern_newObjectFreeze_1, name));
+		return new ObjectFreezeException(format(pat_ObjectFreeze_1, name));
 	}
 	
 	/**
@@ -135,8 +155,8 @@ public class ExceptionProvider {
 	 * @param cause 原因となった例外オブジェクト
 	 * @return 例外オブジェクト
 	 */
-	public static AnubisParserException newParseException(String text, Throwable cause) {
-		return new AnubisParserException(format(pattern_newParseException_1, text), cause);
+	public static ParseException newParseException(String text, Throwable cause) {
+		return new ParseException(format(pat_ParseException_1, text), cause);
 	}
 	
 	/**
@@ -144,8 +164,8 @@ public class ExceptionProvider {
 	 * @param cause 原因となった例外オブジェクト
 	 * @return 例外オブジェクト
 	 */
-	public static AnubisParserException newParseException(Throwable cause) { // TODO この時でも行番号など出せるようにしたい
-		return new AnubisParserException(format(pattern_newParseException_0), cause);
+	public static ParseException newParseException(Throwable cause) { // TODO この時でも行番号など出せるようにしたい
+		return new ParseException(format(pat_ParseException_0), cause);
 	}
 	
 	/**
@@ -153,8 +173,8 @@ public class ExceptionProvider {
 	 * @param message メッセージ
 	 * @return 例外オブジェクト
 	 */
-	public static AnubisParserException newParseExceptionByInvalidChars(String text, String code, int line, int column) {
-		return new AnubisParserException(format(pattern_newParseExceptionByInvalidChars_3, text, code, line, column));
+	public static ParseException newParseExceptionByInvalidChars(String text, String code, int line, int column) {
+		return new ParseException(format(pat_ParseExceptionByInvalidChars_3, text, code, line, column));
 	}
 	
 	/**
@@ -162,8 +182,8 @@ public class ExceptionProvider {
 	 * @param message メッセージ
 	 * @return 例外オブジェクト
 	 */
-	public static AnubisParserException newParseExceptionByStringNotTerminated(String text, int line, int column) {
-		return new AnubisParserException(format(pattern_newParseExceptionByStringNotTerminated_3, text, line, column));
+	public static ParseException newParseExceptionByStringNotTerminated(String text, int line, int column) {
+		return new ParseException(format(pat_ParseExceptionByStringNotTerminated_3, text, line, column));
 	}
 	
 	/**
@@ -173,11 +193,11 @@ public class ExceptionProvider {
 	 * @return 例外オブジェクト
 	 */
 	public static SlotNotFoundException newSlotNotFound(AnubisObject obj, String name) {
-		return new SlotNotFoundException(format(pattern_newSlotNotFound_2, Operator.toDebugString(obj), name));
+		return new SlotNotFoundException(format(pat_SlotNotFound_2, Operator.toDebugString(obj), name));
 	}
 	
-	public static AnubisUserException newUserException(AnubisObject value) {
-		return new AnubisUserException(value);
+	public static UserException newUserException(AnubisObject value) {
+		return new UserException(value);
 	}
 	
 	/**
@@ -185,7 +205,7 @@ public class ExceptionProvider {
 	 * @return 例外オブジェクト
 	 */
 	public static VoidOperationException newVoidOperation() {
-		return new VoidOperationException(format(pattern_newVoidOperation_0));
+		return new VoidOperationException(format(pat_VoidOperation_0));
 	}
 	
 	/**

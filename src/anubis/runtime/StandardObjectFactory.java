@@ -132,17 +132,16 @@ public class StandardObjectFactory implements ObjectFactory {
 			return getObject(cacheScriptContext, (ScriptContext) obj, INITIALIZER_SCRIPTCONTEXT);
 		}
 		if (obj.getClass().isArray()) {
-			return traits.attach(new AList(new ArrayAdapter(obj))); // TODO asJava が origin を返せるように
+			return traits.attach(new ArrayAdapter(obj).toAList());
 		}
 		if (obj instanceof List<?>) {
-			return traits.attach(new AList(new ListAdapter<Object>((List<Object>) obj, Object.class))); // TODO asJava が origin を返せるように
+			return traits.attach(new ListAdapter<Object>((List<Object>) obj, Object.class).toAList());
 		}
 		if (obj instanceof Map<?, ?>) {
-			return traits.attach(new AMap(new MapAdapter<Object, Object>((Map<Object, Object>) obj, Object.class, // TODO asJava が origin を返せるように
-					Object.class)));
+			return traits.attach(new MapAdapter<Object, Object>((Map<Object, Object>) obj, Object.class, Object.class).toAMap());
 		}
 		if (obj instanceof Set<?>) {
-			return traits.attach(new ASet(new SetAdapter<Object>((Set<Object>) obj, Object.class))); // TODO asJava が origin を返せるように
+			return traits.attach(new SetAdapter<Object>((Set<Object>) obj, Object.class).toASet());
 		}
 		return getObject(mutableObjectCache, obj, INITIALIZER_JOBJECT);
 	}
@@ -219,7 +218,7 @@ public class StandardObjectFactory implements ObjectFactory {
 	
 	@Override
 	public ARange newRange(AnubisObject start, AnubisObject end, AnubisObject step) {
-		return traits.attach(new ARange(Utils.as(ANumber.class, start), Utils.as(ANumber.class, end), Utils.as(
+		return traits.attach(new ARange(Utils.cast(ANumber.class, start), Utils.as(ANumber.class, end), Utils.as(
 				ANumber.class, step)));
 	}
 	
@@ -240,9 +239,8 @@ public class StandardObjectFactory implements ObjectFactory {
 		}
 		else {
 			synchronized (cache) {
-				// TODO あとで何とかしよう
 				@SuppressWarnings("unchecked")
-				R result = (R) cache.get(object);
+				R result = (R) cache.get(object); // ここだけは警告を回避できない
 				if (result == null) {
 					result = init.initialize(object);
 					cache.put(object, result);

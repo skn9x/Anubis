@@ -95,6 +95,7 @@ public class StandardTraitsFactory implements TraitsFactory {
 		attach(new ARootToString(root, "toString"));
 		attach(new ARootDebugString(root, "debugString"));
 		attach(new ARootDumpString(root, "dumpString"));
+		// TODO new
 	}
 	
 	protected AnubisObject newRoot() {
@@ -122,6 +123,7 @@ public class StandardTraitsFactory implements TraitsFactory {
 				attach(new AFunctionInvoke(trait, "invoke"));
 				attach(new AFunctionInvokeWith(trait, "invokeWith"));
 				attach(new AFunctionPartial(trait, "partial"));
+				// TODO with
 			}
 		});
 		result.put(ObjectType.NUMBER, new Initializer() {
@@ -167,8 +169,9 @@ public class StandardTraitsFactory implements TraitsFactory {
 				}
 				attach(new ALobbyExit(trait, "exit"));
 				attach(new ALobbyUse(trait, "use"));
-				ANop nop = attach(new ANop());
-				trait.setSlot("nop", nop);
+				trait.setSlot("nop", attach(new ANop()));
+				trait.setSlot("java", attach(new JPackage("java")));
+				trait.setSlot("javax", attach(new JPackage("javax")));
 			}
 		});
 		return result;

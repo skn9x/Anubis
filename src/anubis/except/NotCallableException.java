@@ -13,14 +13,14 @@ public class NotCallableException extends AnubisRuntimeException {
 	/**
 	 * 
 	 */
-	public NotCallableException() {
+	protected NotCallableException() {
 		;
 	}
 	
 	/**
 	 * @param message
 	 */
-	public NotCallableException(String message) {
+	protected NotCallableException(String message) {
 		super(message);
 	}
 	
@@ -28,14 +28,14 @@ public class NotCallableException extends AnubisRuntimeException {
 	 * @param message
 	 * @param cause
 	 */
-	public NotCallableException(String message, Throwable cause) {
+	protected NotCallableException(String message, Throwable cause) {
 		super(message, cause);
 	}
 	
 	/**
 	 * @param cause
 	 */
-	public NotCallableException(Throwable cause) {
+	protected NotCallableException(Throwable cause) {
 		super(cause);
 	}
 	

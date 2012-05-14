@@ -1,8 +1,10 @@
 package anubis.runtime;
 
 import anubis.AFalse;
+import anubis.ANull;
 
-public class ANullObject extends APrimitive implements AFalse {
+@TypeName(ObjectType.NULL)
+public class ANullObject extends APrimitive implements AFalse, ANull {
 	@Override
 	public Object asJava() {
 		return null;
@@ -11,11 +13,6 @@ public class ANullObject extends APrimitive implements AFalse {
 	@Override
 	public boolean equals(Object obj) {
 		return obj != null && obj.getClass() == getClass();
-	}
-	
-	@Override
-	public String getType() {
-		return ObjectType.NULL;
 	}
 	
 	@Override

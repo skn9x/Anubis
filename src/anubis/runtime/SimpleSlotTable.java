@@ -3,6 +3,7 @@ package anubis.runtime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import anubis.AnubisObject;
 
 /**
@@ -23,7 +24,7 @@ public class SimpleSlotTable extends AbstractSlotTable {
 	public Map<String, AnubisObject> getSnap() {
 		if (internal == null)
 			return Collections.emptyMap();
-		return Collections.unmodifiableMap(new HashMap<String, AnubisObject>(internal));
+		return Collections.unmodifiableMap(new TreeMap<String, AnubisObject>(internal));
 	}
 	
 	@Override

@@ -13,14 +13,14 @@ public class VoidOperationException extends AnubisRuntimeException {
 	/**
 	 * 
 	 */
-	public VoidOperationException() {
+	protected VoidOperationException() {
 		;
 	}
 	
 	/**
 	 * @param message
 	 */
-	public VoidOperationException(String message) {
+	protected VoidOperationException(String message) {
 		super(message);
 	}
 	
@@ -28,14 +28,14 @@ public class VoidOperationException extends AnubisRuntimeException {
 	 * @param message
 	 * @param cause
 	 */
-	public VoidOperationException(String message, Throwable cause) {
+	protected VoidOperationException(String message, Throwable cause) {
 		super(message, cause);
 	}
 	
 	/**
 	 * @param cause
 	 */
-	public VoidOperationException(Throwable cause) {
+	protected VoidOperationException(Throwable cause) {
 		super(cause);
 	}
 	

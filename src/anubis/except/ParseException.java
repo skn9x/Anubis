@@ -3,7 +3,7 @@ package anubis.except;
 /**
  * @author SiroKuro
  */
-public class AnubisParserException extends AnubisRuntimeException {
+public class ParseException extends AnubisRuntimeException {
 	
 	/**
 	 * 
@@ -13,13 +13,13 @@ public class AnubisParserException extends AnubisRuntimeException {
 	/**
 	 * 
 	 */
-	public AnubisParserException() {
+	protected ParseException() {
 	}
 	
 	/**
 	 * @param message
 	 */
-	public AnubisParserException(String message) {
+	protected ParseException(String message) {
 		super(message);
 	}
 	
@@ -27,14 +27,14 @@ public class AnubisParserException extends AnubisRuntimeException {
 	 * @param message
 	 * @param cause
 	 */
-	public AnubisParserException(String message, Throwable cause) {
+	protected ParseException(String message, Throwable cause) {
 		super(message, cause);
 	}
 	
 	/**
 	 * @param cause
 	 */
-	public AnubisParserException(Throwable cause) {
+	protected ParseException(Throwable cause) {
 		super(cause);
 	}
 	

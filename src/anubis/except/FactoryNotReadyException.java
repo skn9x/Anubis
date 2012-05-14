@@ -13,14 +13,14 @@ public class FactoryNotReadyException extends AnubisException {
 	/**
 	 * 
 	 */
-	public FactoryNotReadyException() {
+	protected FactoryNotReadyException() {
 		;
 	}
 	
 	/**
 	 * @param message
 	 */
-	public FactoryNotReadyException(String message) {
+	protected FactoryNotReadyException(String message) {
 		super(message);
 	}
 	
@@ -28,14 +28,14 @@ public class FactoryNotReadyException extends AnubisException {
 	 * @param message
 	 * @param cause
 	 */
-	public FactoryNotReadyException(String message, Throwable cause) {
+	protected FactoryNotReadyException(String message, Throwable cause) {
 		super(message, cause);
 	}
 	
 	/**
 	 * @param cause
 	 */
-	public FactoryNotReadyException(Throwable cause) {
+	protected FactoryNotReadyException(Throwable cause) {
 		super(cause);
 	}
 	

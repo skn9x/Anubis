@@ -27,6 +27,7 @@ import static org.objectweb.asm.Opcodes.ICONST_5;
 import static org.objectweb.asm.Opcodes.ICONST_M1;
 import static org.objectweb.asm.Opcodes.IFEQ;
 import static org.objectweb.asm.Opcodes.IFNE;
+import static org.objectweb.asm.Opcodes.IFNULL;
 import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
 import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
@@ -55,7 +56,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 import anubis.AnubisObject;
 import anubis.code.CodeBlock;
-import anubis.except.CompileException;
+import anubis.except.ExceptionProvider;
 
 public class CodeBuilder {
 	private static final Class<?> CN_SUPERCLASS = CompiledCodeBlock.class;
@@ -88,7 +89,7 @@ public class CodeBuilder {
 			this.mv = cw.visitMethod(ACC_PUBLIC, mm.getName(), getMethodDescriptor(mm), null, null);
 		}
 		catch (NoSuchMethodException ex) {
-			throw new CompileException(ex);
+			throw ExceptionProvider.newInternalCompileExeption(ex);
 		}
 	}
 	
@@ -113,15 +114,19 @@ public class CodeBuilder {
 	}
 	
 	public void emitGoto(Label label) {
-		mv.visitJumpInsn(GOTO, (org.objectweb.asm.Label) label.getMarker());
+		mv.visitJumpInsn(GOTO, unwrap(label));
 	}
 	
 	public void emitIfFalse(Label label) {
-		mv.visitJumpInsn(IFEQ, (org.objectweb.asm.Label) label.getMarker());
+		mv.visitJumpInsn(IFEQ, unwrap(label));
+	}
+	
+	public void emitIfNull(Label label) {
+		mv.visitJumpInsn(IFNULL, unwrap(label));
 	}
 	
 	public void emitIfTrue(Label label) {
-		mv.visitJumpInsn(IFNE, (org.objectweb.asm.Label) label.getMarker());
+		mv.visitJumpInsn(IFNE, unwrap(label));
 	}
 	
 	public void emitInvoke(Class<?> clazz, String name, Class<?>... parameterTypes) {
@@ -145,12 +150,12 @@ public class CodeBuilder {
 			}
 		}
 		catch (NoSuchMethodException ex) {
-			throw new CompileException(ex);
+			throw ExceptionProvider.newInternalCompileExeption(ex);
 		}
 	}
 	
 	public void emitLabel(Label label) {
-		mv.visitLabel((org.objectweb.asm.Label) label.getMarker());
+		mv.visitLabel(unwrap(label));
 	}
 	
 	public void emitLoadField(Class<?> clazz, String name) {
@@ -164,7 +169,7 @@ public class CodeBuilder {
 			}
 		}
 		catch (NoSuchFieldException ex) {
-			throw new CompileException(ex);
+			throw ExceptionProvider.newInternalCompileExeption(ex);
 		}
 	}
 	
@@ -206,8 +211,7 @@ public class CodeBuilder {
 	}
 	
 	public void emitTryBlock(Label _try, Label _end, Label _catch, Class<? extends Throwable> ex) {
-		mv.visitTryCatchBlock((org.objectweb.asm.Label) _try.getMarker(), (org.objectweb.asm.Label) _end.getMarker(),
-				(org.objectweb.asm.Label) _catch.getMarker(), ex != null ? getInternalName(ex) : null);
+		mv.visitTryCatchBlock(unwrap(_try), unwrap(_end), unwrap(_catch), ex != null ? getInternalName(ex) : null);
 	}
 	
 	public byte[] finallize() {
@@ -355,5 +359,9 @@ public class CodeBuilder {
 	
 	public void pushString(String value) {
 		mv.visitLdcInsn(value);
+	}
+	
+	private static org.objectweb.asm.Label unwrap(anubis.code.asm.Label label) {
+		return (org.objectweb.asm.Label) label.getMarker();
 	}
 }

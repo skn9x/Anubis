@@ -17,6 +17,7 @@ import anubis.runtime.java.MethodInvocation;
 /**
  * @author SiroKuro
  */
+@TypeName(ObjectType.JCLASS)
 public class JClass extends AObject {
 	private final Class<?> cls;
 	private final Map<String, Field> fields;
@@ -31,11 +32,6 @@ public class JClass extends AObject {
 	
 	public Map<String, Field> getInstanceFields() {
 		return fields;
-	}
-	
-	@Override
-	public String getType() {
-		return ObjectType.JCLASS;
 	}
 	
 	public Class<?> getValue() {

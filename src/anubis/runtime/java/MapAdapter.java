@@ -5,7 +5,9 @@ import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import anubis.ACastable;
 import anubis.AnubisObject;
+import anubis.runtime.AMap;
 import anubis.runtime.AObjects;
 
 public class MapAdapter<K, V> extends AbstractMap<AnubisObject, AnubisObject> implements Adapter {
@@ -34,6 +36,21 @@ public class MapAdapter<K, V> extends AbstractMap<AnubisObject, AnubisObject> im
 	public AnubisObject put(AnubisObject key, AnubisObject value) {
 		return AObjects.getObject(internal.put(cls_key.cast(JCaster.cast(cls_key, key)),
 				cls_val.cast(JCaster.cast(cls_val, value))));
+	}
+	
+	public AMap toAMap() {
+		return new AMapAdapter();
+	}
+	
+	private class AMapAdapter extends AMap implements ACastable {
+		public AMapAdapter() {
+			super(MapAdapter.this);
+		}
+		
+		@Override
+		public Object asJava() {
+			return internal;
+		}
 	}
 	
 	private class EntryAdapter implements Entry<AnubisObject, AnubisObject>, Adapter {

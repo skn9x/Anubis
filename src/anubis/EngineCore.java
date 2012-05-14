@@ -11,8 +11,8 @@ import anubis.ast.CompilationUnit;
 import anubis.code.CodeBlock;
 import anubis.code.Option;
 import anubis.code.asm.AsmCodeBlockFactory;
-import anubis.except.AnubisExitError;
 import anubis.except.ExceptionProvider;
+import anubis.except.ExitError;
 import anubis.parser.Parser;
 import anubis.runtime.AObjects;
 import anubis.runtime.ObjectFactory;
@@ -41,29 +41,34 @@ public class EngineCore {
 		return factory;
 	}
 	
-	public AnubisCompiledScript internalCompile(Reader reader, ScriptContext context) throws ScriptException {
-		CodeBlock block = newCodeBlock(reader, context, null);
-		return new AnubisCompiledScript(block);
-	}
-	
 	public Object internalInvoke(final Class<?> type, final Object obj, final String name, final Object... args) throws ScriptException, NoSuchMethodException {
 		try {
-			return run(factory, owner.getContext(), new Execution<Object>() {
-				@Override
-				public Object exec(ScriptContext context) {
-					AnubisObject aobj = obj != null ? AObjects.getObject(obj) : newLocal(owner.getContext());
-					// TODO NoSuchMethodException の対処
-					AnubisObject result = Operator.opCall(aobj, name, aobj, AObjects.getObjects(args));
-					return type == null ? asJava(result) : JCaster.cast(type, result);
-				}
-			});
-		}
-		catch (AnubisExitError exit) {
-			return type == null ? asJava(exit.getValue()) : JCaster.cast(type, exit.getValue());
+			try {
+				return run(factory, owner.getContext(), new Execution<Object>() {
+					@Override
+					public Object exec(ScriptContext context) {
+						AnubisObject aobj = obj != null ? AObjects.getObject(obj) : newLocal(owner.getContext());
+						// TODO NoSuchMethodException の対処
+						AnubisObject result = Operator.opCall(aobj, name, aobj, AObjects.getObjects(args));
+						return type == null ? asJava(result) : JCaster.cast(type, result);
+					}
+				});
+			}
+			catch (ExitError exit) {
+				return type == null ? asJava(exit.getValue()) : JCaster.cast(type, exit.getValue());
+			}
 		}
 		catch (RuntimeException ex) {
 			throw new ScriptException(ex);
 		}
+	}
+	
+	public AnubisCompiledScript newScript(CodeBlock block) {
+		return new AnubisCompiledScript(block);
+	}
+	
+	public AnubisCompiledScript newScript(Reader reader, ScriptContext context) throws ScriptException {
+		return newScript(newCodeBlock(reader, context, null));
 	}
 	
 	private CodeBlock newCodeBlock(final Reader code, ScriptContext context, final File dir) {
@@ -99,7 +104,7 @@ public class EngineCore {
 		Option result = new Option();
 		result.setSrcFileName(Utils.asString(context.getAttribute(ScriptEngine.FILENAME)));
 		result.setProgramName(Utils.getCnFromSn(result.getSrcFileName()));
-		result.setDisableAssertion(Operator.isTrue(AObjects.getObject(context.getAttribute("anubis.disableAssertion"))));
+		result.isNoAssert(Operator.isTrue(AObjects.getObject(context.getAttribute("anubis.noassert"))));
 		return result;
 	}
 	
@@ -124,7 +129,7 @@ public class EngineCore {
 	public class AnubisCompiledScript extends CompiledScript {
 		private final CodeBlock block;
 		
-		private AnubisCompiledScript(CodeBlock block) {
+		public AnubisCompiledScript(CodeBlock block) {
 			this.block = block;
 		}
 		
@@ -143,7 +148,7 @@ public class EngineCore {
 					}
 				});
 			}
-			catch (AnubisExitError exit) {
+			catch (ExitError exit) {
 				return exit.getValue();
 			}
 			catch (RuntimeException ex) {

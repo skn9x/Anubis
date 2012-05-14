@@ -6,6 +6,7 @@ import java.util.Set;
 import anubis.AIterable;
 import anubis.AnubisObject;
 
+@TypeName(ObjectType.SET)
 public class ASet extends AObject implements AIterable {
 	private final Set<AnubisObject> set;
 	
@@ -24,11 +25,6 @@ public class ASet extends AObject implements AIterable {
 	@Override
 	public Iterator<AnubisObject> getAIterator() {
 		return set.iterator();
-	}
-	
-	@Override
-	public String getType() {
-		return ObjectType.SET;
 	}
 	
 	@Override

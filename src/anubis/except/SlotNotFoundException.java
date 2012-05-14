@@ -13,14 +13,14 @@ public class SlotNotFoundException extends AnubisRuntimeException {
 	/**
 	 * 
 	 */
-	public SlotNotFoundException() {
+	protected SlotNotFoundException() {
 		;
 	}
 	
 	/**
 	 * @param message
 	 */
-	public SlotNotFoundException(String message) {
+	protected SlotNotFoundException(String message) {
 		super(message);
 	}
 	
@@ -28,14 +28,14 @@ public class SlotNotFoundException extends AnubisRuntimeException {
 	 * @param message
 	 * @param cause
 	 */
-	public SlotNotFoundException(String message, Throwable cause) {
+	protected SlotNotFoundException(String message, Throwable cause) {
 		super(message, cause);
 	}
 	
 	/**
 	 * @param cause
 	 */
-	public SlotNotFoundException(Throwable cause) {
+	protected SlotNotFoundException(Throwable cause) {
 		super(cause);
 	}
 	

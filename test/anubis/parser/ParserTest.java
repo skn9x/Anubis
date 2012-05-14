@@ -19,7 +19,7 @@ import anubis.ast.PrimitiveExpression;
 import anubis.ast.ReturnStatement;
 import anubis.ast.TernaryExpression;
 import anubis.ast.UnaryExpression;
-import anubis.except.AnubisParserException;
+import anubis.except.ParseException;
 import anubis.runtime.AObjects;
 import anubis.runtime.APrimitive;
 import anubis.runtime.StandardObjectFactory;
@@ -188,7 +188,7 @@ public class ParserTest {
 		parse("do{ 1; 2; 3; }");
 	}
 	
-	@Test(expected = AnubisParserException.class)
+	@Test(expected = ParseException.class)
 	public void testParseWithError() throws Exception {
 		parse("for");
 	}
