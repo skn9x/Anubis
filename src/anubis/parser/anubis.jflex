@@ -25,6 +25,9 @@ import anubis.ast.Position;
 	
 	public boolean advance() throws java.io.IOException {
 		token = yylex();
+		if (token == YYEOF) {
+			tk(token, "end-of-file");
+		}
 		return token != YYEOF;
 	}
 	
@@ -61,7 +64,11 @@ import anubis.ast.Position;
 	}
 	
 	private int tk(int token) {
-		value = new Token(token, yytext(), new Position(getSourceFileName(), getLine(), getColumn()));
+		return tk(token, yytext());
+	}
+	
+	private int tk(int token, String text) {
+		value = new Token(token, text, new Position(getSourceFileName(), getLine(), getColumn()));
 		return token;
 	}
 	

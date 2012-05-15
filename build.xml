@@ -61,7 +61,7 @@
 			<arg line="anubis.jflex" />
 		</java>
 		<java jar="lib-ant/jay.jar" fork="true" failonerror="true" dir="." output="src/anubis/parser/Parser.java">
-			<arg line="${jay.option} src/anubis/parser/anubis.jay" />
+			<arg line="${jay.option} src/anubis/parser/anubis.jay src/anubis/parser/skeleton.txt" />
 		</java>
 	</target>
 	

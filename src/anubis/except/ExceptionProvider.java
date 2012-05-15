@@ -1,12 +1,14 @@
 package anubis.except;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import anubis.ACallable;
 import anubis.AnubisObject;
 import anubis.ast.Position;
 import anubis.code.asm.BlockEmitter.IllegalGotoException;
+import anubis.parser.ParseError;
 import anubis.runtime.ObjectFactory;
 import anubis.runtime.Operator;
 
@@ -155,6 +157,17 @@ public class ExceptionProvider {
 	 * @param cause 原因となった例外オブジェクト
 	 * @return 例外オブジェクト
 	 */
+	public static ParseException newParseException(List<ParseError> errors) {
+		ParseException result = new ParseException(format(pat_ParseException_0));
+		result.setErrors(errors);
+		return result;
+	}
+	
+	/**
+	 * スクリプトのパースに失敗したことを示す例外を作成します。
+	 * @param cause 原因となった例外オブジェクト
+	 * @return 例外オブジェクト
+	 */
 	public static ParseException newParseException(String text, Throwable cause) {
 		return new ParseException(format(pat_ParseException_1, text), cause);
 	}
@@ -164,8 +177,19 @@ public class ExceptionProvider {
 	 * @param cause 原因となった例外オブジェクト
 	 * @return 例外オブジェクト
 	 */
-	public static ParseException newParseException(Throwable cause) { // TODO この時でも行番号など出せるようにしたい
+	public static ParseException newParseException(Throwable cause) {
 		return new ParseException(format(pat_ParseException_0), cause);
+	}
+	
+	/**
+	 * スクリプトのパースに失敗したことを示す例外を作成します。
+	 * @param cause 原因となった例外オブジェクト
+	 * @return 例外オブジェクト
+	 */
+	public static ParseException newParseException(Throwable cause, List<ParseError> errors) {
+		ParseException result = new ParseException(format(pat_ParseException_0), cause);
+		result.setErrors(errors);
+		return result;
 	}
 	
 	/**

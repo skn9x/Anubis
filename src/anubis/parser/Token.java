@@ -41,4 +41,9 @@ public class Token {
 	public int getToken() {
 		return token;
 	}
+	
+	@Override
+	public String toString() {
+		return ParserHelper.quoteString(getText()) + "(" + pos.toString() + ")";
+	}
 }

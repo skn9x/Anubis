@@ -81,6 +81,10 @@ stmtList:
 		{ $$ = new BlockStatement().append($1).setPos($1.getPos()); }
 	| stmtList stmt
 		{ $$ = $1.append($2); }
+	| error
+		{ $$ = new BlockStatement(); }
+	| stmtList error
+		{ $$ = $1; }
 	;
 stmt:
 	SEMICOLON
@@ -414,6 +418,13 @@ id:
 	;
 
 %%
+	private final List<ParseError> errors = new ArrayList<ParseError>();
+	
+	public void yyerror(String message, Object value, String[] expected) {
+		ParseError error = new ParseError(message, value, expected);
+		errors.add(error);
+	}
+	
 	private static CallExpression newCall(Expression expr, String name, Expression... args) {
 		return newCall(expr, name, new CallArgument(null, args));
 	}
@@ -496,17 +507,22 @@ id:
 	}
 	
 	public CompilationUnit parse(Reader source, String filename) {
-		Parser yyparser = new Parser();
 		try {
 			Scanner scanner = new Scanner(source);
 			scanner.setSourceFileName(filename);
-			return (CompilationUnit) yyparser.yyparse(scanner);
+			CompilationUnit result = (CompilationUnit) yyparse(scanner);
+			if (errors.size() == 0) {
+				return result;
+			}
+			else {
+				throw ExceptionProvider.newParseException(errors);
+			}
 		}
 		catch (Parser.yyException ye) {
-			throw ExceptionProvider.newParseException(ye);
+			throw ExceptionProvider.newParseException(ye, errors);
 		}
 		catch (IOException ie) {
-			throw ExceptionProvider.newParseException(ie);
+			throw ExceptionProvider.newParseException(ie, errors);
 		}
 	}
 	public static void main(final String[] args) {
