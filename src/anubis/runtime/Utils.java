@@ -17,7 +17,8 @@ import anubis.parser.ParserHelper;
  * @author SiroKuro
  */
 public class Utils {
-	private static final ProtoVisitor<Class<? extends AnubisObject>, AnubisObject> AS = new ProtoVisitor<Class<? extends AnubisObject>, AnubisObject>() {
+	private static final ProtoVisitor<Class<? extends AnubisObject>, AnubisObject> AS = new ProtoVisitor<Class<? extends AnubisObject>, AnubisObject>(
+			false) {
 		@Override
 		protected AnubisObject visit(AnubisObject obj, Class<? extends AnubisObject> cls) {
 			if (cls.isInstance(obj))
@@ -27,6 +28,8 @@ public class Utils {
 	};
 	
 	public static <T extends AnubisObject> T as(Class<T> cls, AnubisObject obj) {
+		if (cls.isInstance(obj))
+			return cls.cast(obj);
 		return cls.cast(AS.start(obj, cls));
 	}
 	

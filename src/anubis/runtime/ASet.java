@@ -3,11 +3,13 @@ package anubis.runtime;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import anubis.ACastable;
 import anubis.AIterable;
 import anubis.AnubisObject;
+import anubis.TypeName;
 
 @TypeName(ObjectType.SET)
-public class ASet extends AObject implements AIterable {
+public class ASet extends AObject implements AIterable, ACastable {
 	private final Set<AnubisObject> set;
 	
 	public ASet() {
@@ -23,6 +25,11 @@ public class ASet extends AObject implements AIterable {
 	}
 	
 	@Override
+	public Object asJava() {
+		return set;
+	}
+	
+	@Override
 	public Iterator<AnubisObject> getAIterator() {
 		return set.iterator();
 	}
@@ -35,5 +42,4 @@ public class ASet extends AObject implements AIterable {
 	public int size() {
 		return set.size();
 	}
-	
 }

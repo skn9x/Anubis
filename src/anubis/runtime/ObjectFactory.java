@@ -1,5 +1,6 @@
 package anubis.runtime;
 
+import java.util.List;
 import java.util.regex.Pattern;
 import anubis.AnubisObject;
 import anubis.code.CodeBlock;
@@ -72,6 +73,8 @@ public interface ObjectFactory {
 	public abstract JObject newJObject(Object object);
 	
 	public abstract AList newList();
+	
+	public abstract AList newList(List<AnubisObject> list);
 	
 	public abstract AMap newMap();
 	

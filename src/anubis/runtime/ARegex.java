@@ -1,6 +1,7 @@
 package anubis.runtime;
 
 import java.util.regex.Pattern;
+import anubis.TypeName;
 
 /**
  * @author SiroKuro

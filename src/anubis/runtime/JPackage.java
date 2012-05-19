@@ -2,6 +2,7 @@ package anubis.runtime;
 
 import anubis.ACastable;
 import anubis.AnubisObject;
+import anubis.TypeName;
 
 /**
  * @author SiroKuro

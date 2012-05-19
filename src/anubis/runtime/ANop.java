@@ -11,7 +11,9 @@ import anubis.ASliceable;
 import anubis.AnubisObject;
 import anubis.SlotRef;
 import anubis.SpecialSlot;
+import anubis.TypeName;
 
+@TypeName(ObjectType.NOP)
 public class ANop implements AnubisObject, AIndexable, ACallable, ACastable, ADumpable, ASliceable, AFalse, AIterable, Cloneable {
 	@Override
 	public Object asJava() {
@@ -25,12 +27,12 @@ public class ANop implements AnubisObject, AIndexable, ACallable, ACastable, ADu
 	
 	@Override
 	public String debugString() {
-		return getType();
+		return ObjectType.get(this);
 	}
 	
 	@Override
 	public String dumpString() {
-		return getType();
+		return ObjectType.get(this);
 	}
 	
 	@Override
@@ -86,11 +88,6 @@ public class ANop implements AnubisObject, AIndexable, ACallable, ACastable, ADu
 	@Override
 	public AnubisObject getSlot(String name) {
 		return this;
-	}
-	
-	@Override
-	public String getType() {
-		return ObjectType.NOP;
 	}
 	
 	@Override

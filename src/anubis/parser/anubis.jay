@@ -29,13 +29,13 @@ public class Parser {
 %left <Token>		XOR
 %left <Token>		AND
 %left <Token>		EQ, NEQ
-%left <Token>		LT, LTEQ, GT, GTEQ
-%nonassoc<Token>	RFIND, RREPL
-%left <Token>		IFNULL
-%left <Token>		PLUS, MINUS
-%left <Token>		MUL, DIV, MOD, TRUEDIV
 %right<Token>		NOT
 %left <Token>		ISNULL, ISTRUE, ISFALSE
+%left <Token>		IFNULL
+%left <Token>		LT, LTEQ, GT, GTEQ
+%nonassoc<Token>	RFIND, RREPL
+%left <Token>		PLUS, MINUS
+%left <Token>		MUL, DIV, MOD, TRUEDIV
 %right<Token>		UPLUS, UMINUS
 %left <Token>		DOT
 %right<Token>		RIGHT_DARROW, RIGHT_ARROW

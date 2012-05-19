@@ -2,6 +2,7 @@ package anubis.runtime;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import anubis.TypeName;
 
 /**
  * @author SiroKuro

@@ -14,26 +14,39 @@ public class SimpleSlotTable extends AbstractSlotTable {
 	
 	@Override
 	public AnubisObject get(String name) {
-		if (internal != null) {
-			return internal.get(name);
+		Map<String, AnubisObject> map = getInternal();
+		if (map != null) {
+			synchronized (this) {
+				return map.get(name);
+			}
 		}
 		return null;
 	}
 	
 	@Override
 	public Map<String, AnubisObject> getSnap() {
-		if (internal == null)
-			return Collections.emptyMap();
-		return Collections.unmodifiableMap(new TreeMap<String, AnubisObject>(internal));
+		Map<String, AnubisObject> map = getInternal();
+		if (map != null) {
+			synchronized (this) {
+				return Collections.unmodifiableMap(new TreeMap<String, AnubisObject>(map));
+			}
+		}
+		return Collections.emptyMap();
 	}
 	
 	@Override
-	public synchronized void put(String name, AnubisObject value) {
+	public void put(String name, AnubisObject value) {
 		assertNotFreeze();
-		if (value == null)
-			prepareInternal().remove(name);
-		else
-			prepareInternal().put(name, value);
+		synchronized (this) {
+			if (value == null)
+				prepareInternal().remove(name);
+			else
+				prepareInternal().put(name, value);
+		}
+	}
+	
+	private Map<String, AnubisObject> getInternal() {
+		return this.internal;
 	}
 	
 	private Map<String, AnubisObject> prepareInternal() {

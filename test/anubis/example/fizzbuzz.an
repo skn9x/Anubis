@@ -1,0 +1,12 @@
+for x: [1..30] do
+	switch true
+		case x % 3 == 0 and x % 5 == 0 then
+			console.puts("FizzBuzz");
+		case x % 3 == 0 then
+			console.puts("Fizz");
+		case x % 5 == 0 then
+			console.puts("Buzz");
+		else
+			console.puts(x);
+	end
+end

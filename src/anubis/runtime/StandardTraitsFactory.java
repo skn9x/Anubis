@@ -2,11 +2,13 @@ package anubis.runtime;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import anubis.AnubisObject;
 import anubis.SpecialSlot;
 import anubis.runtime.builtin.AFunctionInvoke;
 import anubis.runtime.builtin.AFunctionInvokeWith;
 import anubis.runtime.builtin.AFunctionPartial;
+import anubis.runtime.builtin.AFunctionWith;
 import anubis.runtime.builtin.ALobbyExit;
 import anubis.runtime.builtin.ALobbyPrint;
 import anubis.runtime.builtin.ALobbyPrintError;
@@ -46,6 +48,10 @@ public class StandardTraitsFactory implements TraitsFactory {
 	 * Other Traits
 	 */
 	private final Map<String, AnubisObject> traits;
+	/**
+	 * 
+	 */
+	private final Map<Class<?>, AnubisObject> cache = new ConcurrentHashMap<Class<?>, AnubisObject>();
 	
 	public StandardTraitsFactory() {
 		this.root = newRoot();
@@ -61,8 +67,7 @@ public class StandardTraitsFactory implements TraitsFactory {
 	
 	public <T extends AnubisObject> T attach(T object) {
 		if (object != null) {
-			String name = object.getType();
-			AnubisObject trait = traits.get(name);
+			AnubisObject trait = getTrait(object);
 			object.setSlot(SpecialSlot.SUPER, trait == null ? getRoot() : trait);
 		}
 		return object;
@@ -115,6 +120,18 @@ public class StandardTraitsFactory implements TraitsFactory {
 		return traits;
 	}
 	
+	private AnubisObject getTrait(AnubisObject object) {
+		Class<?> cls = object.getClass();
+		AnubisObject trait = cache.get(cls);
+		if (trait == null) {
+			trait = traits.get(ObjectType.get(cls));
+			if (trait != null) {
+				cache.put(cls, trait);
+			}
+		}
+		return trait;
+	}
+	
 	private Map<String, Initializer> setupInitializers() {
 		Map<String, Initializer> result = new HashMap<String, StandardTraitsFactory.Initializer>();
 		result.put(ObjectType.FUNCTION, new Initializer() {
@@ -123,7 +140,7 @@ public class StandardTraitsFactory implements TraitsFactory {
 				attach(new AFunctionInvoke(trait, "invoke"));
 				attach(new AFunctionInvokeWith(trait, "invokeWith"));
 				attach(new AFunctionPartial(trait, "partial"));
-				// TODO with
+				attach(new AFunctionWith(trait, "with"));
 			}
 		});
 		result.put(ObjectType.NUMBER, new Initializer() {

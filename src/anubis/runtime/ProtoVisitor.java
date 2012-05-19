@@ -9,11 +9,24 @@ import anubis.SpecialSlot;
  * @author SiroKuro
  */
 public abstract class ProtoVisitor<A, R> {
+	private final boolean visitThis;
+	
+	public ProtoVisitor() {
+		this.visitThis = true;
+	}
+	
+	public ProtoVisitor(boolean visitThis) {
+		this.visitThis = visitThis;
+	}
+	
 	public R start(AnubisObject _this, A arg) {
 		if (_this != null) {
-			R result = visit(_this, arg);
-			if (result != null) {
-				return result;
+			R result;
+			if (visitThis) {
+				result = visit(_this, arg);
+				if (result != null) {
+					return result;
+				}
 			}
 			result = visitToSuper(_this.getSlot(SpecialSlot.SUPER), arg);
 			if (result != null) {

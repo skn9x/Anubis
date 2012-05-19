@@ -68,6 +68,7 @@ public class Main {
 		result.addOption(newOption("help", "h", null, bundle));
 		result.addOption(newOption("compile", "c", null, bundle));
 		result.addOption(newOption("dir", "d", "directory", bundle));
+		result.addOption(newOption("encode", "e", "charset", bundle));
 		result.addOption(newOption("file", "f", "sourcefile", bundle));
 		result.addOption(newOption("line", "l", "code", bundle));
 		result.addOption(newOption("nologo", null, null, bundle));

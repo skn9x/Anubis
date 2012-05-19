@@ -2,6 +2,7 @@ package anubis.runtime;
 
 import anubis.AnubisObject;
 import anubis.SpecialSlot;
+import anubis.TypeName;
 
 /**
  * @author SiroKuro
@@ -27,7 +28,7 @@ public class AContext extends AObject {
 			case THIS:
 				return _this;
 			case SUPER:
-				return _this.getSlot(type);
+				return _this == null ? null : _this.getSlot(type);
 			default:
 				return super.getSlot(type);
 		}

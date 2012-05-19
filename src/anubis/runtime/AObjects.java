@@ -1,5 +1,6 @@
 package anubis.runtime;
 
+import java.util.List;
 import java.util.regex.Pattern;
 import anubis.AnubisObject;
 import anubis.SpecialSlot;
@@ -158,6 +159,10 @@ public class AObjects {
 	 */
 	public static AList newList() {
 		return getCurrent().newList();
+	}
+	
+	public static AList newList(List<AnubisObject> list) {
+		return getCurrent().newList(list);
 	}
 	
 	/**

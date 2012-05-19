@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import anubis.TypeName;
 import anubis.runtime.java.ConstructorInvocation;
 import anubis.runtime.java.FunctionAccessor;
 import anubis.runtime.java.JFieldSlotTable;

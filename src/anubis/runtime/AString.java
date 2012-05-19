@@ -1,5 +1,6 @@
 package anubis.runtime;
 
+import anubis.TypeName;
 import anubis.parser.ParserHelper;
 
 /**

@@ -1,5 +1,7 @@
 package anubis.runtime;
 
+import anubis.TypeName;
+
 @TypeName(ObjectType.BOOL)
 public class ATrueObject extends APrimitive {
 	@Override

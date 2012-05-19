@@ -3,12 +3,14 @@ package anubis.runtime;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import anubis.ACastable;
 import anubis.AIndexable;
 import anubis.AIterable;
 import anubis.AnubisObject;
+import anubis.TypeName;
 
 @TypeName(ObjectType.MAP)
-public class AMap extends AObject implements AIndexable, AIterable {
+public class AMap extends AObject implements AIndexable, AIterable, ACastable {
 	private final Map<AnubisObject, AnubisObject> map;
 	
 	public AMap() {
@@ -22,6 +24,11 @@ public class AMap extends AObject implements AIndexable, AIterable {
 	
 	public void add(AnubisObject key, AnubisObject obj) {
 		map.put(key, obj);
+	}
+	
+	@Override
+	public Object asJava() {
+		return map;
 	}
 	
 	@Override

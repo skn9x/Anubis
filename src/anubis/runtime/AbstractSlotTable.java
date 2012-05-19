@@ -12,7 +12,7 @@ public abstract class AbstractSlotTable implements SlotTable {
 		this.immutable = true;
 	}
 	
-	protected synchronized void assertNotFreeze() {
+	protected void assertNotFreeze() {
 		if (immutable) {
 			throw ExceptionProvider.newObjectFreeze();
 		}

@@ -33,7 +33,7 @@ public abstract class ABuiltinFunction extends AFunction {
 	
 	@Override
 	public String toString() {
-		return getType() + "(" + funcname + ")";
+		return ObjectType.get(this) + "(" + funcname + ")";
 	}
 	
 	public abstract static class _0 extends ABuiltinFunction {

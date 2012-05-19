@@ -16,16 +16,16 @@ public class AObject extends AbstractAObject implements ADumpable {
 	
 	@Override
 	public String debugString() {
-		return getType() + "_" + Utils.getIdString(this);
+		return ObjectType.get(this) + "_" + Utils.getIdString(this);
 	}
 	
 	@Override
 	public String dumpString() {
-		return Utils.formatDumpString(this, slots.getSnap());
+		return Utils.formatDumpString(this, getSlotTable().getSnap());
 	}
 	
 	@Override
 	public String toString() {
-		return getType() + "_" + Utils.getIdString(this);
+		return ObjectType.get(this) + "_" + Utils.getIdString(this);
 	}
 }

@@ -3,12 +3,14 @@ package anubis.runtime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import anubis.ACastable;
 import anubis.AIterable;
 import anubis.ASliceable;
 import anubis.AnubisObject;
+import anubis.TypeName;
 
 @TypeName(ObjectType.LIST)
-public class AList extends AObject implements ASliceable, AIterable {
+public class AList extends AObject implements ASliceable, AIterable, ACastable {
 	private final List<AnubisObject> list;
 	
 	public AList() {
@@ -22,6 +24,11 @@ public class AList extends AObject implements ASliceable, AIterable {
 	
 	public void add(AnubisObject obj) {
 		list.add(obj);
+	}
+	
+	@Override
+	public Object asJava() {
+		return list;
 	}
 	
 	@Override

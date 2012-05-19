@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import anubis.AIterable;
 import anubis.ASliceable;
 import anubis.AnubisObject;
+import anubis.TypeName;
 import anubis.runtime.builtin.NumberOperator;
 
 @TypeName(ObjectType.LIST)

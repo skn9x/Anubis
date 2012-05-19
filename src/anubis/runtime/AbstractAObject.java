@@ -3,12 +3,13 @@ package anubis.runtime;
 import anubis.AnubisObject;
 import anubis.SlotRef;
 import anubis.SpecialSlot;
+import anubis.TypeName;
 import anubis.except.ExceptionProvider;
 import anubis.except.ObjectFreezeException;
 
 @TypeName(ObjectType.OBJECT)
 public abstract class AbstractAObject implements AnubisObject {
-	protected final SlotTable slots;
+	private final SlotTable slots;
 	private AnubisObject _super = null;
 	private AnubisObject _outer = null;
 	
@@ -61,12 +62,7 @@ public abstract class AbstractAObject implements AnubisObject {
 	
 	@Override
 	public AnubisObject getSlot(String name) {
-		return slots.get(name);
-	}
-	
-	@Override
-	public String getType() {
-		return ObjectType.get(getClass());
+		return getSlotTable().get(name);
 	}
 	
 	@Override
@@ -88,10 +84,14 @@ public abstract class AbstractAObject implements AnubisObject {
 	@Override
 	public void setSlot(String name, AnubisObject value) {
 		try {
-			slots.put(name, value);
+			getSlotTable().put(name, value);
 		}
 		catch (ObjectFreezeException ex) {
 			throw ExceptionProvider.newObjectFreeze(ex, this, name);
 		}
+	}
+	
+	protected SlotTable getSlotTable() {
+		return this.slots;
 	}
 }

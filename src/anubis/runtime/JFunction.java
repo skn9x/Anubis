@@ -1,6 +1,7 @@
 package anubis.runtime;
 
 import anubis.AnubisObject;
+import anubis.TypeName;
 import anubis.runtime.java.FunctionAccessor;
 
 /**
@@ -29,7 +30,7 @@ public class JFunction extends AFunction {
 	
 	@Override
 	public String toString() {
-		return getType() + "(" + funcname + ")";
+		return ObjectType.get(this) + "(" + funcname + ")";
 	}
 	
 	public static JFunction valueOf(FunctionAccessor func) {

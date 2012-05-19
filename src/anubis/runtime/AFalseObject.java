@@ -1,6 +1,7 @@
 package anubis.runtime;
 
 import anubis.AFalse;
+import anubis.TypeName;
 
 @TypeName(ObjectType.BOOL)
 public class AFalseObject extends APrimitive implements AFalse {

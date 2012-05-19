@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import javax.script.ScriptContext;
 import anubis.AnubisObject;
 import anubis.SpecialSlot;
+import anubis.TypeName;
 import anubis.code.CodeBlock;
 import anubis.runtime.java.ArrayAdapter;
 import anubis.runtime.java.JFieldSlotTable;
@@ -64,7 +65,7 @@ public class StandardObjectFactory implements ObjectFactory {
 	private final Initializer<ScriptContext, AObject> INITIALIZER_SCRIPTCONTEXT = new Initializer<ScriptContext, AObject>() {
 		@Override
 		public AObject initialize(ScriptContext context) {
-			return traits.attach(new ANamedObject(ObjectType.LOBBY, new ScriptContextSlotTable(context)));
+			return traits.attach(new ALobby(new ScriptContextSlotTable(context)));
 		}
 	};
 	private final Initializer<Package, JPackage> INITIALIZER_JPACKAGE = new Initializer<Package, JPackage>() {
@@ -205,6 +206,11 @@ public class StandardObjectFactory implements ObjectFactory {
 	}
 	
 	@Override
+	public AList newList(List<AnubisObject> list) {
+		return traits.attach(new AList(list));
+	}
+	
+	@Override
 	public AMap newMap() {
 		return traits.attach(new AMap());
 	}
@@ -247,6 +253,13 @@ public class StandardObjectFactory implements ObjectFactory {
 				}
 				return result;
 			}
+		}
+	}
+	
+	@TypeName(ObjectType.LOBBY)
+	private static class ALobby extends AObject {
+		private ALobby(SlotTable slots) {
+			super(slots);
 		}
 	}
 	

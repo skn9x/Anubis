@@ -17,8 +17,8 @@ public class ANamedObject extends AObject {
 	}
 	
 	@Override
-	public String getType() {
-		return name; // TODO こうやってしまうと name が静的に取得できないので Utils.cast でどう扱おうかな
+	public String debugString() {
+		return super.debugString() + "(" + name + ")";
 	}
 	
 	@Override

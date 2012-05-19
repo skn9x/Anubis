@@ -1,5 +1,6 @@
 package anubis.runtime;
 
+import anubis.TypeName;
 
 /**
  * @author SiroKuro
@@ -31,5 +32,14 @@ public class ObjectType {
 			}
 		}
 		return cls.getSimpleName();
+	}
+	
+	public static String get(Object obj) {
+		if (obj == null) {
+			return OBJECT;
+		}
+		else {
+			return get(obj.getClass());
+		}
 	}
 }

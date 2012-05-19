@@ -61,6 +61,8 @@ public class BlockEmitter {
 	}
 	
 	public static class IllegalGotoException extends Exception {
+		private static final long serialVersionUID = 1L;
+		
 		public IllegalGotoException() {
 			super();
 		}

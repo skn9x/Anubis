@@ -3,9 +3,9 @@ do {
 		if x <= y then
 			return y;
 		else
-			return tarai(tarai(x - 1, y, z), tarai(y - 1, z, x), tarai(z - 1, x, y));
+			return callee(callee(x - 1, y, z), callee(y - 1, z, x), callee(z - 1, x, y));
 		end
 	};
-	console.puts("{0} = {1}", "tarai(9, 4, 1)", tarai(9, 4, 1));
-	// console.puts("{0} = {1}", "tarai(13, 6, 0)", tarai(13, 6, 0));
+	console.puts("tarai(9, 4, 1) = {0}", tarai(9, 4, 1));
+	// console.puts("tarai(13, 6, 0) = {0}", tarai(13, 6, 0));
 };

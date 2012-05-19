@@ -19,8 +19,9 @@ anubis はプロトタイプベースのオブジェクト指向言語です。
     
     an> "Hello world".dumpString()
       > 
-    --> string@1b52513a(Hello world) {
-        super = [string traits];
+    --> string_732b3d53("Hello world") {
+        this  = string_732b3d53("Hello world")
+        super = object_1bc74f37(StringTraits)
     }
 
 #### 対話環境(jrunscript)
@@ -31,8 +32,9 @@ jrunscript から `anubis.jar` および `asm-x.x.jar` を classpath に含め�
 対話環境が jrunscript で開始され、プロンプトが表示されます。
 
     anubis> "Hello world".dumpString()
-    string@5a8c63a6(Hello world) {
-        super = [string traits];
+    string_5a8c63a6("Hello world") {
+        this  = string_732b3d53("Hello world")
+        super = object_1bc74f37(StringTraits)
     }
 
 #### JSR223

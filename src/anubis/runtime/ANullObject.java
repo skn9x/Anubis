@@ -2,6 +2,7 @@ package anubis.runtime;
 
 import anubis.AFalse;
 import anubis.ANull;
+import anubis.TypeName;
 
 @TypeName(ObjectType.NULL)
 public class ANullObject extends APrimitive implements AFalse, ANull {
