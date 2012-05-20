@@ -10,8 +10,7 @@ import anubis.AnubisEngine;
 import anubis.AnubisObject;
 import anubis.except.ExitError;
 import anubis.runtime.Operator;
-import anubis.runtime.TraitsFactory;
-import anubis.runtime.builtin.ALobbyExit;
+import anubis.runtime.traits.func.ALobbyExit;
 
 public class Repl implements ALobbyExit.Callback {
 	private final ScriptEngineFactory factory;
@@ -25,13 +24,7 @@ public class Repl implements ALobbyExit.Callback {
 		this.noprompt = noprompt;
 	}
 	
-	@Override
-	public void onExit(ExitError exit) {
-		System.out.println("bye!");
-		running = false;
-	}
-	
-	public void repl() {
+	public void exec() {
 		AnubisEngine engine = initEngine();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		try {
@@ -67,10 +60,15 @@ public class Repl implements ALobbyExit.Callback {
 		}
 	}
 	
+	@Override
+	public void onExit(ExitError exit) {
+		System.out.println("bye!");
+		running = false;
+	}
+	
 	private AnubisEngine initEngine() {
 		AnubisEngine engine = (AnubisEngine) factory.getScriptEngine();
-		TraitsFactory tf = engine.getObjectFactory().getTraitsFactory();
-		engine.put("exit", tf.attach(exit));
+		engine.put("exit", engine.getObjectFactory().getTraitsFactory().attach(exit));
 		engine.put(ScriptEngine.FILENAME, "stdin");
 		return engine;
 	}

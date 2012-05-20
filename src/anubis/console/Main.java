@@ -32,9 +32,14 @@ public class Main {
 			else if (cmdopt.hasOption("f")) {
 				// TODO interpreter
 			}
+			else if (cmdopt.hasOption("l")) {
+				String code = cmdopt.getOptionValue("l");
+				Line main = new Line(factory, code == null ? "" : code);
+				main.exec();
+			}
 			else {
 				Repl main = new Repl(factory, cmdopt.hasOption("nologo"), cmdopt.hasOption("noprompt"));
-				main.repl();
+				main.exec();
 			}
 		}
 		catch (ParseException e) {

@@ -30,7 +30,7 @@ public class StandardObjectFactory implements ObjectFactory {
 	private final Cache<Object, AnubisObject> immutableObjectCache = new EqualsCache<Object, AnubisObject>();
 	private final Cache<Object, AnubisObject> mutableObjectCache = new IdentityCache<Object, AnubisObject>();
 	
-	private final TraitsFactory traits = new StandardTraitsFactory();
+	private final TraitsFactory traits = newTraitsFactory();
 	private final ATrueObject TRUE = traits.attach(new ATrueObject());
 	private final AFalseObject FALSE = traits.attach(new AFalseObject());
 	private final ANullObject NULL = traits.attach(new ANullObject());
@@ -45,6 +45,7 @@ public class StandardObjectFactory implements ObjectFactory {
 			throw new IllegalArgumentException();
 		}
 	};
+	
 	private final Initializer<Object, JObject> INITIALIZER_JOBJECT = new Initializer<Object, JObject>() {
 		@Override
 		public JObject initialize(Object obj) {
@@ -231,6 +232,10 @@ public class StandardObjectFactory implements ObjectFactory {
 	@Override
 	public ASet newSet() {
 		return traits.attach(new ASet());
+	}
+	
+	protected StandardTraitsFactory newTraitsFactory() {
+		return new StandardTraitsFactory();
 	}
 	
 	private JClass getJClass(Class<?> cls) {

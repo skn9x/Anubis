@@ -7,7 +7,7 @@ import anubis.AIterable;
 import anubis.ASliceable;
 import anubis.AnubisObject;
 import anubis.TypeName;
-import anubis.runtime.builtin.NumberOperator;
+import anubis.runtime.traits.func.NumberOperator;
 
 @TypeName(ObjectType.LIST)
 public class ARange extends AObject implements ASliceable, AIterable {
